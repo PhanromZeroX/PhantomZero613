@@ -14,6 +14,7 @@
 # --- Libraries ---
 import datetime
 import pandas as pd
+import tensorflow as tf
 
 
 
@@ -86,4 +87,38 @@ greeting_data_for_model = prepare_greeting_data(greeting_dataset)
 #greeting_df = pd.DataFrame(greeting_data_for_model, columns=["Time of Day", "Response"])
 #print(greeting_df)
 
+# okay so the prepare dataset is now prepared lets move on to make the inputs for the nueral model training both key value pairs using pandas
+# an test and train if it can correctly greet me based on the time of day by coming up with random new responses of its own based on the learned dataset
+def train_greeting_model(prepared_data):
+    # neural network
+    input_size = 11
+    hidden_size = 8
+    output_size = 11
+    learning_rate = 0.01
+    num_epochs = 1000
+    # neural model itsef will be using tensorflow library
+    model = tf.keras.Sequential([
+        tf.keras.layers.Dense(hidden_size, activation='relu', input_shape=(input_size,)),
+        tf.keras.layers.Dense(output_size, activation='softmax')
+    ])
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate),
+                  loss='sparse_categorical_crossentropy',
+                  metrics=['accuracy'])
+    # prepare data for training
+    X_train = []
+    y_train = []
+    time_of_day_mapping = {"morning": 0, "afternoon": 1, "evening": 2, "night": 3}
+    for time_of_day, response in prepared_data:
+        input_vector = [0] * input_size
+        input_vector[time_of_day_mapping[time_of_day]] = 1
+        X_train.append(input_vector)
+        y_train.append(hash(response) % output_size)
+    X_train = tf.convert_to_tensor(X_train, dtype=tf.float32)
+    y_train = tf.convert_to_tensor(y_train, dtype=tf.int32)
+    # train the model
+    model.fit(X_train, y_train, epochs=num_epochs, verbose=0)
+    return model
+
+# train the greeting model
+greeting_model = train_greeting_model(greeting_data_for_model)
 
