@@ -15,6 +15,7 @@
 import datetime
 import pandas as pd
 import tensorflow as tf
+from tensorflow.keras import Input
 
 
 
@@ -93,12 +94,13 @@ def train_greeting_model(prepared_data):
     # neural network
     input_size = 11
     hidden_size = 8
-    output_size = 11
+    output_size = 4  # number of time_of_day classes
     learning_rate = 0.01
-    num_epochs = 1000
+    num_epochs = 100
     # neural model itsef will be using tensorflow library
     model = tf.keras.Sequential([
-        tf.keras.layers.Dense(hidden_size, activation='relu', input_shape=(input_size,)),
+        Input(shape=(input_size,)),
+        tf.keras.layers.Dense(hidden_size, activation='relu'),
         tf.keras.layers.Dense(output_size, activation='softmax')
     ])
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate),
@@ -112,13 +114,37 @@ def train_greeting_model(prepared_data):
         input_vector = [0] * input_size
         input_vector[time_of_day_mapping[time_of_day]] = 1
         X_train.append(input_vector)
-        y_train.append(hash(response) % output_size)
+        y_train.append(time_of_day_mapping[time_of_day])
     X_train = tf.convert_to_tensor(X_train, dtype=tf.float32)
     y_train = tf.convert_to_tensor(y_train, dtype=tf.int32)
     # train the model
-    model.fit(X_train, y_train, epochs=num_epochs, verbose=0)
+    model.fit(X_train, y_train, epochs=num_epochs, verbose=1)
     return model
 
 # train the greeting model
+print("Starting training of the greeting model...")
 greeting_model = train_greeting_model(greeting_data_for_model)
+print("Training completed. Saving model...")
+greeting_model.save('Purple-Phantom.AI/greeting_model.keras')
+print("Model saved.")
+
+# function to generate a greeting based on time of day
+import random
+def generate_greeting(time_of_day):
+    if time_of_day in greeting_dataset:
+        return random.choice(greeting_dataset[time_of_day])
+    else:
+        return "Hello! How can I assist you?"
+
+# example usage
+current_time = datetime.datetime.now()
+if 5 <= current_time.hour < 12:
+    tod = "morning"
+elif 12 <= current_time.hour < 17:
+    tod = "afternoon"
+elif 17 <= current_time.hour < 21:
+    tod = "evening"
+else:
+    tod = "night"
+print(f"Generated greeting: {generate_greeting(tod)}")
 
