@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'Purple-Phantom.AI'))
+
 from flask import Flask, request, jsonify
 from Purple_Phantom import conversational_response, MODEL_AVAILABLE
 
