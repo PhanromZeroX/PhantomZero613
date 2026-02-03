@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu
+FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-22.04
 
 # Install system packages for Haxe/Lime/OpenFL + a lightweight desktop + noVNC
 ENV DEBIAN_FRONTEND=noninteractive
