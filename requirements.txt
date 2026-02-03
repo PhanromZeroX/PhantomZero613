@@ -1,3 +1,3 @@
-tensorflow
+torch
+transformers
 streamlit
-pandas
