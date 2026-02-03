@@ -1,15 +1,9 @@
 import streamlit as st
 import datetime
 import pandas as pd
+import tensorflow as tf
 import random
 from Purple_Phantom import conversational_response
-
-# TensorFlow is optional for deployment environments that don't support it
-try:
-    import tensorflow as tf
-    TENSORFLOW_AVAILABLE = True
-except Exception:
-    TENSORFLOW_AVAILABLE = False
 
 # Copy functions from Purple-Phantom.py
 def mississippi_time():

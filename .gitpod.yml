@@ -1,0 +1,78 @@
+image: ubuntu:latest
+
+tasks:
+  - name: Setup FNF Development Environment
+    init: |
+      # Update system
+      sudo apt update && sudo apt upgrade -y
+      
+      # Install Haxe
+      sudo apt install software-properties-common -y
+      sudo add-apt-repository ppa:haxe/releases -y
+      sudo apt update
+      sudo apt install haxe -y
+      
+      # Install haxelib dependencies
+      haxelib install lime
+      haxelib install openfl
+      haxelib run lime setup
+      haxelib run openfl setup
+      
+      # Install Lua
+      sudo apt install lua5.1 -y
+      
+      # Install PowerShell
+      # (May not be available, skip if needed)
+      
+      # Python environment
+      python3 -m venv .venv
+      source .venv/bin/activate
+      pip install streamlit flask torch transformers requests kivy
+      
+      # Clone Psych Engine
+      git clone https://github.com/ShadowMario/FNF-PsychEngine.git PsychEngine
+      
+      # Install Psych Engine dependencies
+      cd PsychEngine
+      haxelib install flixel
+      haxelib install flixel-addons
+      haxelib install flixel-ui
+      haxelib install hscript
+      haxelib install newgrounds
+      haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+      haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
+      cd ..
+      
+      # Setup AI components
+      mkdir -p Purple-Phantom.AI
+      # (Copy AI files from repo)
+      
+    command: |
+      source .venv/bin/activate
+      echo "FNF Development Environment Ready!"
+      echo "Run: python -m streamlit run app.py &"
+      echo "Run: python api_server.py &"
+      echo "For GUI: Use GitPod's desktop mode or external VNC"
+
+ports:
+  - port: 8501
+    onOpen: open-preview
+  - port: 5000
+  - port: 6080
+
+vscode:
+  extensions:
+    - ms-python.python
+    - sumneko.lua
+    - shyykoserhiy.vscode-spotify
+    - codeium.codeium
+
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: false
+    addComment: true
+    addBadge: true
+    addLabel: true
