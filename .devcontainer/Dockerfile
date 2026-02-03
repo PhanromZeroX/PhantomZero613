@@ -9,6 +9,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xfce4 xfce4-terminal x11vnc net-tools novnc websockify \
     && rm -rf /var/lib/apt/lists/*
 
+# Install PowerShell (pwsh) from Microsoft package repo
+RUN wget -q "https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb" -O /tmp/packages-microsoft-prod.deb \
+  && dpkg -i /tmp/packages-microsoft-prod.deb || true \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends powershell \
+  && rm -rf /var/lib/apt/lists/* /tmp/packages-microsoft-prod.deb
+
+# Install Lua and luarocks for Lua-based FNF tooling
+RUN apt-get update && apt-get install -y --no-install-recommends lua5.4 luarocks \
+  && rm -rf /var/lib/apt/lists/*
+
 # Install Haxe (official apt repo)
 RUN wget -qO - https://haxe.org/keys/haxe-debian.key | gpg --dearmor -o /usr/share/keyrings/haxe-archive-keyring.gpg \
   && echo "deb [signed-by=/usr/share/keyrings/haxe-archive-keyring.gpg] https://haxe.org/apt stable main" > /etc/apt/sources.list.d/haxe.list \

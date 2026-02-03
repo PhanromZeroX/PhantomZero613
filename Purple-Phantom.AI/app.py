@@ -1,9 +1,15 @@
 import streamlit as st
 import datetime
 import pandas as pd
-import tensorflow as tf
 import random
 from Purple_Phantom import predict_category
+
+# TensorFlow optional import (avoids Streamlit deploy failures when TF unavailable)
+try:
+    import tensorflow as tf
+    TENSORFLOW_AVAILABLE = True
+except Exception:
+    TENSORFLOW_AVAILABLE = False
 
 # Copy functions from Purple-Phantom.py
 def mississippi_time():
