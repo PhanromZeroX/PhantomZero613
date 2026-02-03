@@ -1,0 +1,17 @@
+{
+  "name": "FNF Development Codespace",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "forwardPorts": [6080],
+  "postCreateCommand": "/workspaces/PhantomZero613/.devcontainer/postCreateCommand.sh",
+  "runArgs": ["--init"],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "haxe-foundation.haxe", "ms-python.python", "ms-vscode.cpptools"
+      ]
+    }
+  }
+}

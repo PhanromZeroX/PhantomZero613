@@ -5,7 +5,24 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
-from Purple_Phantom import predict_category
+from kivy.graphics import Color, RoundedRectangle
+import os
+try:
+    import requests
+    REQUESTS_AVAILABLE = True
+except Exception:
+    REQUESTS_AVAILABLE = False
+
+# Mobile app will prefer a remote API for responses (set REMOTE_API_URL env var).
+REMOTE_API_URL = os.environ.get('REMOTE_API_URL')
+if REMOTE_API_URL is None:
+    try:
+        from Purple_Phantom import predict_category
+        LOCAL_PREDICT_AVAILABLE = True
+    except Exception:
+        LOCAL_PREDICT_AVAILABLE = False
+else:
+    LOCAL_PREDICT_AVAILABLE = False
 
 class ChatBubble(BoxLayout):
     def __init__(self, text, is_user=False, **kwargs):
@@ -15,14 +32,27 @@ class ChatBubble(BoxLayout):
         self.height = 50
         self.padding = 10
         self.spacing = 5
-        if is_user:
-            self.canvas.before.add(Color(0.6, 0.2, 0.8, 1))  # Purple for user
-        else:
-            self.canvas.before.add(Color(0.1, 0.1, 0.1, 0.8))  # Dark for AI
+        # Glassmorphism-style translucent bubble with purple tint
+        bg_color = (0.6, 0.2, 0.8, 0.18) if is_user else (0.08, 0.08, 0.12, 0.18)
+        border_color = (0.54, 0.17, 0.89, 0.9)
         with self.canvas.before:
-            RoundedRectangle(pos=self.pos, size=self.size, radius=[15])
+            Color(*bg_color)
+            self._rect = RoundedRectangle(pos=self.pos, size=self.size, radius=[12])
+            Color(*border_color)
+            # thin border simulated by another rounded rectangle slightly inset
+            self._border = RoundedRectangle(pos=(self.x+1, self.y+1), size=(self.width-2, self.height-2), radius=[12])
+        self.bind(pos=self._update_rect, size=self._update_rect)
         label = Label(text=text, color=(1,1,1,1), size_hint_y=None, height=40)
         self.add_widget(label)
+
+    def _update_rect(self, *args):
+        try:
+            self._rect.pos = self.pos
+            self._rect.size = self.size
+            self._border.pos = (self.x+1, self.y+1)
+            self._border.size = (self.width-2, self.height-2)
+        except Exception:
+            pass
 
 class ChatApp(App):
     def build(self):
@@ -51,8 +81,21 @@ class ChatApp(App):
         if user_text:
             user_bubble = ChatBubble(user_text, is_user=True)
             self.chat_layout.add_widget(user_bubble)
-            
-            response = predict_category(user_text)
+            # prefer remote API if set
+            response = ''
+            if REMOTE_API_URL and REQUESTS_AVAILABLE:
+                try:
+                    r = requests.post(REMOTE_API_URL, json={"prompt": user_text}, timeout=8)
+                    if r.status_code == 200:
+                        response = r.json().get('response', r.text)
+                    else:
+                        response = f"(remote error {r.status_code})"
+                except Exception:
+                    response = "(remote request failed)"
+            elif LOCAL_PREDICT_AVAILABLE:
+                response = predict_category(user_text)
+            else:
+                response = "(no available model; set REMOTE_API_URL in environment)"
             ai_bubble = ChatBubble(response, is_user=False)
             self.chat_layout.add_widget(ai_bubble)
             

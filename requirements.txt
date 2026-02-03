@@ -1,3 +1,10 @@
-torch
-transformers
 streamlit
+
+# Dev / server packages
+pandas
+requests
+flask
+
+# Optional ML packages for local dev (not included in APK)
+# torch
+# transformers
