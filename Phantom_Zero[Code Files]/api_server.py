@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/codespace/PhantomZero613/Purple-Phantom.AI')
+sys.path.append('Purple-Phantom.AI')
 
 from Purple_Phantom import predict_category, mississippi_time
 
