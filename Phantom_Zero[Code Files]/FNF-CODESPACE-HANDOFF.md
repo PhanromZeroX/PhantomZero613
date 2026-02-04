@@ -196,7 +196,7 @@ adb shell am start -n com.phantomzero.ai/.MainActivity
 
 ---
 
-## Task 7: FNF Game Development GUI Setup (Optional)
+## Task 7: FNF Game Development GUI Setup
 
 **If GUI display is needed for testing FNF game client or Haxe compilation output:**
 
