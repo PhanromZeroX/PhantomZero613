@@ -10,8 +10,11 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "haxe-foundation.haxe", "ms-python.python", "ms-vscode.cpptools",
-        "yinfei.luahelper", "blackboxapp.blackbox", "blackboxapp.blackboxagent"
+        "ms-python.python",
+        "yinfei.luahelper",
+        "blackboxapp.blackbox",
+        "blackboxapp.blackboxagent",
+        "ms-vscode.cpptools"
       ]
     }
   }
