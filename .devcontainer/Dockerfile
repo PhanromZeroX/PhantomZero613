@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-11-jdk python3 python3-pip pkg-config cmake \
     libx11-dev libxrandr-dev libxi-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev \
     xfce4 xfce4-terminal x11vnc net-tools novnc websockify \
+    libstdc++6 libssl3 libc6 zlib1g \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PowerShell (pwsh) from Microsoft package repo
