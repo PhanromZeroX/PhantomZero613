@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libx11-dev libxrandr-dev libxi-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev \
     xfce4 xfce4-terminal x11vnc net-tools novnc websockify \
     libstdc++6 libssl3 libc6 zlib1g \
+    libvlc5 libvlccore9 vlc-data \
+    libpulse0 libogg0 libflac8 libvorbis0a libvorbisfile3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PowerShell (pwsh) from Microsoft package repo
