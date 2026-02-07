@@ -32,6 +32,20 @@ RUN wget -qO - https://haxe.org/keys/haxe-debian.key | gpg --dearmor -o /usr/sha
   && (haxelib install lime || true) \
   && (haxelib install openfl || true)
 
+# Fallback: if `haxe` binary is not present after apt, download official binary and install
+RUN if ! command -v haxe >/dev/null 2>&1; then \
+    HAXE_VER=4.2.5; \
+    echo "haxe not found - attempting fallback install of ${HAXE_VER}"; \
+    wget -qO /tmp/haxe.tar.gz "https://github.com/HaxeFoundation/haxe/releases/download/${HAXE_VER}/haxe-${HAXE_VER}.linux64.tar.gz" || true; \
+    mkdir -p /usr/local/haxe; \
+    tar -xzf /tmp/haxe.tar.gz -C /usr/local/haxe --strip-components=1 || true; \
+    ln -sf /usr/local/haxe/haxe /usr/local/bin/haxe || true; \
+    ln -sf /usr/local/haxe/haxelib /usr/local/bin/haxelib || true; \
+    (haxelib setup /usr/lib/haxe/lib || true); \
+    (haxelib install lime || true); \
+    (haxelib install openfl || true); \
+  fi
+
 WORKDIR /workspaces/PhantomZero613
 
 COPY .devcontainer/start-novnc.sh /usr/local/bin/start-novnc.sh
