@@ -15,6 +15,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN apt-get update && apt-get install -y --no-install-recommends lua5.4 luarocks \
     && rm -rf /var/lib/apt/lists/*
 
+# Install PowerShell for terminal preference
+RUN apt-get update && apt-get install -y --no-install-recommends wget apt-transport-https \
+    && wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | apt-key add - \
+    && curl https://packages.microsoft.com/config/ubuntu/24.04/prod.list > /etc/apt/sources.list.d/powershell.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends powershell \
+    && rm -rf /var/lib/apt/lists/*
+
 # Note: Haxe is NOT installed via apt - it causes build failures
 # If Haxe is needed later, install via binary download AFTER container is built
 
@@ -22,6 +30,10 @@ WORKDIR /workspaces/PhantomZero613
 
 COPY .devcontainer/start-novnc.sh /usr/local/bin/start-novnc.sh
 RUN chmod +x /usr/local/bin/start-novnc.sh
+
+# Copy and set execute permissions for postCreateCommand.sh
+COPY .devcontainer/postCreateCommand.sh /workspaces/PhantomZero613/.devcontainer/postCreateCommand.sh
+RUN chmod +x /workspaces/PhantomZero613/.devcontainer/postCreateCommand.sh
 
 EXPOSE 6080
 

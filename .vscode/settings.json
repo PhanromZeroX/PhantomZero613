@@ -4,10 +4,13 @@
         "pwsh": {
             "path": "/usr/bin/pwsh",
             "args": []
+        },
+        "bash": {
+            "path": "/bin/bash",
+            "args": []
         }
-    }
-}
-{
+    },
     "python-envs.defaultEnvManager": "ms-python.python:system",
     "python-envs.pythonProjects": []
 }
+
