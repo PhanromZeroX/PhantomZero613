@@ -1,5 +1,5 @@
-# Ubuntu 22.04 LTS - Compatible version for Psych Engine development
-FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-22.04
+# Ubuntu 24.04 LTS - Required for Psych Engine 1.0.4 (glibc 2.38+)
+FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-24.04
 
 # Install system packages for Haxe/Lime/OpenFL + a lightweight desktop + noVNC
 ENV DEBIAN_FRONTEND=noninteractive
