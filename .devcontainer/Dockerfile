@@ -16,9 +16,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends lua5.4 luarocks
     && rm -rf /var/lib/apt/lists/*
 
 # Install PowerShell for terminal preference
-RUN apt-get update && apt-get install -y --no-install-recommends wget apt-transport-https \
-    && wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | apt-key add - \
-    && curl https://packages.microsoft.com/config/ubuntu/24.04/prod.list > /etc/apt/sources.list.d/powershell.list \
+RUN apt-get update && apt-get install -y --no-install-recommends wget apt-transport-https gpg \
+    && mkdir -p /etc/apt/keyrings \
+    && wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg \
+    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/24.04/prod noble main" > /etc/apt/sources.list.d/powershell.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends powershell \
     && rm -rf /var/lib/apt/lists/*
