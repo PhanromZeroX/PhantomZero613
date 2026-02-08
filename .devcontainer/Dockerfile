@@ -8,8 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-17-jdk python3 python3-pip pkg-config cmake \
     libx11-dev libxrandr-dev libxi-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev \
     xfce4 xfce4-terminal x11vnc net-tools novnc websockify \
-    libstdc++6 libssl3 libc6 zlib1g libflac6 libogg0 libvorbis0a libvorbisenc3 libpulse0 \
-    libvlc5 libvlccore10 vlc-data \
+    libstdc++6 libssl3 libc6 zlib1g libogg0 libvorbis0a libpulse0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Lua and luarocks for Lua-based FNF tooling
