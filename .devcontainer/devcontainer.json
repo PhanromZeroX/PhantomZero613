@@ -1,5 +1,5 @@
 {
-  "name": "FNF Development Codespace",
+  "name": "FNF Development Codespace - Ubuntu 24.04 LTS",
   "build": {
     "dockerfile": "Dockerfile",
     "context": ".."
@@ -17,5 +17,7 @@
         "ms-vscode.cpptools"
       ]
     }
-  }
+  },
+  "remoteUser": "vscode"
 }
+

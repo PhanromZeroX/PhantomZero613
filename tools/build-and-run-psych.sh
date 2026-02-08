@@ -8,52 +8,51 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PSYCH_DIR="$REPO_ROOT/games/PsychEngine"
 PSYCH_BIN="$PSYCH_DIR/export/release/PsychEngine"
 
-# Check if container is Alpine (incompatible with glibc binary)
-if grep -qi "Alpine" /etc/os-release 2>/dev/null; then
-  echo "════════════════════════════════════════════════════════════════════════"
-  echo "⚠️  Alpine Linux Detected - Binary Not Compatible"
-  echo "════════════════════════════════════════════════════════════════════════"
-  echo ""
-  echo "The Psych Engine binary requires Ubuntu (glibc), but this container is"
-  echo "Alpine Linux (musl libc). They are not compatible."
-  echo ""
-  echo "📋 OPTIONS:"
-  echo ""
-  echo "1. REBUILD THIS CODESPACE (Recommended for immediate testing)"
-  echo "   • VS Code: Ctrl+Shift+P → 'Rebuild Container'"
-  echo "   • Wait 3-5 minutes for Ubuntu 22.04 to install"
-  echo "   • Binary will be ready to run"
-  echo ""
-  echo "2. CREATE A NEW CODESPACE"
-  echo "   • New Codespaces use the updated Dockerfile (Ubuntu 22.04)"
-  echo "   • Binary and dependencies are pre-installed"
-  echo "   • Recommended for future sessions"
-  echo ""
-  echo "3. PREPARE MODS IN PARALLEL"
-  echo "   • Add assets to: games/PsychEngine/mods/PurplePhantomMod/"
-  echo "   • When you rebuild to Ubuntu, mods will load automatically"
-  echo ""
-  echo "📖 For more details, see: .devcontainer/PSYCH-ENGINE-SETUP.md"
-  echo "════════════════════════════════════════════════════════════════════════"
-  exit 1
+# Verify we're on Ubuntu 24.04+ (glibc 2.38+)
+GLIBC_VERSION=$(ldd --version | head -1 | awk '{print $NF}')
+REQUIRED_GLIBC="2.38"
+
+if [ "$(printf '%s\n' "$REQUIRED_GLIBC" "$GLIBC_VERSION" | sort -V | head -n1)" != "$REQUIRED_GLIBC" ]; then
+    echo "⚠️  glibc version $GLIBC_VERSION detected (required: $REQUIRED_GLIBC+)"
+    echo "   This script requires Ubuntu 24.04 LTS or newer."
+    echo ""
+    echo "📋 To fix this:"
+    echo "   1. Rebuild your codespace with the updated devcontainer"
+    echo "   2. VS Code: Ctrl+Shift+P → 'Rebuild Container'"
+    echo "   3. Or create a new codespace from the repository"
+    exit 1
 fi
 
+echo "✅ Ubuntu 24.04+ detected (glibc $GLIBC_VERSION)"
+
 if [ ! -d "$PSYCH_DIR" ]; then
-  echo "❌ Psych Engine directory not found at: $PSYCH_DIR"
-  exit 1
+    echo "❌ Psych Engine directory not found at: $PSYCH_DIR"
+    exit 1
 fi
 
 if [ ! -f "$PSYCH_BIN" ]; then
-  echo "❌ Pre-built Psych Engine binary not found at: $PSYCH_BIN"
-  echo "📥 Please download from:"
-  echo "   https://github.com/ShadowMario/FNF-PsychEngine/releases/download/1.0.4/PsychEngine-Linux.zip"
-  exit 1
+    echo "❌ Pre-built Psych Engine binary not found at: $PSYCH_BIN"
+    echo ""
+    echo "📥 Options:"
+    echo "   1. Download from GitHub:"
+    echo "      wget https://github.com/ShadowMario/FNF-PsychEngine/releases/download/1.0.4/PsychEngine-Linux.zip"
+    echo ""
+    echo "   2. Build from source:"
+    echo "      ./tools/build-psych-engine.sh"
+    exit 1
 fi
 
-chmod +x "$PSYCH_BIN" || true
+chmod +x "$PSYCH_BIN" 2>/dev/null || true
 
-echo "✅ Launching Psych Engine 1.0.4 (Linux pre-built)..."
+echo "🎮 Launching Psych Engine 1.0.4..."
 echo "   Binary: $PSYCH_BIN"
 echo ""
+
 cd "$PSYCH_DIR/export/release"
+
+# Set up environment for headless running
+export DISPLAY=:0
+export SDL_VIDEODRIVER=dummy
+
 exec "$PSYCH_BIN"
+
