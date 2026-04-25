@@ -1,5 +1,6 @@
--- Combined shader script: heatwave + glow + vhs
+-- Combined shader script: heatwave + glow (characters) + vhs + beat bounce
 shadersLoaded = false
+glowCharsApplied = false
 
 function onStartCountdown()
     if not shadersEnabled then
@@ -29,17 +30,27 @@ function onStartCountdown()
     setShaderFloat('heatwaveShader', 'speed', 0.5)
     setShaderFloat('heatwaveShader', 'time', 0.0)
 
-    -- Glow shader setup (camHUD)
-    makeLuaSprite('glowShaderHUD')
-    setSpriteShader('glowShaderHUD', 'glow')
+    -- Glow shader setup (characters + icons)
+    makeLuaSprite('glowShaderChars')
+    setSpriteShader('glowShaderChars', 'glow')
+    makeLuaSprite('glowShaderIcons')
+    setSpriteShader('glowShaderIcons', 'glow')
 
     runHaxeCode([[
-        var glowFilter = new ShaderFilter(game.getLuaObject("glowShaderHUD").shader);
-        game.camHUD.setFilters([glowFilter]);
+        var glowChars = game.getLuaObject('glowShaderChars').shader;
+        var glowIcons = game.getLuaObject('glowShaderIcons').shader;
+        if (game.dad != null) game.dad.shader = glowChars;
+        if (game.boyfriend != null) game.boyfriend.shader = glowChars;
+        if (game.iconP2 != null) game.iconP2.shader = glowIcons;
+        if (game.iconP1 != null) game.iconP1.shader = glowIcons;
     ]])
 
-    setShaderFloat('glowShaderHUD', 'dim', 0.8)
-    setShaderFloat('glowShaderHUD', 'size', 3.0)
+    setShaderFloat('glowShaderChars', 'dim', 1.2)
+    setShaderFloat('glowShaderChars', 'size', 1.5)
+    setShaderFloat('glowShaderIcons', 'dim', 1.2)
+    setShaderFloat('glowShaderIcons', 'size', 1.5)
+
+    glowCharsApplied = true
 
     -- VHS shader setup
     makeLuaSprite('vhsShader')
@@ -55,7 +66,7 @@ function onStartCountdown()
     setShaderFloat('vhsShader', 'colorOffsetIntensity', 1.0)
 
     shadersLoaded = true
-    debugPrint('All Shaders: heatwave + glow + vhs loaded!')
+    debugPrint('All Shaders: heatwave + glow chars + vhs loaded!')
 end
 
 function onUpdatePost(elapsed)
@@ -63,4 +74,15 @@ function onUpdatePost(elapsed)
         setShaderFloat('heatwaveShader', 'time', getSongPosition() / 1000.0)
         setShaderFloat('vhsShader', 'time', getSongPosition() / 1000.0)
     end
+end
+
+-- Medium camera bounce synced to beat
+local defaultZoom = 1.0
+local bounceZoom = 1.03
+local bounceDecay = 0.06
+
+function onBeatHit()
+    -- Medium bounce: quick zoom in on every beat, decays back
+    setProperty('camGame.zoom', bounceZoom)
+    doTweenZoom('camBounce', 'camGame', defaultZoom, bounceDecay, 'quadOut')
 end
