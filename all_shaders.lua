@@ -21,7 +21,7 @@ function onStartCountdown()
     makeLuaSprite('heatwaveShader')
     setSpriteShader('heatwaveShader', 'heatwave')
 
-    runHaxeCode([[
+runHaxeCode([[
         var heatFilter = new ShaderFilter(game.getLuaObject("heatwaveShader").shader);
         game.camGame.setFilters([heatFilter]);
     ]])
