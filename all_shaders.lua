@@ -23,7 +23,7 @@ function onStartCountdown()
 
 runHaxeCode([[
         var heatFilter = new ShaderFilter(game.getLuaObject("heatwaveShader").shader);
-        game.camGame.setFilters([heatFilter]);
+        game.camHUD.setFilters([heatFilter]);
     ]])
 
     setShaderFloat('heatwaveShader', 'strength', 0.5)
@@ -78,7 +78,7 @@ end
 
 -- Medium camera bounce synced to beat
 local defaultZoom = 1.0
-local bounceZoom = 1.03
+local bounceZoom = 1.05
 local bounceDecay = 0.06
 
 function onBeatHit()
