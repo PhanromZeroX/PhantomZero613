@@ -1,4 +1,4 @@
--- Combined shader script: heatwave + glow (characters) + vhs + beat bounce
+-- Combined shader script: heatwave (camHUD) + glow (characters) + vhs (camGame)
 shadersLoaded = false
 glowCharsApplied = false
 
@@ -33,11 +33,12 @@ function onStartCountdown()
     setShaderFloat('vhsShader', 'noiseIntensity', 0.5)
     setShaderFloat('vhsShader', 'colorOffsetIntensity', 1.0)
 
-    -- Apply both heatwave and vhs to camGame together
+    -- Heatwave on camHUD, VHS on camGame
     runHaxeCode([[
         var heatFilter = new ShaderFilter(game.getLuaObject("heatwaveShader").shader);
         var vhsFilter = new ShaderFilter(game.getLuaObject("vhsShader").shader);
-        game.camGame.setFilters([heatFilter, vhsFilter]);
+        game.camHUD.setFilters([heatFilter]);
+        game.camGame.setFilters([vhsFilter]);
     ]])
 
     -- Glow shader setup (characters + icons)
@@ -71,15 +72,4 @@ function onUpdatePost(elapsed)
         setShaderFloat('heatwaveShader', 'time', getSongPosition() / 1000.0)
         setShaderFloat('vhsShader', 'time', getSongPosition() / 1000.0)
     end
-end
-
--- Beat bounce synced to Inst/bass (3% strength, snappy decay)
-local defaultZoom = 1.0
-local bounceZoom = 1.03
-local bounceDecay = 0.04
-
-function onBeatHit()
-    -- 3% zoom in on every beat, quick bounce-out decay for tight sync
-    setProperty('camGame.zoom', bounceZoom)
-    doTweenZoom('beatBounceCam', 'camGame', defaultZoom, bounceDecay, 'bounceOut')
 end
