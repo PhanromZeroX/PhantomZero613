@@ -1,0 +1,77 @@
+{
+  "shader_basic": {
+    "prefix": "shader",
+    "body": [
+      "local shaderEnabled = false",
+      "",
+      "function onStartCountdown()",
+      "    if shadersEnabled then",
+      "        debugPrint('Loading ${1:shaderName} Shader')",
+      "        runHaxeCode([[",
+      "            game.initLuaShader('${1:shaderName}');",
+      "        ]])",
+      "        ",
+      "        makeLuaSprite('${1:shaderName}Shader')",
+      "        setSpriteShader('${1:shaderName}Shader', '${1:shaderName}')",
+      "        ",
+      "        runHaxeCode([[",
+      "            var shaderFilter = new ShaderFilter(game.getLuaObject(\"${1:shaderName}Shader\").shader);",
+      "            game.camGame.setFilters([shaderFilter]);",
+      "        ]])",
+      "        ",
+      "        setShaderFloat('${1:shaderName}Shader', 'time', 0)",
+      "        ",
+      "        shaderEnabled = true",
+      "    end",
+      "end",
+      "",
+      "function onUpdatePost(elapsed)",
+      "    if shaderEnabled then",
+      "        setShaderFloat('${1:shaderName}Shader', 'time', getSongPosition() / 1000)",
+      "    end",
+      "end"
+    ],
+    "description": "Basic shader activation template"
+  },
+  "sprite_with_tween": {
+    "prefix": "sprite-tween",
+    "body": [
+      "makeLuaSprite('${1:spriteId}', '${2:path/to/image}', ${3:x}, ${4:y})",
+      "addLuaSprite('${1:spriteId}', ${5:false})",
+      "",
+      "doTweenY('${1:spriteId}_tween', '${1:spriteId}', ${6:endValue}, ${7:duration}, '${8:linear}')"
+    ],
+    "description": "Create sprite with Y tween"
+  },
+  "event_handler": {
+    "prefix": "event",
+    "body": [
+      "function ${1:eventName}(value1, value2)",
+      "    debugPrint('Event triggered: ${1:eventName}')",
+      "    -- TODO: implement event",
+      "    ${0}",
+      "end"
+    ],
+    "description": "Custom event handler"
+  },
+  "character_def": {
+    "prefix": "character",
+    "body": [
+      "{",
+      "  \"animations\": [",
+      "    {",
+      "      \"anim\": \"idle\",",
+      "      \"name\": \"Idle\",",
+      "      \"offsets\": [0, 0],",
+      "      \"loop\": true",
+      "    }",
+      "  ],",
+      "  \"image\": \"characters/${1:characterName}\",",
+      "  \"scale\": 1.0,",
+      "  \"sing_duration\": 4.0,",
+      "  \"healthicon\": \"${1:characterName}\"",
+      "}"
+    ],
+    "description": "Character JSON template"
+  }
+}

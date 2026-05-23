@@ -1,10 +1,10 @@
 # Ubuntu 24.04 LTS - Required for Psych Engine 1.0.4 (glibc 2.38+)
 FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu-24.04
 
-# Install system packages for Haxe/Lime/OpenFL + a lightweight desktop + noVNC
+# Install system packages for Haxe/Lime/OpenFL + a lightweight desktop + noVNC + Git LFS
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget curl git build-essential ca-certificates gnupg2 lsb-release \
+    wget curl git git-lfs build-essential ca-certificates gnupg2 lsb-release \
     openjdk-17-jdk python3 python3-pip pkg-config cmake \
     libx11-dev libxrandr-dev libxi-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev \
     xfce4 xfce4-terminal x11vnc net-tools novnc websockify \

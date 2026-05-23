@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# Initialize Git LFS
+echo "Initializing Git LFS..."
+git lfs install --system || true
+cd /workspaces/PhantomZero613
+git lfs pull || true
+
 # Install Python dependencies for Purple Phantom AI and mega.nz integration
 python3 -m pip install --quiet --upgrade pip
 python3 -m pip install --quiet mega.py streamlit pandas requests flask numpy pillow pyarrow
@@ -15,4 +21,4 @@ if [ ! -d "/workspaces/PhantomZero613/.noVNC" ]; then
   git clone https://github.com/novnc/websockify.git /workspaces/PhantomZero613/.noVNC/utils/websockify || true
 fi
 
-echo "Post-create: Haxelib, noVNC, and Python packages installed. mega.nz storage ready at storage/mega-sync/"
+echo "Post-create: Git LFS, Haxelib, noVNC, and Python packages installed. mega.nz storage ready at storage/mega-sync/"

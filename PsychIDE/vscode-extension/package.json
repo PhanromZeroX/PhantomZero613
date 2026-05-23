@@ -1,0 +1,82 @@
+{
+  "name": "psych-ide",
+  "displayName": "Psych Engine IDE",
+  "description": "Complete development environment for Psych Engine v1.0.4 modding",
+  "version": "0.1.0",
+  "publisher": "PsychModding",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Debuggers"
+  ],
+  "keywords": [
+    "psych-engine",
+    "fnf",
+    "lua",
+    "haxe",
+    "modding"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "lua",
+        "extensions": [".lua"],
+        "aliases": ["Lua"]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "lua",
+        "scopeName": "source.lua",
+        "path": "./syntaxes/lua.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "lua",
+        "path": "./snippets/psych-snippets.json"
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "song.json",
+        "url": "./schemas/song.schema.json"
+      },
+      {
+        "fileMatch": "character.json",
+        "url": "./schemas/character.schema.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "psychIde.validateLua",
+        "title": "Psych: Validate Lua File"
+      },
+      {
+        "command": "psychIde.validateJson",
+        "title": "Psych: Validate JSON File"
+      },
+      {
+        "command": "psychIde.generateSnippet",
+        "title": "Psych: Generate Code Snippet"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/node": "latest",
+    "typescript": "latest"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.1.0"
+  }
+}

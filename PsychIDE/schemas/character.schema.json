@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Psych Engine Character Definition",
+  "description": "Schema for character.json files",
+  "type": "object",
+  "required": ["animations"],
+  "properties": {
+    "animations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["anim", "name"],
+        "properties": {
+          "anim": {
+            "type": "string",
+            "description": "Animation internal name"
+          },
+          "name": {
+            "type": "string",
+            "description": "Frame animation name in spritesheet"
+          },
+          "offsets": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {"type": "number"},
+            "description": "X and Y offset"
+          },
+          "loop": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    "image": {
+      "type": "string",
+      "description": "Path to character spritesheet"
+    },
+    "scale": {
+      "type": "number",
+      "default": 1.0,
+      "description": "Character scale multiplier"
+    },
+    "sing_duration": {
+      "type": "number",
+      "default": 4.0,
+      "description": "How long sing animations play"
+    },
+    "healthicon": {
+      "type": "string",
+      "description": "Health bar icon name"
+    }
+  }
+}
