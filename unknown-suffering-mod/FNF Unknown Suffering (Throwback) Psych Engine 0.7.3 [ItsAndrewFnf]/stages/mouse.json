@@ -1,0 +1,12 @@
+{
+  "directory": "",
+  "stageUI": "miki",
+  "defaultZoom": 0.5,
+  "boyfriend": [1200,420],
+  "girlfriend": [470,1130],
+  "opponent": [-150,150],
+  "camera_boyfriend": [-50,50],
+  "camera_girlfriend": [900,-500],
+  "camera_opponent": [0,0],
+  "camera_speed": 1.5
+}

@@ -1,0 +1,1386 @@
+{
+    "onCreate Hook": {
+        "prefix": "onCreate",
+        "body": [
+            "function onCreate()",
+            "    ${1:-- create sprites and initialize variables}",
+            "end"
+        ],
+        "description": "Psych Engine Lua onCreate hook. Runs once when the script starts."
+    },
+    "onCreatePost Hook": {
+        "prefix": "onCreatePost",
+        "body": [
+            "function onCreatePost()",
+            "    ${1:-- run after onCreate and after scene setup}",
+            "end"
+        ],
+        "description": "Psych Engine Lua onCreatePost hook. Runs after onCreate."
+    },
+    "onUpdate Hook": {
+        "prefix": "onUpdate",
+        "body": [
+            "function onUpdate(elapsed)",
+            "    ${1:-- update logic each frame}",
+            "end"
+        ],
+        "description": "Psych Engine Lua onUpdate hook. Runs each frame with delta time."
+    },
+    "onUpdatePost Hook": {
+        "prefix": "onUpdatePost",
+        "body": [
+            "function onUpdatePost(elapsed)",
+            "    ${1:-- run after the frame update logic}",
+            "end"
+        ],
+        "description": "Psych Engine Lua onUpdatePost hook. Runs after onUpdate each frame."
+    },
+    "onStepHit Hook": {
+        "prefix": "onStepHit",
+        "body": [
+            "function onStepHit()",
+            "    ${1:-- run when a music step occurs}",
+            "end"
+        ],
+        "description": "Psych Engine Lua onStepHit hook. Runs on every chart step."
+    },
+    "onBeatHit Hook": {
+        "prefix": "onBeatHit",
+        "body": [
+            "function onBeatHit()",
+            "    ${1:-- run when a beat occurs}",
+            "end"
+        ],
+        "description": "Psych Engine Lua onBeatHit hook. Runs on each beat."
+    },
+    "onEvent Hook": {
+        "prefix": "onEvent",
+        "body": [
+            "function onEvent(name, value1, value2)",
+            "    if name == '${1:Event Name}' then",
+            "        ${2:-- handle event here}",
+            "    end",
+            "end"
+        ],
+        "description": "Psych Engine Lua event handler for custom events."
+    },
+    "makeSprite": {
+        "prefix": "makeSprite",
+        "body": [
+            "makeLuaSprite('${1:tag}', '${2:imagePath}', ${3:x}, ${4:y})",
+            "scaleObject('${1:tag}', ${5:1}, ${6:1})",
+            "addLuaSprite('${1:tag}', ${7:false})"
+        ],
+        "description": "Create and place a sprite in the scene."
+    },
+    "makeAnimatedSprite": {
+        "prefix": "makeAnimatedSprite",
+        "body": [
+            "makeAnimatedLuaSprite('${1:tag}', '${2:imagePath}', ${3:x}, ${4:y})",
+            "addAnimationByPrefix('${1:tag}', '${5:animName}', '${6:prefix}', ${7:24}, ${8:true})",
+            "scaleObject('${1:tag}', ${9:1}, ${10:1})",
+            "addLuaSprite('${1:tag}', ${11:false})"
+        ],
+        "description": "Create an animated sprite and add it to the scene."
+    },
+    "setProperty": {
+        "prefix": "setProperty",
+        "body": [
+            "setProperty('${1:propertyName}', ${2:value})"
+        ],
+        "description": "Set any engine property by its name."
+    },
+    "getProperty": {
+        "prefix": "getProperty",
+        "body": [
+            "local ${1:value} = getProperty('${2:propertyName}')"
+        ],
+        "description": "Read an engine property value."
+    },
+    "setPropertyFromGroup": {
+        "prefix": "setPropertyFromGroup",
+        "body": [
+            "setPropertyFromGroup('${1:group}', ${2:index}, '${3:propertyName}', ${4:value})"
+        ],
+        "description": "Change a property for a grouped object."
+    },
+    "runTimer": {
+        "prefix": "runTimer",
+        "body": [
+            "runTimer('${1:tag}', ${2:seconds}, ${3:loops})"
+        ],
+        "description": "Start a timer that triggers onTimerCompleted."
+    },
+    "triggerEvent": {
+        "prefix": "triggerEvent",
+        "body": [
+            "triggerEvent('${1:name}', '${2:value1}', '${3:value2}')"
+        ],
+        "description": "Trigger a built-in or custom game event."
+    },
+    "playSound": {
+        "prefix": "playSound",
+        "body": [
+            "playSound('${1:soundTag}', ${2:volume})"
+        ],
+        "description": "Play a sound effect."
+    },
+    "Psych.help": {
+        "prefix": "Psych.help",
+        "body": [
+            "Psych.help('${1:functionName}')"
+        ],
+        "description": "Show built-in library help for a Psych function."
+    },
+    "Psych.makeSprite": {
+        "prefix": "Psych.makeSprite",
+        "body": [
+            "Psych.makeSprite('${1:tag}', '${2:imagePath}', ${3:x}, ${4:y}, ${5:false}, ${6:1}, ${7:1}, '${8:game}')"
+        ],
+        "description": "Create, scale, camera-assign, and add a sprite with Psych helper."
+    },
+    "Psych.makeAnimatedSprite": {
+        "prefix": "Psych.makeAnimatedSprite",
+        "body": [
+            "Psych.makeAnimatedSprite('${1:tag}', '${2:imagePath}', ${3:x}, ${4:y}, '${5:animName}', '${6:prefix}', ${7:24}, ${8:true}, ${9:false}, ${10:1}, ${11:1}, '${12:game}')"
+        ],
+        "description": "Create and add an animated sprite using the Psych helper."
+    },
+    "Psych.playSound": {
+        "prefix": "Psych.playSound",
+        "body": [
+            "Psych.playSound('${1:soundTag}', ${2:volume})"
+        ],
+        "description": "Play a sound effect through the Psych helper."
+    },
+    "Psych.trigger": {
+        "prefix": "Psych.trigger",
+        "body": [
+            "Psych.trigger('${1:Event Name}', '${2:value1}', '${3:value2}')"
+        ],
+        "description": "Trigger a custom or built-in event using the Psych helper."
+    },
+    "Psych.tweenAlpha": {
+        "prefix": "Psych.tweenAlpha",
+        "body": [
+            "Psych.tweenAlpha('${1:tag}', '${2:target}', ${3:value}, ${4:duration}, '${5:linear}')"
+        ],
+        "description": "Tween the alpha value of an object through the Psych helper."
+    },
+    "Psych.makeText": {
+        "prefix": "Psych.makeText",
+        "body": [
+            "Psych.makeText('${1:tag}', '${2:text}', ${3:x}, ${4:y}, ${5:28}, '${6:FFFFFF}')"
+        ],
+        "description": "Create a text object using the Psych helper." 
+    },
+    "Psych.makeOverlay": {
+        "prefix": "Psych.makeOverlay",
+        "body": [
+            "Psych.makeOverlay('${1:tag}', ${2:1280}, ${3:720}, '${4:000000}', ${5:1}, '${6:other}')"
+        ],
+        "description": "Create a full-screen overlay with the Psych helper." 
+    },
+    "Psych.setCameraZoom": {
+        "prefix": "Psych.setCameraZoom",
+        "body": [
+            "Psych.setCameraZoom(${1:1.1})"
+        ],
+        "description": "Set the game camera zoom with the Psych helper."
+    },
+    "Psych.screenShake": {
+        "prefix": "Psych.screenShake",
+        "body": [
+            "Psych.screenShake(${1:0.3}, ${2:0.02})"
+        ],
+        "description": "Trigger a screen shake event using the Psych helper."
+    },
+    "onOpponentNoteHit Hook": {
+        "prefix": "onOpponentNoteHit",
+        "body": [
+            "function opponentNoteHit(id, noteData, noteType, isSustainNote)",
+            "    ${1:-- opponent note hit logic here}",
+            "end"
+        ],
+        "description": "Psych Engine opponentNoteHit hook. Runs when the opponent hits a note."
+    },
+    "onGoodNoteHit Hook": {
+        "prefix": "onGoodNoteHit",
+        "body": [
+            "function goodNoteHit(id, noteData, noteType, isSustainNote)",
+            "    ${1:-- player hit note logic here}",
+            "end"
+        ],
+        "description": "Psych Engine goodNoteHit hook. Runs when the player hits a note."
+    },
+    "onNoteMiss Hook": {
+        "prefix": "noteMiss",
+        "body": [
+            "function noteMiss(id, noteData, noteType, isSustainNote)",
+            "    ${1:-- player missed note logic here}",
+            "end"
+        ],
+        "description": "Psych Engine noteMiss hook. Runs when the player misses a note."
+    },
+    "initLuaShader": {
+        "prefix": "initLuaShader",
+        "body": [
+            "initLuaShader('${1:shaderName}')"
+        ],
+        "description": "Initialize a GLSL shader from the shaders folder."
+    },
+    "setSpriteShader": {
+        "prefix": "setSpriteShader",
+        "body": [
+            "setSpriteShader('${1:spriteTag}', '${2:shaderName}')"
+        ],
+        "description": "Apply a shader to a specific sprite."
+    },
+    "setShaderFloat": {
+        "prefix": "setShaderFloat",
+        "body": [
+            "setShaderFloat('${1:shaderName}', '${2:propertyName}', ${3:value})"
+        ],
+        "description": "Set a float uniform in a shader."
+    },
+    "setShaderBool": {
+        "prefix": "setShaderBool",
+        "body": [
+            "setShaderBool('${1:shaderName}', '${2:propertyName}', ${3:true})"
+        ],
+        "description": "Set a boolean uniform in a shader."
+    },
+    "setShaderInt": {
+        "prefix": "setShaderInt",
+        "body": [
+            "setShaderInt('${1:shaderName}', '${2:propertyName}', ${3:value})"
+        ],
+        "description": "Set an integer uniform in a shader."
+    },
+    "setShaderFloatArray": {
+        "prefix": "setShaderFloatArray",
+        "body": [
+            "setShaderFloatArray('${1:shaderName}', '${2:propertyName}', {${3:values}})"
+        ],
+        "description": "Set a float array uniform in a shader."
+    },
+    "setShaderSampler2D": {
+        "prefix": "setShaderSampler2D",
+        "body": [
+            "setShaderSampler2D('${1:shaderName}', '${2:propertyName}', '${3:texturePath}')"
+        ],
+        "description": "Set a texture sampler uniform in a shader."
+    },
+    "doTweenX": {
+        "prefix": "doTweenX",
+        "body": [
+            "doTweenX('${1:tag}', '${2:target}', ${3:value}, ${4:duration}, '${5:linear}')"
+        ],
+        "description": "Tween a value on the X axis."
+    },
+    "doTweenY": {
+        "prefix": "doTweenY",
+        "body": [
+            "doTweenY('${1:tag}', '${2:target}', ${3:value}, ${4:duration}, '${5:linear}')"
+        ],
+        "description": "Tween a value on the Y axis."
+    },
+    "doTweenAlpha": {
+        "prefix": "doTweenAlpha",
+        "body": [
+            "doTweenAlpha('${1:tag}', '${2:target}', ${3:value}, ${4:duration}, '${5:linear}')"
+        ],
+        "description": "Tween opacity over time."
+    },
+    "doTweenAngle": {
+        "prefix": "doTweenAngle",
+        "body": [
+            "doTweenAngle('${1:tag}', '${2:target}', ${3:value}, ${4:duration}, '${5:linear}')"
+        ],
+        "description": "Tween rotation angle."
+    },
+    "doTweenZoom": {
+        "prefix": "doTweenZoom",
+        "body": [
+            "doTweenZoom('${1:tag}', '${2:target}', ${3:value}, ${4:duration}, '${5:linear}')"
+        ],
+        "description": "Tween zoom level."
+    },
+    "stopTweens": {
+        "prefix": "stopTweens",
+        "body": [
+            "stopTweens('${1:tag}')"
+        ],
+        "description": "Stop tweens by tag."
+    },
+    "cancelTimer": {
+        "prefix": "cancelTimer",
+        "body": [
+            "cancelTimer('${1:tag}')"
+        ],
+        "description": "Cancel a running timer."
+    },
+    "stopSound": {
+        "prefix": "stopSound",
+        "body": [
+            "stopSound('${1:soundTag}')"
+        ],
+        "description": "Stop a playing sound effect."
+    },
+    "soundFadeOut": {
+        "prefix": "soundFadeOut",
+        "body": [
+            "soundFadeOut('${1:soundTag}', ${2:duration})"
+        ],
+        "description": "Fade out a sound effect over time."
+    },
+    "makeLuaText": {
+        "prefix": "makeLuaText",
+        "body": [
+            "makeLuaText('${1:tag}', '${2:text}', ${3:x}, ${4:y})",
+            "setTextSize('${1:tag}', ${5:28})",
+            "setTextColor('${1:tag}', '${6:FFFFFF}')",
+            "addLuaText('${1:tag}')"
+        ],
+        "description": "Create and add text to the screen."
+    },
+    "setTextString": {
+        "prefix": "setTextString",
+        "body": [
+            "setTextString('${1:tag}', '${2:newText}')"
+        ],
+        "description": "Update the text content of a text object."
+    },
+    "makeGraphic": {
+        "prefix": "makeGraphic",
+        "body": [
+            "makeGraphic('${1:tag}', ${2:width}, ${3:height}, '${4:FFFFFF}')"
+        ],
+        "description": "Create a simple colored rectangle."
+    },
+    "luaSpriteExists": {
+        "prefix": "luaSpriteExists",
+        "body": [
+            "if luaSpriteExists('${1:tag}') then",
+            "    ${2:-- sprite exists}",
+            "end"
+        ],
+        "description": "Check if a Lua sprite exists."
+    },
+    "removeLuaSprite": {
+        "prefix": "removeLuaSprite",
+        "body": [
+            "removeLuaSprite('${1:tag}', ${2:true})"
+        ],
+        "description": "Remove a sprite from the scene."
+    },
+    "setObjectCamera": {
+        "prefix": "setObjectCamera",
+        "body": [
+            "setObjectCamera('${1:tag}', '${2:camera}')"
+        ],
+        "description": "Set the camera layer for an object."
+    },
+    "getSongPosition": {
+        "prefix": "getSongPosition",
+        "body": [
+            "local ${1:pos} = getSongPosition()"
+        ],
+        "description": "Get the current song position in milliseconds."
+    },
+    "getHealth": {
+        "prefix": "getHealth",
+        "body": [
+            "local ${1:health} = getHealth()"
+        ],
+        "description": "Get the current player health."
+    },
+    "formatTime": {
+        "prefix": "formatTime",
+        "body": [
+            "local ${1:timeStr} = formatTime(${2:milliseconds})"
+        ],
+        "description": "Format milliseconds into readable time string."
+    },
+    "cameraShake": {
+        "prefix": "cameraShake",
+        "body": [
+            "cameraShake('${1:camGame}', ${2:0.05}, ${3:0.1})"
+        ],
+        "description": "Shake the camera for a duration."
+    },
+    "setPropertyFromClass": {
+        "prefix": "setPropertyFromClass",
+        "body": [
+            "setPropertyFromClass('${1:ClientPrefs}', '${2:propertyName}', ${3:value})"
+        ],
+        "description": "Set a property on an engine class."
+    },
+    "getPropertyFromClass": {
+        "prefix": "getPropertyFromClass",
+        "body": [
+            "local ${1:value} = getPropertyFromClass('${2:ClientPrefs}', '${3:propertyName}')"
+        ],
+        "description": "Read a property from an engine class."
+    },
+    "setBlendMode": {
+        "prefix": "setBlendMode",
+        "body": [
+            "setBlendMode('${1:tag}', '${2:ADD}')"
+        ],
+        "description": "Set the blend mode for a sprite."
+    },
+    "setScrollFactor": {
+        "prefix": "setScrollFactor",
+        "body": [
+            "setScrollFactor('${1:tag}', ${2:1.0}, ${3:1.0})"
+        ],
+        "description": "Set how much a sprite scrolls with the camera."
+    },
+    "precacheImage": {
+        "prefix": "precacheImage",
+        "body": [
+            "precacheImage('${1:imagePath}')"
+        ],
+        "description": "Preload an image to avoid loading stutters."
+    },
+    "precacheSound": {
+        "prefix": "precacheSound",
+        "body": [
+            "precacheSound('${1:soundPath}')"
+        ],
+        "description": "Preload a sound to avoid loading delays."
+    },
+    "debugPrint": {
+        "prefix": "debugPrint",
+        "body": [
+            "debugPrint('${1:message}')"
+        ],
+        "description": "Print a debug message to the console."
+    },
+    "close": {
+        "prefix": "close",
+        "body": [
+            "close()"
+        ],
+        "description": "Close the current script or state."
+    },
+    "stringStartsWith": {
+        "prefix": "stringStartsWith",
+        "body": [
+            "stringStartsWith('${1:str}', '${2:start}')"
+        ],
+        "description": "Check if string starts with substring."
+    },
+    "stringEndsWith": {
+        "prefix": "stringEndsWith",
+        "body": [
+            "stringEndsWith('${1:str}', '${2:end}')"
+        ],
+        "description": "Check if string ends with substring."
+    },
+    "stringSplit": {
+        "prefix": "stringSplit",
+        "body": [
+            "stringSplit('${1:str}', '${2:delimiter}')"
+        ],
+        "description": "Split string by delimiter."
+    },
+    "stringTrim": {
+        "prefix": "stringTrim",
+        "body": [
+            "stringTrim('${1:str}')"
+        ],
+        "description": "Remove whitespace from string."
+    },
+    "getRandomInt": {
+        "prefix": "getRandomInt",
+        "body": [
+            "getRandomInt(${1:min}, ${2:max}, '${3:exclude}')"
+        ],
+        "description": "Get random integer in range."
+    },
+    "getRandomFloat": {
+        "prefix": "getRandomFloat",
+        "body": [
+            "getRandomFloat(${1:min}, ${2:max}, '${3:exclude}')"
+        ],
+        "description": "Get random float in range."
+    },
+    "getTextFromFile": {
+        "prefix": "getTextFromFile",
+        "body": [
+            "getTextFromFile('${1:path}', ${2:false})"
+        ],
+        "description": "Read text from file."
+    },
+    "directoryFileList": {
+        "prefix": "directoryFileList",
+        "body": [
+            "directoryFileList('${1:folder}')"
+        ],
+        "description": "List files in directory."
+    },
+    "mouseClicked": {
+        "prefix": "mouseClicked",
+        "body": [
+            "mouseClicked('${1:left}')"
+        ],
+        "description": "Check mouse click."
+    },
+    "mousePressed": {
+        "prefix": "mousePressed",
+        "body": [
+            "mousePressed('${1:left}')"
+        ],
+        "description": "Check mouse press."
+    },
+    "mouseReleased": {
+        "prefix": "mouseReleased",
+        "body": [
+            "mouseReleased('${1:left}')"
+        ],
+        "description": "Check mouse release."
+    },
+    "keyboardJustPressed": {
+        "prefix": "keyboardJustPressed",
+        "body": [
+            "keyboardJustPressed('${1:key}')"
+        ],
+        "description": "Check key press."
+    },
+    "keyboardPressed": {
+        "prefix": "keyboardPressed",
+        "body": [
+            "keyboardPressed('${1:key}')"
+        ],
+        "description": "Check key hold."
+    },
+    "keyboardReleased": {
+        "prefix": "keyboardReleased",
+        "body": [
+            "keyboardReleased('${1:key}')"
+        ],
+        "description": "Check key release."
+    },
+    "setSoundTime": {
+        "prefix": "setSoundTime",
+        "body": [
+            "setSoundTime('${1:tag}', ${2:time})"
+        ],
+        "description": "Set sound playback position (v1.0.4+)."
+    },
+    "getSoundPitch": {
+        "prefix": "getSoundPitch",
+        "body": [
+            "getSoundPitch('${1:tag}')"
+        ],
+        "description": "Get sound pitch (v1.0.4+)."
+    },
+    "addCameraScroll": {
+        "prefix": "addCameraScroll",
+        "body": [
+            "addCameraScroll(${1:x}, ${2:y})"
+        ],
+        "description": "Add to camera scroll position."
+    },
+    "addCameraFollowPoint": {
+        "prefix": "addCameraFollowPoint",
+        "body": [
+            "addCameraFollowPoint(${1:x}, ${2:y})"
+        ],
+        "description": "Add to camera follow position."
+    },
+    "getCameraScrollX": {
+        "prefix": "getCameraScrollX",
+        "body": [
+            "getCameraScrollX()"
+        ],
+        "description": "Get camera scroll X position."
+    },
+    "getCameraScrollY": {
+        "prefix": "getCameraScrollY",
+        "body": [
+            "getCameraScrollY()"
+        ],
+        "description": "Get camera scroll Y position."
+    },
+    "getCameraFollowX": {
+        "prefix": "getCameraFollowX",
+        "body": [
+            "getCameraFollowX()"
+        ],
+        "description": "Get camera follow X position."
+    },
+    "getCameraFollowY": {
+        "prefix": "getCameraFollowY",
+        "body": [
+            "getCameraFollowY()"
+        ],
+        "description": "Get camera follow Y position."
+    },
+    "screenCenter": {
+        "prefix": "screenCenter",
+        "body": [
+            "screenCenter('${1:obj}', '${2:xy}')"
+        ],
+        "description": "Center object on screen."
+    },
+    "objectsOverlap": {
+        "prefix": "objectsOverlap",
+        "body": [
+            "objectsOverlap('${1:obj1}', '${2:obj2}')"
+        ],
+        "description": "Check if objects overlap."
+    },
+    "getPixelColor": {
+        "prefix": "getPixelColor",
+        "body": [
+            "getPixelColor('${1:obj}', ${2:x}, ${3:y})"
+        ],
+        "description": "Get pixel color from sprite."
+    },
+    "setRatingPercent": {
+        "prefix": "setRatingPercent",
+        "body": [
+            "setRatingPercent(${1:value})"
+        ],
+        "description": "Set rating percentage."
+    },
+    "setRatingName": {
+        "prefix": "setRatingName",
+        "body": [
+            "setRatingName('${1:name}')"
+        ],
+        "description": "Set rating name."
+    },
+    "setRatingFC": {
+        "prefix": "setRatingFC",
+        "body": [
+            "setRatingFC('${1:fc}')"
+        ],
+        "description": "Set rating FC status."
+    },
+    "exitSong": {
+        "prefix": "exitSong",
+        "body": [
+            "exitSong(${1:false})"
+        ],
+        "description": "Exit current song to menu."
+    },
+    "loadSong": {
+        "prefix": "loadSong",
+        "body": [
+            "loadSong('${1:songName}', ${2:difficulty})"
+        ],
+        "description": "Load a different song."
+    },
+    "restartSong": {
+        "prefix": "restartSong",
+        "body": [
+            "restartSong(${1:false})"
+        ],
+        "description": "Restart current song."
+    },
+    "psychFullScript": {
+        "prefix": "psychFullScript",
+        "body": [
+            "local Psych = require('psych_engine_lib')",
+            "",
+            "-- [1] initial scene setup and asset precaching",
+            "function onCreate()",
+            "    makeLuaSprite('bg', 'stage/background', -400, -200)",
+            "    scaleObject('bg', 1.1, 1.1)",
+            "    addLuaSprite('bg', false)",
+            "    setObjectCamera('bg', 'game')",
+            "    precacheSound('sfx-hit')",
+            "    makeLuaText('scoreText', 'Score: 0', 16, 16)",
+            "    setTextSize('scoreText', 28)",
+            "    addLuaText('scoreText')",
+            "end",
+            "",
+            "-- [2] scene ready adjustments after creation",
+            "function onCreatePost()",
+            "    setProperty('camGame.zoom', 1.05)",
+            "    setProperty('camHUD.alpha', 1)",
+            "end",
+            "",
+            "-- [3] per-frame updates and input handling",
+            "function onUpdate(elapsed)",
+            "    if keyboardJustPressed('SPACE') then",
+            "        playSound('sfx-hit', 0.8)",
+            "    end",
+            "",
+            "    local songPos = getSongPosition()",
+            "    if songPos > 10000 then",
+            "        -- example action after 10 seconds",
+            "    end",
+            "end",
+            "",
+            "-- [4] beat and step timing",
+            "function onBeatHit()",
+            "    cameraShake('camGame', 0.02, 0.1)",
+            "end",
+            "",
+            "function onStepHit()",
+            "    if curStep == 128 then",
+            "        setProperty('bg.alpha', 0.5)",
+            "    end",
+            "end",
+            "",
+            "-- [5] custom event handling",
+            "function onEvent(name, value1, value2)",
+            "    if name == 'Flash' then",
+            "        cameraFlash('camGame', value1, tonumber(value2))",
+            "    elseif name == 'SetText' then",
+            "        setTextString(value1, value2)",
+            "    end",
+            "end",
+            "",
+            "-- [6] timed callbacks",
+            "function onTimerCompleted(tag)",
+            "    if tag == 'spawnWave' then",
+            "        triggerEvent('SpawnEnemy', 'big', '')",
+            "    end",
+            "end",
+            "",
+            "-- [7] note hit reactions",
+            "function goodNoteHit(id, noteData, noteType, isSustainNote)",
+            "    addHealth(0.015)",
+            "    setTextString('scoreText', 'Score: ' .. getProperty('songScore'))",
+            "end",
+            "",
+            "function noteMiss(id, noteData, noteType, isSustainNote)",
+            "    cameraShake('camGame', 0.03, 0.2)",
+            "end",
+            "",
+            "-- [8] cleanup and removal",
+            "function onDestroy()",
+            "    removeLuaSprite('bg', true)",
+            "end"
+        ],
+        "description": "Large full-script Psych Engine Lua skeleton with comments and hook structure."
+    },
+    "psychShaderRoutine": {
+        "prefix": "psychShaderRoutine",
+        "body": [
+            "function onCreate()",
+            "    initLuaShader('vhs')",
+            "    makeLuaSprite('shaderOverlay', '', 0, 0)",
+            "    setObjectCamera('shaderOverlay', 'other')",
+            "    setSpriteShader('shaderOverlay', 'vhs')",
+            "    addLuaSprite('shaderOverlay', true)",
+            "end",
+            "",
+            "function onUpdate(elapsed)",
+            "    local time = getSongPosition() * 0.001",
+            "    setShaderFloat('vhs', 'time', time)",
+            "    setShaderFloat('vhs', 'noise', 0.08)",
+            "    setShaderFloat('vhs', 'scanline', 0.5)",
+            "end"
+        ],
+        "description": "Shader effect skeleton with runtime uniform updates."
+    },
+    "psychEventHandler": {
+        "prefix": "psychEventHandler",
+        "body": [
+            "function onEvent(name, value1, value2)",
+            "    if name == 'HealthDrain' then",
+            "        addHealth(-(tonumber(value1) or 0.1))",
+            "    elseif name == 'CameraZoom' then",
+            "        doTweenZoom('zoomTween', 'camGame', tonumber(value1) or 1.05, 0.4, 'expoOut')",
+            "    elseif name == 'SetText' then",
+            "        setTextString(value1, value2)",
+            "    end",
+            "end"
+        ],
+        "description": "Comprehensive custom event handler template."
+    },
+    "psychTimerPattern": {
+        "prefix": "psychTimerPattern",
+        "body": [
+            "function onCreate()",
+            "    runTimer('spawnWave', 2.5)",
+            "    runTimer('cameraReset', 1.0)",
+            "end",
+            "",
+            "function onTimerCompleted(tag)",
+            "    if tag == 'spawnWave' then",
+            "        triggerEvent('SpawnEnemy', 'big', '')",
+            "    elseif tag == 'cameraReset' then",
+            "        doTweenZoom('resetZoom', 'camGame', 1.0, 0.5, 'linear')",
+            "    end",
+            "end"
+        ],
+        "description": "Timer-driven logic skeleton for delayed events."
+    },
+    "psychSmallSpriteSetup": {
+        "prefix": "psychSmallSpriteSetup",
+        "body": [
+            "makeLuaSprite('bg', 'stage/background', -400, -200)",
+            "scaleObject('bg', 1.1, 1.1)",
+            "addLuaSprite('bg', false)",
+            "setObjectCamera('bg', 'game')"
+        ],
+        "description": "Small sprite setup skeleton with camera and scaling."
+    },
+    "psychHudText": {
+        "prefix": "psychHudText",
+        "body": [
+            "makeLuaText('scoreText', 'Score: 0', 16, 16)",
+            "setTextSize('scoreText', 26)",
+            "setTextColor('scoreText', 'FFFFFF')",
+            "addLuaText('scoreText')"
+        ],
+        "description": "HUD text creation skeleton."
+    },
+    "psychInputCheck": {
+        "prefix": "psychInputCheck",
+        "body": [
+            "if keyboardJustPressed('SPACE') then",
+            "    -- action on first press",
+            "end",
+            "",
+            "if keyboardPressed('LEFT') then",
+            "    -- hold behavior",
+            "end"
+        ],
+        "description": "Keyboard input check skeleton for press and hold behavior."
+    },
+    "psychCustomNoteType": {
+        "prefix": "psychCustomNoteType",
+        "body": [
+            "function onCreate()",
+            "    for i = 0, getProperty('unspawnNotes.length')-1 do",
+            "        if getPropertyFromGroup('unspawnNotes', i, 'noteType') == 'Custom' then",
+            "            setPropertyFromGroup('unspawnNotes', i, 'texture', 'customNoteTexture')",
+            "        end",
+            "    end",
+            "end",
+            "",
+            "function goodNoteHit(id, noteData, noteType, isSustainNote)",
+            "    if noteType == 'Custom' then",
+            "        addHealth(0.02)",
+            "    end",
+            "end",
+            "",
+            "function noteMiss(id, noteData, noteType, isSustainNote)",
+            "    if noteType == 'Custom' then",
+            "        cameraShake('camGame', 0.04, 0.25)",
+            "    end",
+            "end"
+        ],
+        "description": "Skeleton for custom note types and special behavior."
+    },
+    "psychMenuScoreScreen": {
+        "prefix": "psychMenuScoreScreen",
+        "body": [
+            "function onCreate()",
+            "    makeLuaSprite('menuBG', 'menu/background', 0, 0)",
+            "    setObjectCamera('menuBG', 'other')",
+            "    addLuaSprite('menuBG', true)",
+            "",
+            "    makeLuaText('finalScore', 'Final Score: 0', 200, 160)",
+            "    setObjectCamera('finalScore', 'other')",
+            "    setTextSize('finalScore', 32)",
+            "    addLuaText('finalScore')",
+            "end",
+            "",
+            "function onEndSong()",
+            "    setTextString('finalScore', 'Final Score: ' .. getProperty('songScore'))",
+            "    return Function_Stop",
+            "end"
+        ],
+        "description": "Skeleton for a simple menu or score screen at song end."
+    },
+    "psychMultiplayerBot": {
+        "prefix": "psychMultiplayerBot",
+        "body": [
+            "function onCreate()",
+            "    makeLuaSprite('botIcon', 'ui/bot', 1100, 30)",
+            "    setObjectCamera('botIcon', 'hud')",
+            "    addLuaSprite('botIcon', true)",
+            "end",
+            "",
+            "function onUpdate(elapsed)",
+            "    if getProperty('botPlay') then",
+            "        if getProperty('songMisses') < 3 then",
+            "            triggerEvent('BotAction', 'hit', '')",
+            "        end",
+            "    end",
+            "end"
+        ],
+        "description": "Skeleton for multiplayer/bot mode HUD and behavior."
+    },
+    "psychShaderComposer": {
+        "prefix": "psychShaderComposer",
+        "body": [
+            "function onCreate()",
+            "    initLuaShader('heat')",
+            "    initLuaShader('vhs')",
+            "    makeLuaSprite('shaderLayer', '', 0, 0)",
+            "    setObjectCamera('shaderLayer', 'other')",
+            "    setSpriteShader('shaderLayer', 'heat')",
+            "    addLuaSprite('shaderLayer', true)",
+            "end",
+            "",
+            "function onUpdate(elapsed)",
+            "    local time = getSongPosition() * 0.001",
+            "    setShaderFloat('heat', 'time', time)",
+            "    setShaderFloat('heat', 'strength', 0.25)",
+            "    setShaderFloat('vhs', 'noise', 0.12)",
+            "end"
+        ],
+        "description": "Skeleton for composing multiple shader effects together."
+    },
+    "psychDebugHarness": {
+        "prefix": "psychDebugHarness",
+        "body": [
+            "local debugMode = true",
+            "local debugTimer = 0",
+            "",
+            "function onUpdate(elapsed)",
+            "    if debugMode then",
+            "        debugTimer = debugTimer + elapsed",
+            "        if debugTimer > 1 then",
+            "            debugTimer = 0",
+            "            debugPrint('Debug: song pos=' .. getSongPosition())",
+            "        end",
+            "    end",
+            "end",
+            "",
+            "function onEvent(name, value1, value2)",
+            "    if name == 'ToggleDebug' then",
+            "        debugMode = not debugMode",
+            "        debugPrint('Debug mode: ' .. tostring(debugMode))",
+            "    end",
+            "end"
+        ],
+        "description": "Skeleton for a debug/test harness with toggleable output."
+    },
+    "psychFlashCamera": {
+        "prefix": "psychFlashCamera",
+        "body": [
+            "Psych.flashCamera('camGame', 'FF0000', 0.25, false, true)"
+        ],
+        "description": "Quick helper call to flash a camera with a color and duration."
+    },
+    "psychShaderUniform": {
+        "prefix": "psychShaderUniform",
+        "body": [
+            "Psych.setShaderUniform('glow', 'intensity', 0.75)"
+        ],
+        "description": "Set a shader uniform with a unified helper call."
+    },
+    "psychCustomizeNoteType": {
+        "prefix": "psychCustomizeNoteType",
+        "body": [
+            "Psych.customizeNoteType('Custom', 'customNoteTexture')"
+        ],
+        "description": "Apply a custom texture to every note of the given type."
+    },
+    "psychMakeScoreScreen": {
+        "prefix": "psychMakeScoreScreen",
+        "body": [
+            "Psych.makeScoreScreen('menuBG', 'finalScore', 'menu/background', 200, 160, 32, 'FFFFFF')"
+        ],
+        "description": "Create a simple end-of-song score screen overlay."
+    },
+    "psychMakeDebugConsole": {
+        "prefix": "psychMakeDebugConsole",
+        "body": [
+            "Psych.makeDebugConsole('debugConsole', 20, 20, 18, 'FF0000')"
+        ],
+        "description": "Create a debug console text object for runtime info."
+    },
+    "psychUpdateDebugText": {
+        "prefix": "psychUpdateDebugText",
+        "body": [
+            "Psych.updateDebugText('debugConsole', 'FPS: ' .. tostring(getProperty('fps')))"
+        ],
+        "description": "Update the debug console text display."
+    },
+    "psychBindEvent": {
+        "prefix": "psychBindEvent",
+        "body": [
+            "Psych.bindEvent('HealthDrain', function(name, value1, value2)",
+            "    Psych.debugLog('Health drain: ' .. value1)",
+            "end)"
+        ],
+        "description": "Bind a callback to a named event within the Psych helper system."
+    },
+    "psychDispatchEvent": {
+        "prefix": "psychDispatchEvent",
+        "body": [
+            "Psych.dispatchEvent('HealthDrain', '0.1', '')"
+        ],
+        "description": "Dispatch an event through the Psych helper event bus."
+    },
+	"psychIdeaBuilder": {
+		"prefix": "psych-idea",
+		"body": [
+			"-- Psych Engine Idea Builder",
+			"-- Get suggestions: Psych.suggestIdea(\"${1:description}\")",
+			"-- Build from idea: Psych.buildFromIdea(\"${2:ideaName}\", {${3:customParams}})",
+			"-- Combine ideas: Psych.combineIdeas(\"${4:idea1}\", \"${5:idea2}\", \"${6:customCode}\")",
+			"",
+			"function onCreate()",
+			"\t${7:-- Your code here}",
+			"end"
+		],
+		"description": "Idea builder system for generating mod concepts and code"
+	},
+	"psychQuickTemplate": {
+		"prefix": "psych-template",
+		"body": [
+			"-- Quick Template System",
+			"-- Available: sprite, animated, tween, event, timer, shader",
+			"-- Usage: Psych.quickTemplate(\"${1:type}\", {${2:params}})",
+			"",
+			"function onCreate()",
+			"\tPsych.quickTemplate(\"${1:type}\", {",
+			"\t\ttag = \"${2:mySprite}\",",
+			"\t\timage = \"${3:image/path}\",",
+			"\t\tx = ${4:0},",
+			"\t\ty = ${5:0},",
+			"\t\tforeground = ${6:false},",
+			"\t\tscaleX = ${7:1.0},",
+			"\t\tscaleY = ${8:1.0},",
+			"\t\tcamera = \"${9:game}\"",
+			"\t})",
+			"end"
+		],
+		"description": "Quick template insertion system"
+	},
+	"psychLearningPath": {
+		"prefix": "psych-learn",
+		"body": [
+			"-- Psych Engine Learning Path",
+			"-- Start learning: Psych.learningPath(1)",
+			"-- Get quick reference: Psych.quickRef(\"${1:hooks|sprites|effects|audio|utilities}\")",
+			"",
+			"function onCreate()",
+			"\tPsych.learningPath(${2:1})",
+			"\tPsych.quickRef(\"${1:hooks}\")",
+			"end"
+		],
+		"description": "Learning path and quick reference system"
+	},
+	"psychGuidedTemplate": {
+		"prefix": "psych-guided",
+		"body": [
+			"-- Guided Template Builder",
+			"-- Available: modchart, bossfight, rhythmGame",
+			"-- Usage: Psych.buildTemplate(\"${1:templateName}\")",
+			"",
+			"function onCreate()",
+			"\tPsych.buildTemplate(\"${1:modchart}\")",
+			"end",
+			"",
+			"function onUpdate(elapsed)",
+			"\t${2:-- Template code will be generated above}",
+			"end"
+		],
+		"description": "Guided template builder for complex mod types"
+	},
+	"psychScreenShake": {
+		"prefix": "psych-shake",
+		"body": [
+			"Psych.screenShake(${1:0.3}, ${2:0.02})"
+		],
+		"description": "Screen shake effect"
+	},
+	"psychFlashCamera": {
+		"prefix": "psych-flash",
+		"body": [
+			"Psych.flashCamera('${1:camGame}', '${2:FFFFFF}', ${3:0.5}, ${4:false}, ${5:true})"
+		],
+		"description": "Camera flash effect"
+	},
+	"psychTween": {
+		"prefix": "psych-tween",
+		"body": [
+			"Psych.tween${1|X|Y|Alpha|Angle}('${2:tag}', '${3:target}', ${4:value}, ${5:1.0}, '${6:linear}')"
+		],
+		"description": "Tween animation system"
+	},
+	"psychShader": {
+		"prefix": "psych-shader",
+		"body": [
+			"Psych.initShader('${1:shaderName}')",
+			"Psych.setSpriteShader('${2:spriteTag}', '${1:shaderName}')",
+			"Psych.setShaderFloat('${1:shaderName}', '${3:uniform}', ${4:1.0})"
+		],
+		"description": "Shader setup and control"
+	},
+	"psychDebugConsole": {
+		"prefix": "psych-debug",
+		"body": [
+			"Psych.makeDebugConsole('${1:debugConsole}', ${2:20}, ${3:20}, ${4:600}, ${5:400})",
+			"Psych.updateDebugText('${1:debugConsole}', '${6:Debug Info}')",
+			"Psych.toggleDebug('${1:debugConsole}', ${7:true})"
+		],
+		"description": "Debug console system"
+	},
+	"psychEventSystem": {
+		"prefix": "psych-event",
+		"body": [
+			"Psych.bindEvent('${1:eventName}', function(${2:...})",
+			"\t${3:-- Event handler code}",
+			"end)",
+			"",
+			"-- Trigger event",
+			"Psych.dispatchEvent('${1:eventName}', ${4:arg1}, ${5:arg2})"
+		],
+		"description": "Custom event system"
+	},
+	"psychTimer": {
+		"prefix": "psych-timer",
+		"body": [
+			"Psych.runTimer('${1:timerTag}', ${2:1.0})",
+			"",
+			"function onTimerCompleted(tag)",
+			"\t\tif tag == '${1:timerTag}' then",
+			"\t\t\t${3:-- Timer action}",
+			"\t\tend",
+			"end"
+		],
+		"description": "Timer system with callback"
+	},
+	"psychHealthDrain": {
+		"prefix": "psych-drain",
+		"body": [
+			"function onUpdate(elapsed)",
+			"\tif getProperty('health') > ${1:0.1} then",
+			"\t\taddHealth(-${2:0.001} * elapsed)",
+			"\tend",
+			"end"
+		],
+		"description": "Health drain mechanic"
+	},
+	"psychComboSystem": {
+		"prefix": "psych-combo",
+		"body": [
+			"local comboCount = 0",
+			"local comboMultiplier = 1",
+			"",
+			"function goodNoteHit(id, noteData, noteType, isSustainNote)",
+			"\tcomboCount = comboCount + 1",
+			"\tif comboCount >= ${1:10} then",
+			"\t\tcomboMultiplier = ${2:2}",
+			"\tend",
+			"\t",
+			"\tlocal finalScore = ${3:100} * comboMultiplier",
+			"\taddScore(finalScore)",
+			"end",
+			"",
+			"function noteMiss(id, noteData, noteType, isSustainNote)",
+			"\tcomboCount = 0",
+			"\tcomboMultiplier = 1",
+			"end"
+		],
+		"description": "Combo scoring system"
+	},
+	"psychCameraFollow": {
+		"prefix": "psych-follow",
+		"body": [
+			"function onUpdate(elapsed)",
+			"\tlocal playerX = getProperty('${1:boyfriend}.x') + ${2:100}",
+			"\tlocal playerY = getProperty('${1:boyfriend}.y') + ${3:100}",
+			"\tsetProperty('camFollow.x', playerX)",
+			"\tsetProperty('camFollow.y', playerY)",
+			"end"
+		],
+		"description": "Dynamic camera follow"
+	},
+	"psychParticleSystem": {
+		"prefix": "psych-particles",
+		"body": [
+			"local particles = {}",
+			"",
+			"function onCreate()",
+			"\tfor i = 1, ${1:10} do",
+			"\t\tlocal particle = 'particle' .. i",
+			"\t\tPsych.makeSprite(particle, '${2:effects/particle}', math.random(-200, 1280), math.random(-200, 720), true, 0.5, 0.5, 'game')",
+			"\t\tparticles[i] = {tag = particle, vx = math.random(-${3:5}, ${3:5}), vy = math.random(-${3:5}, ${3:5})}",
+			"\tend",
+			"end",
+			"",
+			"function onUpdate(elapsed)",
+			"\tfor _, p in ipairs(particles) do",
+			"\t\tsetProperty(p.tag .. '.x', getProperty(p.tag .. '.x') + p.vx)",
+			"\t\tsetProperty(p.tag .. '.y', getProperty(p.tag .. '.y') + p.vy)",
+			"\t\tsetProperty(p.tag .. '.alpha', getProperty(p.tag .. '.alpha') - ${4:0.01})",
+			"\tend",
+			"end"
+		],
+		"description": "Simple particle effect system"
+	},
+	"psychPauseMenu": {
+		"prefix": "psych-pause",
+		"body": [
+			"local paused = false",
+			"",
+			"function onCreate()",
+			"\tPsych.makeOverlay('pauseBG', 1280, 720, '${1:000000}', ${2:0.7}, 'other')",
+			"\tPsych.makeText('pauseTitle', '${3:PAUSED}', ${4:500}, ${5:200}, ${6:48}, '${7:FFFFFF}')",
+			"\tsetObjectCamera('pauseTitle', 'other')",
+			"\tPsych.makeText('resumeText', '${8:Press ENTER to Resume}', ${9:450}, ${10:300}, ${11:24}, '${7:FFFFFF}')",
+			"\tsetObjectCamera('resumeText', 'other')",
+			"end",
+			"",
+			"function onUpdate(elapsed)",
+			"\tif keyboardJustPressed('${12:ENTER}') then",
+			"\t\tpaused = not paused",
+			"\t\tsetProperty('pauseBG.alpha', paused and ${2:0.7} or 0)",
+			"\t\tsetProperty('pauseTitle.visible', paused)",
+			"\t\tsetProperty('resumeText.visible', paused)",
+			"\tend",
+			"end"
+		],
+		"description": "Custom pause menu overlay"
+	},
+	"psychBackgroundAnim": {
+		"prefix": "psych-bg-anim",
+		"body": [
+			"function onCreate()",
+			"\tPsych.makeSprite('bg1', '${1:stage/layer1}', -400, -200, false, ${2:1.0}, ${2:1.0}, 'game')",
+			"\tPsych.makeSprite('bg2', '${3:stage/layer2}', -400, -200, false, ${4:1.1}, ${4:1.1}, 'game')",
+			"\tPsych.makeSprite('bg3', '${5:stage/layer3}', -400, -200, false, ${6:1.2}, ${6:1.2}, 'game')",
+			"end",
+			"",
+			"function onUpdate(elapsed)",
+			"\tsetProperty('bg1.x', getProperty('bg1.x') + ${7:0.5})",
+			"\tsetProperty('bg2.x', getProperty('bg2.x') + ${8:1.0})",
+			"\tsetProperty('bg3.x', getProperty('bg3.x') + ${9:1.5})",
+			"end"
+		],
+		"description": "Animated background with parallax layers"
+	},
+	"psychCustomNoteType": {
+		"prefix": "psych-note-type",
+		"body": [
+			"function onCreate()",
+			"\tPsych.customizeNoteType('${1:FireNote}', {",
+			"\t\ttexture = '${2:NOTE_fire_assets}',",
+			"\t\tcolor = '${3:FF6600}',",
+			"\t\thitSound = '${4:fire_hit}',",
+			"\t\tsplashColor = '${5:FFAA00}'",
+			"\t})",
+			"end",
+			"",
+			"function goodNoteHit(id, noteData, noteType, isSustainNote)",
+			"\tif noteType == '${1:FireNote}' then",
+			"\t\t${6:-- Custom hit effect}",
+			"\tend",
+			"end"
+		],
+		"description": "Custom note type with effects"
+	},
+	"psychScoreScreen": {
+		"prefix": "psych-score",
+		"body": [
+			"function onCreate()",
+			"\tPsych.makeScoreScreen('${1:scoreScreen}', ${2:400}, ${3:200}, ${4:480}, ${5:300}, '${6:Score: }', '${7:FFFFFF}')",
+			"end",
+			"",
+			"function onUpdate(elapsed)",
+			"\tPsych.updateScoreScreen('${1:scoreScreen}', getProperty('songScore'))",
+			"end"
+		],
+		"description": "Custom score display screen"
+	},
+	"psychFullScript": {
+		"prefix": "psych-full-script",
+		"body": [
+			"-- Psych Engine Full Script Template",
+			"-- Includes all major hooks and systems",
+			"",
+			"function onCreate()",
+			"\t-- Setup code here",
+			"\t${1:-- Add sprites, initialize variables}",
+			"end",
+			"",
+			"function onCreatePost()",
+			"\t-- Post-setup code",
+			"\t${2:-- Final adjustments after scene setup}",
+			"end",
+			"",
+			"function onUpdate(elapsed)",
+			"\t-- Frame-by-frame logic",
+			"\t${3:-- Continuous updates}",
+			"end",
+			"",
+			"function onUpdatePost(elapsed)",
+			"\t-- Post-update logic",
+			"\t${4:-- After main updates}",
+			"end",
+			"",
+			"function onBeatHit()",
+			"\t-- Beat-based effects",
+			"\tif curBeat % ${5:4} == 0 then",
+			"\t\t${6:-- Every 4 beats}",
+			"\tend",
+			"end",
+			"",
+			"function onStepHit()",
+			"\t-- Step-based timing",
+			"\tif curStep % ${7:16} == 0 then",
+			"\t\t${8:-- Every 16 steps}",
+			"\tend",
+			"end",
+			"",
+			"function onSongStart()",
+			"\t-- Song start logic",
+			"\t${9:-- Initialize song-specific features}",
+			"end",
+			"",
+			"function onEvent(name, value1, value2)",
+			"\t-- Custom events",
+			"\tif name == '${10:CustomEvent}' then",
+			"\t\t${11:-- Handle event}",
+			"\tend",
+			"end",
+			"",
+			"function goodNoteHit(id, noteData, noteType, isSustainNote)",
+			"\t-- Player hits note",
+			"\t${12:-- Note hit reactions}",
+			"end",
+			"",
+			"function opponentNoteHit(id, noteData, noteType, isSustainNote)",
+			"\t-- Opponent hits note",
+			"\t${13:-- Opponent reactions}",
+			"end",
+			"",
+			"function noteMiss(id, noteData, noteType, isSustainNote)",
+			"\t-- Player misses note",
+			"\t${14:-- Miss penalties}",
+			"end",
+			"",
+			"function noteMissPress(direction)",
+			"\t-- Player misses by not pressing",
+			"\t${15:-- Ghost note handling}",
+			"end",
+			"",
+			"function onTimerCompleted(tag)",
+			"\t-- Timer callbacks",
+			"\tif tag == '${16:myTimer}' then",
+			"\t\t${17:-- Timer action}",
+			"\tend",
+			"end",
+			"",
+			"function onTweenCompleted(tag)",
+			"\t-- Tween completion",
+			"\tif tag == '${18:myTween}' then",
+			"\t\t${19:-- Tween finished}",
+			"\tend",
+			"end",
+			"",
+			"function onDestroy()",
+			"\t-- Cleanup code",
+			"\t${20:-- Remove sprites, reset state}",
+			"end"
+		],
+		"description": "Complete Psych Engine script template with all hooks"
+	}
+}

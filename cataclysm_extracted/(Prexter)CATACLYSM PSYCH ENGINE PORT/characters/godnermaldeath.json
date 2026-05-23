@@ -1,0 +1,56 @@
+{
+    "animations": [
+        {
+            "offsets": [
+                -354,
+                -390
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GOD DEATH LOOP",
+            "anim": "deathLoop",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -354,
+                -355
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GOD DEATH0",
+            "anim": "firstDeath",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -221,
+                -391
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GOD DEATH CONFIRM",
+            "anim": "deathConfirm",
+            "indices": []
+        }
+    ],
+    "no_antialiasing": false,
+    "image": "characters/GOD_DEATH",
+    "position": [
+        -80,
+        540
+    ],
+    "healthicon": "bf-house",
+    "flip_x": true,
+    "healthbar_colors": [
+        90,
+        80,
+        211
+    ],
+    "camera_position": [
+        230,
+        -280
+    ],
+    "sing_duration": 4,
+    "scale": 2.5
+}

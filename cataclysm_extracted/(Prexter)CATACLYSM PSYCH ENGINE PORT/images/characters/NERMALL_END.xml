@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="NERMALL_END.png">
+  <SubTexture name="NERMALL END0000" x="332" y="389" width="74" height="92" frameX="-12" frameY="-6" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0001" x="339" y="292" width="74" height="92" frameX="-12" frameY="-6" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0002" x="375" y="194" width="74" height="92" frameX="-12" frameY="-6" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0003" x="304" y="194" width="71" height="98" frameX="-14" frameY="-3" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0004" x="262" y="389" width="70" height="98" frameX="-14" frameY="-3" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0005" x="438" y="96" width="74" height="98" frameX="-12" frameY="0" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0006" x="406" y="384" width="74" height="92" frameX="-12" frameY="-6" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0007" x="413" y="286" width="74" height="92" frameX="-12" frameY="-6" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0008" x="262" y="297" width="77" height="92" frameX="-11" frameY="-8" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0009" x="431" y="0" width="78" height="96" frameX="-11" frameY="-7" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0010" x="180" y="307" width="82" height="97" frameX="-9" frameY="-8" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0011" x="179" y="406" width="83" height="98" frameX="-9" frameY="-9" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0012" x="93" y="307" width="87" height="99" frameX="-7" frameY="-10" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0013" x="91" y="408" width="88" height="101" frameX="-7" frameY="-10" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0014" x="0" y="408" width="91" height="101" frameX="-6" frameY="-11" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0015" x="0" y="306" width="93" height="102" frameX="-5" frameY="-12" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0016" x="100" y="204" width="95" height="103" frameX="-4" frameY="-13" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0017" x="207" y="194" width="97" height="103" frameX="-4" frameY="-15" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0018" x="0" y="202" width="100" height="104" frameX="-3" frameY="-18" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0019" x="106" y="101" width="101" height="103" frameX="-3" frameY="-22" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0020" x="328" y="0" width="103" height="103" frameX="-3" frameY="-26" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0021" x="0" y="100" width="106" height="102" frameX="-2" frameY="-31" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0022" x="110" y="0" width="108" height="101" frameX="-1" frameY="-36" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0023" x="0" y="0" width="110" height="100" frameX="0" frameY="-42" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0024" x="218" y="0" width="110" height="98" frameX="0" frameY="-48" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0025" x="218" y="98" width="110" height="96" frameX="0" frameY="-55" frameWidth="110" frameHeight="154"/>
+  <SubTexture name="NERMALL END0026" x="328" y="103" width="110" height="91" frameX="0" frameY="-63" frameWidth="110" frameHeight="154"/>
+</TextureAtlas>

@@ -1,0 +1,32 @@
+{
+	"songs": [
+		[
+			"cataclysm",
+			"bf",
+			[
+				255,
+				165,
+				0
+			]
+		]
+	],
+	"hiddenUntilUnlocked": false,
+	"hideFreeplay": false,
+	"weekBackground": "gvtwoc",
+	"difficulties": "normal",
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"storyName": "Your New Week",
+	"weekName": "Custom Week",
+	"freeplayColor": [
+		225,
+		165,
+		0
+	],
+	"hideStoryMode": true,
+	"weekBefore": "tutorial",
+	"startUnlocked": true
+}

@@ -1,0 +1,89 @@
+{
+    "animations": [
+        {
+            "offsets": [
+                -46,
+                -87
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "ANGELFIELD DOWN",
+            "anim": "singDOWN",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -65,
+                -35
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "ANGELFIELD UP",
+            "anim": "singUP",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -55,
+                -55
+            ],
+            "loop": true,
+            "fps": 24,
+            "name": "ANGELFIELD IDLE",
+            "anim": "idle",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -51,
+                -25
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "ANGELFIELD APARITION",
+            "anim": "appear",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -30,
+                -50
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "ANGELFIELD RIGHT",
+            "anim": "singLEFT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -70,
+                -70
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "ANGELFIELD LEFT",
+            "anim": "singRIGHT",
+            "indices": []
+        }
+    ],
+    "no_antialiasing": false,
+    "image": "characters/ANGELFIELD",
+    "position": [
+        -325,
+        -410
+    ],
+    "healthicon": "icon-sansfield_GOD",
+    "flip_x": true,
+    "healthbar_colors": [
+        211,
+        225,
+        255
+    ],
+    "camera_position": [
+        -440,
+        280
+    ],
+    "sing_duration": 4,
+    "scale": 2.5
+}

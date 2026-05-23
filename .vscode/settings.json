@@ -1,16 +1,71 @@
 {
-    "terminal.integrated.defaultProfile.linux": "pwsh",
-    "terminal.integrated.profiles.linux": {
-        "pwsh": {
-            "path": "/usr/bin/pwsh",
-            "args": []
-        },
-        "bash": {
-            "path": "/bin/bash",
-            "args": []
-        }
+  "terminal.integrated.defaultProfile.linux": "pwsh",
+  "terminal.integrated.profiles.linux": {
+    "pwsh": {
+      "path": "/usr/bin/pwsh",
+      "args": []
     },
-    "python-envs.defaultEnvManager": "ms-python.python:system",
-    "python-envs.pythonProjects": []
+    "bash": {
+      "path": "/bin/bash",
+      "args": []
+    }
+  },
+  "python-envs.defaultEnvManager": "ms-python.python:system",
+  "python-envs.pythonProjects": [],
+  "Lua.runtime.version": "Lua 5.1",
+  "Lua.workspace.library": [
+    "${workspaceFolder}/docs/psych_engine_lib.lua",
+    "${workspaceFolder}/docs/psych_engine_globals.lua"
+  ],
+  "Lua.diagnostics.globals": [
+    "onCreate",
+    "onCreatePost",
+    "update",
+    "onUpdate",
+    "onUpdatePost",
+    "onStepHit",
+    "onBeatHit",
+    "onCountdownTick",
+    "onStartCountdown",
+    "onSongStart",
+    "onEvent",
+    "opponentNoteHit",
+    "goodNoteHit",
+    "noteMiss",
+    "onTweenCompleted",
+    "onTimerCompleted",
+    "onMoveCamera",
+    "onDestroy",
+    "makeLuaSprite",
+    "makeAnimatedLuaSprite",
+    "addLuaSprite",
+    "addAnimationByPrefix",
+    "setProperty",
+    "getProperty",
+    "setPropertyFromGroup",
+    "getPropertyFromGroup",
+    "setPropertyLuaSprite",
+    "doTweenX",
+    "doTweenY",
+    "doTweenAlpha",
+    "runTimer",
+    "triggerEvent",
+    "playSound",
+    "setObjectCamera",
+    "scaleObject",
+    "makeGraphic",
+    "makeLuaText",
+    "setTextSize",
+    "setTextColor",
+    "addLuaText",
+    "Psych",
+    "setTextString",
+    "removeLuaSprite",
+    "setPropertyFromClass",
+    "cancelTimer",
+    "soundFadeOut",
+    "doTweenAngle",
+    "doTweenZoom",
+    "cameraMoveTo"
+  ]
 }
-

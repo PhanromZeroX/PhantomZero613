@@ -1,0 +1,122 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				-130,
+				-154
+			],
+			"anim": "idle",
+			"fps": 24,
+			"indices": [],
+			"name": "LASAGNA GOD IDLE"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-43,
+				-139
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"indices": [],
+			"name": "LASAGNA GOD LEFT"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-63,
+				-256
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"indices": [],
+			"name": "LASAGNA GOD DOWN"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-157,
+				-84
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"indices": [],
+			"name": "LASAGNA GOD UP"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-210,
+				-124
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"indices": [],
+			"name": "LASAGNA GOD RIGHT"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				2,
+				-139
+			],
+			"anim": "singLEFTmiss",
+			"fps": 24,
+			"indices": [],
+			"name": "MISS LEFT"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-220,
+				-123
+			],
+			"anim": "singRIGHTmiss",
+			"fps": 24,
+			"indices": [],
+			"name": "MISS RIGHT"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-157,
+				-57
+			],
+			"anim": "singUPmiss",
+			"fps": 24,
+			"indices": [],
+			"name": "MISS UP"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-54,
+				-255
+			],
+			"anim": "singDOWNmiss",
+			"fps": 24,
+			"indices": [],
+			"name": "MISS DOWN"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/GOD_LASAGNA",
+	"position": [
+		600,
+		-240
+	],
+	"healthicon": "LB_JON_GODFIELD",
+	"flip_x": true,
+	"healthbar_colors": [
+		52,
+		103,
+		86
+	],
+	"camera_position": [
+		30,
+		740
+	],
+	"sing_duration": 4,
+	"scale": 2.5
+}

@@ -1,0 +1,122 @@
+{
+    "animations": [
+        {
+            "offsets": [
+                -17,
+                -23
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "CRUZ MISS DOWN",
+            "anim": "singDOWNmiss",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -17,
+                -23
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "CRUZ MISS LEFT",
+            "anim": "singLEFTmiss",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -17,
+                -23
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "CRUZ MISS RIGHT",
+            "anim": "singRIGHTmiss",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -17,
+                -23
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "CRUZ MISS UP",
+            "anim": "singUPmiss",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -17,
+                -23
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "CRUZ NERMALL DOWN",
+            "anim": "singDOWN",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -17,
+                -23
+            ],
+            "loop": true,
+            "fps": 30,
+            "name": "CRUZ NERMALL IDLE",
+            "anim": "idle",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -17,
+                -23
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "CRUZ NERMALL LEFT",
+            "anim": "singLEFT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -17,
+                -23
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "CRUZ NERMALL RIGHT",
+            "anim": "singRIGHT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -17,
+                -23
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "CRUZ NERMALL UP",
+            "anim": "singUP",
+            "indices": []
+        }
+    ],
+    "no_antialiasing": false,
+    "image": "characters/nermal-messiah-player",
+    "position": [
+        -110,
+        -850
+    ],
+    "healthicon": "NERMAL_GODFIELD",
+    "flip_x": true,
+    "healthbar_colors": [
+        153,
+        153,
+        153
+    ],
+    "camera_position": [
+        0,
+        0
+    ],
+    "sing_duration": 4,
+    "scale": 1.25
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="GODFIELD_CARGA.png">
+  <SubTexture name="GODFIELD CARGA0000" x="0" y="0" width="649" height="534" frameX="0" frameY="0" frameWidth="649" frameHeight="534"/>
+  <SubTexture name="GODFIELD CARGA0001" x="649" y="0" width="649" height="534" frameX="0" frameY="0" frameWidth="649" frameHeight="534"/>
+  <SubTexture name="GODFIELD CARGA0002" x="0" y="534" width="649" height="534" frameX="0" frameY="0" frameWidth="649" frameHeight="534"/>
+  <SubTexture name="GODFIELD CARGA0003" x="0" y="534" width="649" height="534" frameX="0" frameY="0" frameWidth="649" frameHeight="534"/>
+  <SubTexture name="GODFIELD CARGA0004" x="649" y="534" width="649" height="534" frameX="0" frameY="0" frameWidth="649" frameHeight="534"/>
+  <SubTexture name="GODFIELD CARGA0005" x="649" y="534" width="649" height="534" frameX="0" frameY="0" frameWidth="649" frameHeight="534"/>
+</TextureAtlas>

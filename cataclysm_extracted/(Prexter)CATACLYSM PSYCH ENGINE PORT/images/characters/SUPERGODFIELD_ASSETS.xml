@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="SUPERGODFIELD_ASSETS.png" width="1370" height="1972">
+	<SubTexture name="GODFIELD DOWN0000" x="1" y="997" width="684" height="189" frameX="-0" frameY="-0" frameWidth="684" frameHeight="189"/>
+	<SubTexture name="GODFIELD DOWN0001" x="1" y="997" width="684" height="189" frameX="-0" frameY="-0" frameWidth="684" frameHeight="189"/>
+	<SubTexture name="GODFIELD DOWN0002" x="1" y="1790" width="683" height="181" frameX="-0" frameY="-0" frameWidth="683" frameHeight="181"/>
+	<SubTexture name="GODFIELD DOWN0003" x="1" y="1790" width="683" height="181" frameX="-0" frameY="-0" frameWidth="683" frameHeight="181"/>
+	<SubTexture name="GODFIELD LEFT0000" x="1" y="1" width="684" height="204" frameX="-0" frameY="-0" frameWidth="684" frameHeight="204"/>
+	<SubTexture name="GODFIELD LEFT0001" x="1" y="1" width="684" height="204" frameX="-0" frameY="-0" frameWidth="684" frameHeight="204"/>
+	<SubTexture name="GODFIELD LEFT0002" x="685" y="1" width="684" height="204" frameX="-0" frameY="-0" frameWidth="684" frameHeight="204"/>
+	<SubTexture name="GODFIELD LEFT0003" x="685" y="1" width="684" height="204" frameX="-0" frameY="-0" frameWidth="684" frameHeight="204"/>
+	<SubTexture name="GODFIELD RIGHT0000" x="1" y="1186" width="683" height="203" frameX="-0" frameY="-0" frameWidth="683" frameHeight="203"/>
+	<SubTexture name="GODFIELD RIGHT0001" x="1" y="1186" width="683" height="203" frameX="-0" frameY="-0" frameWidth="683" frameHeight="203"/>
+	<SubTexture name="GODFIELD RIGHT0002" x="1" y="1389" width="683" height="203" frameX="-0" frameY="-0" frameWidth="683" frameHeight="203"/>
+	<SubTexture name="GODFIELD RIGHT0003" x="1" y="1389" width="683" height="203" frameX="-0" frameY="-0" frameWidth="683" frameHeight="203"/>
+	<SubTexture name="GODFIELD UP0000" x="685" y="799" width="684" height="195" frameX="-0" frameY="-0" frameWidth="684" frameHeight="195"/>
+	<SubTexture name="GODFIELD UP0001" x="685" y="799" width="684" height="195" frameX="-0" frameY="-0" frameWidth="684" frameHeight="195"/>
+	<SubTexture name="GODFIELD UP0002" x="1" y="205" width="684" height="204" frameX="-0" frameY="-0" frameWidth="684" frameHeight="204"/>
+	<SubTexture name="GODFIELD UP0003" x="1" y="205" width="684" height="204" frameX="-0" frameY="-0" frameWidth="684" frameHeight="204"/>
+	<SubTexture name="SUPERGODFIELD IDLE0000" x="684" y="1385" width="683" height="195" frameX="-0" frameY="-0" frameWidth="683" frameHeight="195"/>
+	<SubTexture name="SUPERGODFIELD IDLE0001" x="684" y="1385" width="683" height="195" frameX="-0" frameY="-0" frameWidth="683" frameHeight="195"/>
+	<SubTexture name="SUPERGODFIELD IDLE0002" x="685" y="603" width="684" height="196" frameX="-0" frameY="-0" frameWidth="684" frameHeight="196"/>
+	<SubTexture name="SUPERGODFIELD IDLE0003" x="685" y="603" width="684" height="196" frameX="-0" frameY="-0" frameWidth="684" frameHeight="196"/>
+	<SubTexture name="SUPERGODFIELD IDLE0004" x="1" y="409" width="684" height="197" frameX="-0" frameY="-0" frameWidth="684" frameHeight="197"/>
+	<SubTexture name="SUPERGODFIELD IDLE0005" x="1" y="409" width="684" height="197" frameX="-0" frameY="-0" frameWidth="684" frameHeight="197"/>
+	<SubTexture name="SUPERGODFIELD IDLE0006" x="1" y="1592" width="683" height="198" frameX="-0" frameY="-0" frameWidth="683" frameHeight="198"/>
+	<SubTexture name="SUPERGODFIELD IDLE0007" x="1" y="1592" width="683" height="198" frameX="-0" frameY="-0" frameWidth="683" frameHeight="198"/>
+	<SubTexture name="SUPERGODFIELD IDLE0008" x="685" y="205" width="684" height="199" frameX="-0" frameY="-0" frameWidth="684" frameHeight="199"/>
+	<SubTexture name="SUPERGODFIELD IDLE0009" x="685" y="205" width="684" height="199" frameX="-0" frameY="-0" frameWidth="684" frameHeight="199"/>
+	<SubTexture name="SUPERGODFIELD IDLE0010" x="685" y="404" width="684" height="199" frameX="-0" frameY="-0" frameWidth="684" frameHeight="199"/>
+	<SubTexture name="SUPERGODFIELD IDLE0011" x="685" y="404" width="684" height="199" frameX="-0" frameY="-0" frameWidth="684" frameHeight="199"/>
+	<SubTexture name="SUPERGODFIELD IDLE0012" x="684" y="1189" width="683" height="196" frameX="-0" frameY="-0" frameWidth="683" frameHeight="196"/>
+	<SubTexture name="SUPERGODFIELD IDLE0013" x="684" y="1189" width="683" height="196" frameX="-0" frameY="-0" frameWidth="683" frameHeight="196"/>
+	<SubTexture name="SUPERGODFIELD IDLE0014" x="1" y="606" width="684" height="196" frameX="-0" frameY="-0" frameWidth="684" frameHeight="196"/>
+	<SubTexture name="SUPERGODFIELD IDLE0015" x="1" y="606" width="684" height="196" frameX="-0" frameY="-0" frameWidth="684" frameHeight="196"/>
+	<SubTexture name="SUPERGODFIELD IDLE0016" x="684" y="1580" width="683" height="195" frameX="-0" frameY="-0" frameWidth="683" frameHeight="195"/>
+	<SubTexture name="SUPERGODFIELD IDLE0017" x="684" y="1580" width="683" height="195" frameX="-0" frameY="-0" frameWidth="683" frameHeight="195"/>
+	<SubTexture name="SUPERGODFIELD IDLE0018" x="684" y="1775" width="683" height="195" frameX="-0" frameY="-0" frameWidth="683" frameHeight="195"/>
+	<SubTexture name="SUPERGODFIELD IDLE0019" x="684" y="1775" width="683" height="195" frameX="-0" frameY="-0" frameWidth="683" frameHeight="195"/>
+	<SubTexture name="SUPERGODFIELD IDLE0020" x="1" y="802" width="684" height="195" frameX="-0" frameY="-0" frameWidth="684" frameHeight="195"/>
+	<SubTexture name="SUPERGODFIELD IDLE0021" x="1" y="802" width="684" height="195" frameX="-0" frameY="-0" frameWidth="684" frameHeight="195"/>
+	<SubTexture name="SUPERGODFIELD IDLE0022" x="685" y="994" width="684" height="195" frameX="-0" frameY="-0" frameWidth="684" frameHeight="195"/>
+	<SubTexture name="SUPERGODFIELD IDLE0023" x="685" y="994" width="684" height="195" frameX="-0" frameY="-0" frameWidth="684" frameHeight="195"/>
+</TextureAtlas>

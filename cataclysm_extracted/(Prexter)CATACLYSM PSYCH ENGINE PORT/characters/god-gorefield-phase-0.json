@@ -1,0 +1,78 @@
+{
+    "animations": [
+        {
+            "offsets": [
+                -371,
+                -302
+            ],
+            "loop": true,
+            "fps": 24,
+            "name": "GOREFIELD IDLE",
+            "anim": "idle",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -371,
+                -282
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GOREFIELD LEFT",
+            "anim": "singLEFT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -361,
+                -362
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GOREFIELD DOWN",
+            "anim": "singDOWN",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -391,
+                -242
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GOREFIELD UP",
+            "anim": "singUP",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -381,
+                -302
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GOREFIELD RIGHT",
+            "anim": "singRIGHT",
+            "indices": []
+        }
+    ],
+    "no_antialiasing": false,
+    "image": "characters/GOREFIELD_GOD",
+    "position": [
+        0,
+        0
+    ],
+    "healthicon": "godfield_gore",
+    "flip_x": false,
+    "healthbar_colors": [
+        136,
+        193,
+        112
+    ],
+    "camera_position": [
+        -300,
+        400
+    ],
+    "sing_duration": 2,
+    "scale": 2.857142857142857
+}

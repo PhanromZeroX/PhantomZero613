@@ -1,0 +1,78 @@
+{
+    "animations": [
+        {
+            "offsets": [
+                -105,
+                -98
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "BF IDLE",
+            "anim": "idle",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -81,
+                -87
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "BF LEFT",
+            "anim": "singLEFT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -109,
+                -117
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "BF DOWN",
+            "anim": "singDOWN",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -146,
+                -76
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "BF UP",
+            "anim": "singUP",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -155,
+                -96
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "BF RIGHT",
+            "anim": "singRIGHT",
+            "indices": []
+        }
+    ],
+    "no_antialiasing": false,
+    "image": "characters/GOD_BF_SANS",
+    "position": [
+        830,
+        -180
+    ],
+    "healthicon": "BF_sansfield_ingame",
+    "flip_x": true,
+    "healthbar_colors": [
+        90,
+        80,
+        211
+    ],
+    "camera_position": [
+        10,
+        650
+    ],
+    "sing_duration": 4,
+    "scale": 2.5
+}

@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				-314,
+				-274
+			],
+			"anim": "idle",
+			"fps": 24,
+			"indices": [],
+			"name": "GOD CAT IDLE"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-309,
+				-224
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"indices": [],
+			"name": "GOD CAT LEFT"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-254,
+				-451
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"indices": [],
+			"name": "GOD CAT DOWN"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-459,
+				71
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"indices": [],
+			"name": "GOD CAT UP"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-329,
+				-266
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"indices": [],
+			"name": "GOD CAT RIGHT"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/GOD_CAT",
+	"position": [
+		-710,
+		-520
+	],
+	"healthicon": "LB_GOREFIELD_GOD",
+	"flip_x": false,
+	"healthbar_colors": [
+		52,
+		103,
+		86
+	],
+	"camera_position": [
+		-200,
+		420
+	],
+	"sing_duration": 4,
+	"scale": 4.28571428571429
+}

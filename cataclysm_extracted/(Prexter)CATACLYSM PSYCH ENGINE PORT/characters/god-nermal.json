@@ -1,0 +1,122 @@
+{
+    "animations": [
+        {
+            "offsets": [
+                -342,
+                -309
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "NERMALL IDLE",
+            "anim": "idle",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -366,
+                -229
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "NERMALL LEFT0",
+            "anim": "singLEFT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -266,
+                -350
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "NERMALL DOWN",
+            "anim": "singDOWN",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -364,
+                -133
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "NERMALL UP",
+            "anim": "singUP",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -327,
+                -283
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "NERMALL RIGHT",
+            "anim": "singRIGHT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -319,
+                -207
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "NERMALL MISS LEFT",
+            "anim": "singLEFTmiss",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -207,
+                -357
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "NERMALL MISS DOWN",
+            "anim": "singDOWNmiss",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -329,
+                -46
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "NERMALL MISS UP",
+            "anim": "singUPmiss",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -288,
+                -235
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "NERMALL MISS RIGHT",
+            "anim": "singRIGHTmiss",
+            "indices": []
+        }
+    ],
+    "no_antialiasing": false,
+    "image": "characters/NERMALL_GOD_ASSETS",
+    "position": [
+        -180,
+        540
+    ],
+    "healthicon": "NERMAL_GODFIELD",
+    "flip_x": true,
+    "healthbar_colors": [
+        153,
+        153,
+        153
+    ],
+    "camera_position": [
+        240,
+        240
+    ],
+    "sing_duration": 4,
+    "scale": 3.75
+}

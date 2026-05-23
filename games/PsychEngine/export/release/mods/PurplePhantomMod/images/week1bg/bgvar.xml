@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="VAR_Background.png">
+	<!-- Created with Adobe Animate version 20.0.1.19255 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Thunder0000" x="10" y="10" width="2560" height="1400"/>
+	<SubTexture name="Thunder0001" x="10" y="10" width="2560" height="1400"/>
+	<SubTexture name="Thunder0002" x="10" y="10" width="2560" height="1400"/>
+	<SubTexture name="Thunder0003" x="2580" y="10" width="2560" height="1400"/>
+	<SubTexture name="Thunder0004" x="2580" y="10" width="2560" height="1400"/>
+	<SubTexture name="Thunder0005" x="5150" y="10" width="2560" height="1400"/>
+	<SubTexture name="Thunder0006" x="5150" y="10" width="2560" height="1400"/>
+	<SubTexture name="Thunder0007" x="10" y="1420" width="2560" height="1400"/>
+	<SubTexture name="Thunder0008" x="10" y="1420" width="2560" height="1400"/>
+	<SubTexture name="Thunder0009" x="2580" y="1420" width="2560" height="1400"/>
+	<SubTexture name="Thunder0010" x="2580" y="1420" width="2560" height="1400"/>
+	<SubTexture name="Thunder0011" x="2580" y="1420" width="2560" height="1400"/>
+	<SubTexture name="Thunder0012" x="2580" y="1420" width="2560" height="1400"/>
+	<SubTexture name="Thunder0013" x="2580" y="1420" width="2560" height="1400"/>
+	<SubTexture name="Thunder0014" x="2580" y="1420" width="2560" height="1400"/>
+	<SubTexture name="VARbackground0000" x="2580" y="1420" width="2560" height="1400"/>
+</TextureAtlas>

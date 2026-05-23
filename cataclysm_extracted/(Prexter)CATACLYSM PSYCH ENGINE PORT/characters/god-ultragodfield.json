@@ -1,0 +1,78 @@
+{
+    "animations": [
+        {
+            "offsets": [
+                -336,
+                -222
+            ],
+            "loop": true,
+            "fps": 24,
+            "name": "ULTRA GODFIELD IDLE",
+            "anim": "idle",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -341,
+                -209
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "ULTRA GODFIELD LEFT",
+            "anim": "singLEFT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -387,
+                -200.5
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "ULTRA GODFIELD DOWN",
+            "anim": "singDOWN",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -333,
+                -214
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "ULTRA GODFIELD UP",
+            "anim": "singUP",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -442,
+                -207
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "ULTRA GODFIELD RIGHT",
+            "anim": "singRIGHT",
+            "indices": []
+        }
+    ],
+    "no_antialiasing": false,
+    "image": "characters/ULTRAGODFIELD",
+    "position": [
+        -730,
+        -520
+    ],
+    "healthicon": "GODFIELD_TRUE_FORM",
+    "flip_x": false,
+    "healthbar_colors": [
+        52,
+        103,
+        86
+    ],
+    "camera_position": [
+        -200,
+        420
+    ],
+    "sing_duration": 4,
+    "scale": 3.0
+}

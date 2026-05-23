@@ -1,4 +1,4 @@
--- Combined shader script: heatwave (camHUD) + glow (characters) + vhs (camGame)
+-- Combined shader script: heatwave (characters + icons) + glow (characters + icons)
 shadersLoaded = false
 glowCharsApplied = false
 
@@ -10,14 +10,14 @@ function onStartCountdown()
 
     debugPrint('All Shaders: Initializing...')
 
-    -- Initialize all three shaders
+-- Initialize shaders
     runHaxeCode([[
         game.initLuaShader('heatwave');
         game.initLuaShader('glow');
-        game.initLuaShader('vhs');
+        game.initLuaShader('vcr');
     ]])
 
-    -- Heatwave shader setup
+    -- Heatwave shader setup (applied to camHUD)
     makeLuaSprite('heatwaveShader')
     setSpriteShader('heatwaveShader', 'heatwave')
 
@@ -25,20 +25,18 @@ function onStartCountdown()
     setShaderFloat('heatwaveShader', 'speed', 0.5)
     setShaderFloat('heatwaveShader', 'time', 0.0)
 
-    -- VHS shader setup
-    makeLuaSprite('vhsShader')
-    setSpriteShader('vhsShader', 'vhs')
+    -- VCR shader setup (applied to camGame)
+    makeLuaSprite('vcrShader')
+    setSpriteShader('vcrShader', 'vcr')
 
-    setShaderFloat('vhsShader', 'time', 0.0)
-    setShaderFloat('vhsShader', 'noiseIntensity', 0.5)
-    setShaderFloat('vhsShader', 'colorOffsetIntensity', 1.0)
+    setShaderFloat('vcrShader', 'time', 0.0)
 
-    -- Heatwave on camHUD, VHS on camGame
+    -- Apply heatwave to camHUD, VCR to camGame
     runHaxeCode([[
-        var heatFilter = new ShaderFilter(game.getLuaObject("heatwaveShader").shader);
-        var vhsFilter = new ShaderFilter(game.getLuaObject("vhsShader").shader);
+        var heatFilter = new ShaderFilter(game.getLuaObject('heatwaveShader').shader);
+        var vcrFilter = new ShaderFilter(game.getLuaObject('vcrShader').shader);
         game.camHUD.setFilters([heatFilter]);
-        game.camGame.setFilters([vhsFilter]);
+        game.camGame.setFilters([vcrFilter]);
     ]])
 
     -- Glow shader setup (characters + icons)
@@ -64,12 +62,12 @@ function onStartCountdown()
     glowCharsApplied = true
 
     shadersLoaded = true
-    debugPrint('All Shaders: heatwave + glow chars + vhs loaded!')
+    debugPrint('All Shaders: heatwave + glow chars loaded!')
 end
 
 function onUpdatePost(elapsed)
     if shadersLoaded then
         setShaderFloat('heatwaveShader', 'time', getSongPosition() / 1000.0)
-        setShaderFloat('vhsShader', 'time', getSongPosition() / 1000.0)
+        setShaderFloat('vcrShader', 'time', getSongPosition() / 1000.0)
     end
 end

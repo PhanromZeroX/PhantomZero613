@@ -1,0 +1,78 @@
+{
+    "animations": [
+        {
+            "offsets": [
+                -120,
+                -188
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GARFIELD JIPI0",
+            "anim": "idle",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -23,
+                -195
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GARFIELD JIPI LEFT",
+            "anim": "singLEFT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -128,
+                -312
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GARFIELD JIPI DOWN",
+            "anim": "singDOWN",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -120,
+                -119
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GARFIELD JIPI UP",
+            "anim": "singUP",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -179,
+                -190
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GARFIELD JIPI RIGHT",
+            "anim": "singRIGHT",
+            "indices": []
+        }
+    ],
+    "no_antialiasing": false,
+    "image": "characters/JIPPI",
+    "position": [
+        0,
+        -350
+    ],
+    "healthicon": "1_FORM_GODFIELD",
+    "flip_x": false,
+    "healthbar_colors": [
+        255,
+        255,
+        255
+    ],
+    "camera_position": [
+        -390,
+        120
+    ],
+    "sing_duration": 4,
+    "scale": 3.75
+}

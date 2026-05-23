@@ -1,0 +1,78 @@
+{
+    "animations": [
+        {
+            "offsets": [
+                -342,
+                -102
+            ],
+            "loop": true,
+            "fps": 24,
+            "name": "SUPERGODFIELD IDLE",
+            "anim": "idle",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -347,
+                -99
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GODFIELD LEFT",
+            "anim": "singLEFT",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -343,
+                -105.5
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GODFIELD DOWN",
+            "anim": "singDOWN",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -349,
+                -94
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GODFIELD UP",
+            "anim": "singUP",
+            "indices": []
+        },
+        {
+            "offsets": [
+                -348,
+                -102
+            ],
+            "loop": false,
+            "fps": 24,
+            "name": "GODFIELD RIGHT",
+            "anim": "singRIGHT",
+            "indices": []
+        }
+    ],
+    "no_antialiasing": false,
+    "image": "characters/SUPERGODFIELD_ASSETS",
+    "position": [
+        -710,
+        -520
+    ],
+    "healthicon": "GODFIELD_TRUE_FORM",
+    "flip_x": false,
+    "healthbar_colors": [
+        52,
+        103,
+        86
+    ],
+    "camera_position": [
+        -200,
+        420
+    ],
+    "sing_duration": 4,
+    "scale": 3.0
+}
