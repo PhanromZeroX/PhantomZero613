@@ -15,16 +15,11 @@ function onStartCountdown()
             game.camGame.setFilters([particlesFilter]);
         ]])
 
-        setShaderFloat('particlesShader', 'time', 0)
-        setShaderFloat('particlesShader', 'res', screenWidth)
-        setShaderFloat('particlesShader', 'res', screenHeight)
-        setShaderFloat('particlesShader', 'particleXY', screenWidth / 2)
-        setShaderFloat('particlesShader', 'particleXY', screenHeight / 2)
-        setShaderFloat('particlesShader', 'particleColor', 0.8)
-        setShaderFloat('particlesShader', 'particleColor', 0.2)
-        setShaderFloat('particlesShader', 'particleColor', 1.0)
-        setShaderFloat('particlesShader', 'particleDirection', 0.3)
-        setShaderFloat('particlesShader', 'particleDirection', -1.0)
+        setShaderFloat('particlesShader', 'time', 0.0)
+        setShaderVec2('particlesShader', 'res', screenWidth, screenHeight)
+        setShaderVec2('particlesShader', 'particleXY', screenWidth / 2.0, screenHeight / 2.0)
+        setShaderVec3('particlesShader', 'particleColor', 0.8, 0.2, 1.0)
+        setShaderVec2('particlesShader', 'particleDirection', 0.3, -1.0)
         setShaderFloat('particlesShader', 'particleZoom', 1.0)
         setShaderFloat('particlesShader', 'particlealpha', 0.8)
         setShaderInt('particlesShader', 'layers', 6)
@@ -35,6 +30,6 @@ end
 
 function onUpdatePost(elapsed)
     if particlesApplied then
-        setShaderFloat('particlesShader', 'time', getSongPosition() / 1000)
+        setShaderFloat('particlesShader', 'time', getSongPosition() / 1000.0)
     end
 end

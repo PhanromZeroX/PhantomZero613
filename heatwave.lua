@@ -18,7 +18,7 @@ function onStartCountdown()
 
         setShaderFloat('heatwaveShader', 'strength', 0.5)
         setShaderFloat('heatwaveShader', 'speed', 0.5)
-        setShaderFloat('heatwaveShader', 'time', 0)
+        setShaderFloat('heatwaveShader', 'time', 0.0)
 
         shaderApplied = true
 
@@ -45,6 +45,6 @@ end
 
 function onUpdatePost(elapsed)
     if shaderApplied then
-        setShaderFloat('heatwaveShader', 'time', getSongPosition() / 1000)
+        setShaderFloat('heatwaveShader', 'time', getSongPosition() / 1000.0)
     end
 end

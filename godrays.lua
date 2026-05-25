@@ -16,7 +16,7 @@ function onStartCountdown()
         ]])
 
         setShaderFloat('godraysShader', 'Exposure', 0.5)
-        setShaderVec2('godraysShader', '_LightPos', screenWidth / 2, screenHeight / 2)
+        setShaderVec2('godraysShader', '_LightPos', screenWidth / 2.0, screenHeight / 2.0)
 
         godraysApplied = true
     end
@@ -25,6 +25,6 @@ end
 function onUpdatePost(elapsed)
     if godraysApplied then
         -- Update light position to follow center or a character
-        setShaderVec2('godraysShader', '_LightPos', screenWidth / 2, screenHeight / 2)
+        setShaderVec2('godraysShader', '_LightPos', screenWidth / 2.0, screenHeight / 2.0)
     end
 end
