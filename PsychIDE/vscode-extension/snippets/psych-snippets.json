@@ -1,8 +1,8 @@
 {
-  "shader_basic": {
+  "shader_full": {
     "prefix": "shader",
     "body": [
-      "local shaderEnabled = false",
+      "${1:shaderName}Applied = false",
       "",
       "function onStartCountdown()",
       "    if shadersEnabled then",
@@ -19,19 +19,20 @@
       "            game.camGame.setFilters([shaderFilter]);",
       "        ]])",
       "        ",
-      "        setShaderFloat('${1:shaderName}Shader', 'time', 0)",
+      "        setShaderFloat('${1:shaderName}Shader', 'time', 0.0)",
+      "        setShaderFloat('${1:shaderName}Shader', '${2:uniform}', ${3:0.5})",
       "        ",
-      "        shaderEnabled = true",
+      "        ${1:shaderName}Applied = true",
       "    end",
       "end",
       "",
       "function onUpdatePost(elapsed)",
-      "    if shaderEnabled then",
-      "        setShaderFloat('${1:shaderName}Shader', 'time', getSongPosition() / 1000)",
+      "    if ${1:shaderName}Applied then",
+      "        setShaderFloat('${1:shaderName}Shader', 'time', getSongPosition() / 1000.0)",
       "    end",
       "end"
     ],
-    "description": "Basic shader activation template"
+    "description": "Complete shader activation with uniform setup"
   },
   "sprite_with_tween": {
     "prefix": "sprite-tween",
@@ -43,16 +44,52 @@
     ],
     "description": "Create sprite with Y tween"
   },
+  "sprite_animation": {
+    "prefix": "sprite-anim",
+    "body": [
+      "makeAnimatedLuaSprite('${1:spriteId}', '${2:image}', ${3:x}, ${4:y})",
+      "addAnimationByPrefix('${1:spriteId}', '${5:idle}', '${5:idle}', 24, true)",
+      "objectPlayAnimation('${1:spriteId}', '${5:idle}', true)",
+      "addLuaSprite('${1:spriteId}', false)"
+    ],
+    "description": "Create animated sprite with prefix animation"
+  },
+  "camera_shake": {
+    "prefix": "cam-shake",
+    "body": [
+      "cameraShake(${1:camGame}, ${2:0.01}, ${3:0.2})"
+    ],
+    "description": "Shake camera effect"
+  },
+  "callback_loop": {
+    "prefix": "callback",
+    "body": [
+      "function ${1:onUpdate}(elapsed)",
+      "    ${2:-- TODO: implement}",
+      "end"
+    ],
+    "description": "Psych callback function"
+  },
+  "note_event": {
+    "prefix": "note-event",
+    "body": [
+      "function goodNoteHit(membersIndex, noteData, noteType, isSustainNote)",
+      "    debugPrint('Good note hit! Note: ' .. noteData)",
+      "    -- noteData: 0=LEFT, 1=DOWN, 2=UP, 3=RIGHT",
+      "    ${1:-- TODO: implement hit effect}",
+      "end"
+    ],
+    "description": "Good note hit event handler"
+  },
   "event_handler": {
     "prefix": "event",
     "body": [
       "function ${1:eventName}(value1, value2)",
-      "    debugPrint('Event triggered: ${1:eventName}')",
-      "    -- TODO: implement event",
-      "    ${0}",
+      "    debugPrint('Event triggered: ${1:eventName}', 'Value1: ' .. tostring(value1), 'Value2: ' .. tostring(value2))",
+      "    ${0:-- TODO: implement event}",
       "end"
     ],
-    "description": "Custom event handler"
+    "description": "Custom event handler with parameters"
   },
   "character_def": {
     "prefix": "character",
@@ -73,5 +110,37 @@
       "}"
     ],
     "description": "Character JSON template"
+  },
+  "song_def": {
+    "prefix": "song",
+    "body": [
+      "{",
+      "  \"song\": \"${1:Song Name}\",",
+      "  \"player1\": \"${2:bf}\",",
+      "  \"player2\": \"${3:dad}\",",
+      "  \"stage\": \"${4:stage}\",",
+      "  \"gfVersion\": \"${5:gf}\",",
+      "  \"validScore\": true,",
+      "  \"needsVoices\": true,",
+      "  \"bpm\": ${6:120},",
+      "  \"notes\": [],",
+      "  \"events\": []",
+      "}"
+    ],
+    "description": "Song metadata JSON template"
+  },
+  "shader_vec2": {
+    "prefix": "shader-vec2",
+    "body": [
+      "setShaderVec2('${1:spriteId}', '${2:uniformName}', ${3:0.0}, ${4:0.0})"
+    ],
+    "description": "Set vec2 shader uniform"
+  },
+  "shader_vec3": {
+    "prefix": "shader-vec3",
+    "body": [
+      "setShaderVec3('${1:spriteId}', '${2:uniformName}', ${3:0.8}, ${4:0.2}, ${5:1.0})"
+    ],
+    "description": "Set vec3 shader uniform (RGB color example)"
   }
 }

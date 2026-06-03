@@ -12,8 +12,9 @@
   },
   "python-envs.defaultEnvManager": "ms-python.python:system",
   "python-envs.pythonProjects": [],
-  "Lua.runtime.version": "Lua 5.1",
+  "Lua.runtime.version": "Lua 5.4",
   "Lua.workspace.library": [
+    "${workspaceFolder}/PsychIDE/lua-library",
     "${workspaceFolder}/docs/psych_engine_lib.lua",
     "${workspaceFolder}/docs/psych_engine_globals.lua"
   ],
