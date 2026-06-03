@@ -15,6 +15,7 @@
   "Lua.runtime.version": "Lua 5.4",
   "Lua.workspace.library": [
     "${workspaceFolder}/PsychIDE/lua-library",
+    "${workspaceFolder}/PsychEngine_Globals.lua",
     "${workspaceFolder}/docs/psych_engine_lib.lua",
     "${workspaceFolder}/docs/psych_engine_globals.lua"
   ],

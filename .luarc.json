@@ -1,0 +1,40 @@
+{
+  "runtime": {
+    "version": "Lua 5.4",
+    "pathStrict": true
+  },
+  "workspace": {
+    "library": [
+      "${3rd}/love2d/library",
+      "${workspaceFolder}/PsychIDE/lua-library"
+    ],
+    "ignoreDir": [
+      ".git",
+      "node_modules",
+      ".vscode-remote"
+    ]
+  },
+  "diagnostics": {
+    "globals": [
+      "game",
+      "shadersEnabled",
+      "screenWidth",
+      "screenHeight",
+      "curBeat",
+      "curStep",
+      "curSection",
+      "mustHitSection",
+      "altAnim",
+      "gfSection",
+      "bpm",
+      "scrollSpeed",
+      "version",
+      "startingSongPos",
+      "client"
+    ],
+    "disable": ["lowercase-global"],
+    "severity": {
+      "undefined-global": "Warning"
+    }
+  }
+}
