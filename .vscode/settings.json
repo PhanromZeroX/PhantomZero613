@@ -19,7 +19,17 @@
     "${workspaceFolder}/docs/psych_engine_lib.lua",
     "${workspaceFolder}/docs/psych_engine_globals.lua"
   ],
-  "Lua.diagnostics.globals": [
+  "Lua.workspace.ignoreDir": [
+    ".git",
+    "node_modules",
+    ".vscode-remote",
+    "unknown-suffering-mod",
+    "cataclysm_extracted",
+    "tmp_altstage_extract",
+    "PsychEngine",
+    "games",
+    "storage"
+  ],
     "onCreate",
     "onCreatePost",
     "update",
