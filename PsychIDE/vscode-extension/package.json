@@ -20,6 +20,7 @@
     "modding"
   ],
   "main": "./out/extension.js",
+  "icon": "./resources/icon.png",
   "contributes": {
     "languages": [
       {
@@ -51,6 +52,16 @@
         "url": "./schemas/character.schema.json"
       }
     ],
+    "semanticTokenColorCustomizations": {
+      "semanticTokenColors": {
+        "variable": "#8BE9FD",
+        "function": "#50FA7B",
+        "keyword": "#FF79C6",
+        "string": "#F1FA8C",
+        "number": "#BD93F9",
+        "type": "#FFB86C"
+      }
+    },
     "commands": [
       {
         "command": "psychIde.validateLua",
