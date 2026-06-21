@@ -62,7 +62,7 @@
         "type": "#FFB86C"
       }
     },
-"commands": [
+    "commands": [
       {
         "command": "psychIde.validateLua",
         "title": "Psych: Validate Lua File"
