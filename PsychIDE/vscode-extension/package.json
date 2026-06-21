@@ -62,7 +62,7 @@
         "type": "#FFB86C"
       }
     },
-    "commands": [
+"commands": [
       {
         "command": "psychIde.validateLua",
         "title": "Psych: Validate Lua File"
@@ -74,6 +74,10 @@
       {
         "command": "psychIde.generateSnippet",
         "title": "Psych: Generate Code Snippet"
+      },
+      {
+        "command": "psychide.showOutput",
+        "title": "PsychIDE: Show Server Output Logs"
       }
     ]
   },

@@ -1,14 +1,91 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import {
+    LanguageClient,
+    LanguageClientOptions,
+    ServerOptions,
+    TransportKind,
+} from 'vscode-languageclient/node';
+
+function createPsychServerOptions(extensionPath: string): ServerOptions {
+    const serverPath = path.join(
+        extensionPath,
+        '..',
+        'backend',
+        'psych_lsp.py'
+    );
+
+
+
+
+    // We use stdio transport: VS Code connects stdin/stdout of the python process.
+    return {
+        command: 'python3',
+        args: [serverPath],
+    };
+}
+
 
 let diagnosticCollection: vscode.DiagnosticCollection;
+
+type PsychIDEStatus = 'initializing' | 'active' | 'stopped';
+
+let statusBarItem: vscode.StatusBarItem | undefined;
+let psychClient: LanguageClient | undefined;
+
+function setStatus(status: PsychIDEStatus) {
+    if (!statusBarItem) return;
+
+    switch (status) {
+        case 'initializing':
+            statusBarItem.text = '⏳ PsychIDE Initializing...';
+            statusBarItem.color = undefined;
+            statusBarItem.backgroundColor = undefined;
+            statusBarItem.command = 'psychide.showOutput';
+            statusBarItem.show();
+            return;
+        case 'active':
+            statusBarItem.text = '⚡ PsychIDE Active';
+            statusBarItem.color = undefined;
+            statusBarItem.backgroundColor = undefined;
+            statusBarItem.command = 'psychide.showOutput';
+            statusBarItem.show();
+            return;
+        case 'stopped':
+            statusBarItem.text = '❌ PsychIDE Stopped';
+            // best-effort theme colors
+            statusBarItem.color = new vscode.ThemeColor('statusBarItem.errorForeground');
+            statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
+            statusBarItem.command = 'psychide.showOutput';
+            statusBarItem.show();
+            return;
+    }
+}
 
 export async function activate(context: vscode.ExtensionContext) {
     diagnosticCollection = vscode.languages.createDiagnosticCollection('psych-ide');
     context.subscriptions.push(diagnosticCollection);
-    
-    console.log('Psych Engine IDE activated');
+
+    const output = vscode.window.createOutputChannel('PsychIDE');
+    context.subscriptions.push(output);
+
+    // Status bar heartbeat
+    statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+    statusBarItem.command = 'psychide.showOutput';
+    statusBarItem.priority = 100;
+    statusBarItem.tooltip = 'PsychIDE server status';
+    statusBarItem.show();
+    setStatus('initializing');
+    context.subscriptions.push(statusBarItem);
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('psychide.showOutput', () => {
+            output.show(true);
+        })
+    );
+
+    output.appendLine('Psych Engine IDE activated');
 
     // Register validation command
     context.subscriptions.push(
