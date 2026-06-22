@@ -11,13 +11,9 @@ import {
 function createPsychServerOptions(extensionPath: string): ServerOptions {
     const serverPath = path.join(
         extensionPath,
-        '..',
         'backend',
         'psych_lsp.py'
     );
-
-
-
 
     // We use stdio transport: VS Code connects stdin/stdout of the python process.
     return {
@@ -73,7 +69,7 @@ export async function activate(context: vscode.ExtensionContext) {
     // Status bar heartbeat
     statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
     statusBarItem.command = 'psychide.showOutput';
-    statusBarItem.priority = 100;
+    // Removed priority re-assignment here to fix the read-only TS error!
     statusBarItem.tooltip = 'PsychIDE server status';
     statusBarItem.show();
     setStatus('initializing');
@@ -87,6 +83,39 @@ export async function activate(context: vscode.ExtensionContext) {
 
     output.appendLine('Psych Engine IDE activated');
 
+    // --- NEW IGNITION CODE START ---
+    try {
+        // 1. Tell the client to listen to Lua and JSON files
+        const clientOptions: LanguageClientOptions = {
+            documentSelector: [
+                { scheme: 'file', language: 'lua' },
+                { scheme: 'file', language: 'json' }
+            ]
+        };
+
+        // 2. Grab the Python server path we set up earlier
+        const serverOptions = createPsychServerOptions(context.extensionPath);
+
+        // 3. Build the actual Language Client
+        psychClient = new LanguageClient(
+            'psychLSP',
+            'Psych Engine Language Server',
+            serverOptions,
+            clientOptions
+        );
+
+        // 4. Start the server and update the UI!
+        // We add a tiny delay to ensure the Python process is fully ready to handshake
+        await new Promise(resolve => setTimeout(resolve, 1500)); 
+        await psychClient.start();
+        
+        setStatus('active');
+        output.appendLine('PsychIDE Language Server successfully attached! 🚀');
+    } catch (error) {
+        setStatus('stopped');
+        output.appendLine(`Failed to start PsychIDE Language Server: ${error}`);
+    }
+    // --- NEW IGNITION CODE END ---
     // Register validation command
     context.subscriptions.push(
         vscode.commands.registerCommand('psychIde.validateLua', async () => {
@@ -130,25 +159,24 @@ export async function activate(context: vscode.ExtensionContext) {
         })
     );
 
-    // Watch Lua files for changes and validate on save
-    const luaWatcher = vscode.workspace.createFileSystemWatcher('**/*.lua');
-    luaWatcher.onDidSave(uri => {
-        const document = vscode.workspace.textDocuments.find(doc => doc.uri === uri);
-        if (document) {
-            validateLuaFile(document);
-        }
-    });
-    context.subscriptions.push(luaWatcher);
+    // Watch Lua files for changes and validate on save (Fixed for VS Code API)
+    context.subscriptions.push(
+        vscode.workspace.onDidSaveTextDocument(document => {
+            if (document.languageId === 'lua') {
+                validateLuaFile(document);
+            }
+        })
+    );
 
-    // Watch JSON files for changes
-    const jsonWatcher = vscode.workspace.createFileSystemWatcher('{**/song.json,**/character.json}');
-    jsonWatcher.onDidSave(uri => {
-        const document = vscode.workspace.textDocuments.find(doc => doc.uri === uri);
-        if (document) {
-            validateJsonFile(document);
-        }
-    });
-    context.subscriptions.push(jsonWatcher);
+    // Watch JSON files for changes (Fixed for VS Code API)
+    context.subscriptions.push(
+        vscode.workspace.onDidSaveTextDocument(document => {
+            const fileName = path.basename(document.fileName);
+            if (fileName === 'song.json' || fileName === 'character.json') {
+                validateJsonFile(document);
+            }
+        })
+    );
 
     // Provide hover hints for Psych functions
     context.subscriptions.push(

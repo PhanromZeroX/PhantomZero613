@@ -1,0 +1,14 @@
+# Node dependencies
+node_modules/
+
+# Compiled output
+out/
+extension.js
+extension.js.map
+
+# Extension packaging
+*.vsix
+
+# Logs and Caches
+*.log
+__pycache__/

@@ -8,6 +8,8 @@ import sys
 import logging
 import traceback
 import os
+from datetime import datetime
+import threading
 from typing import Dict, Any, List, Optional
 
 from lua_validator import LuaValidator
@@ -19,7 +21,11 @@ import pathlib
 class PsychLanguageServer:
     def __init__(self):
         self.validator = LuaValidator()
+        self.last_diagnostics = {} # The "Memory" for errors
+        self.document_manager = {} # The "Memory" for file content
         self.log_path = "/tmp/psych_ide_lsp.log"
+        self.debounce_timer = None
+        self.debounce_interval = 0.3
 
         # Load Psych Engine v1.0.4 API database (callbacks/functions)
         self.api_db_path = "/workspaces/PhantomZero613/PsychIDE/backend/psych_api.json"
@@ -31,7 +37,6 @@ class PsychLanguageServer:
         except Exception:
             # Never crash LSP due to api DB load failure
             self.api_db = {"callbacks": [], "functions": []}
-
 
         # Robust crash logging for hidden failures
         self.crash_log_file = "/workspaces/PhantomZero613/PsychIDE/server_crash.log"
@@ -52,14 +57,70 @@ class PsychLanguageServer:
             "initialized": self.initialized,
             "textDocument/didOpen": self.did_open,
             "textDocument/didChange": self.did_change,
+            "textDocument/didSave": self.did_save,
             "textDocument/completion": self.completion,
             "textDocument/hover": self.hover,
         }
 
+    def publish_diagnostics(self, uri: str, errors: List[Any], warnings: List[Any]):
+        """Push diagnostics to VS Code with debug logging"""
+        diagnostics = []
+        
+        # 🔴 Process Errors (Red Squiggles)
+        for err in errors:
+            self._log(f"DEBUG Error: {err}")
+            # Use .get() for dictionaries, and subtract 1 for VS Code's 0-based lines
+            line = err.get('line', err.get('row', 1)) - 1 
+            col = err.get('col', err.get('column', 0))
+            msg = err.get('message', err.get('msg', 'Unknown Error'))
+
+            diagnostics.append({
+                "range": {
+                    "start": {"line": line, "character": col},
+                    "end": {"line": line, "character": col + 15} # Give the squiggle some width
+                },
+                "severity": 1, # 1 = Error
+                "message": msg
+            })
+            
+        # 🟡 Process Warnings (Yellow Squiggles)
+        for warn in warnings:
+            self._log(f"DEBUG Warning: {warn}")
+            line = warn.get('line', warn.get('row', 1)) - 1
+            col = warn.get('col', warn.get('column', 0))
+            msg = warn.get('message', warn.get('msg', 'Unknown Warning'))
+
+            diagnostics.append({
+                "range": {
+                    "start": {"line": line, "character": col},
+                    "end": {"line": line, "character": col + 15}
+                },
+                "severity": 2, # 2 = Warning
+                "message": msg
+            })
+        
+        payload = {
+            "jsonrpc": "2.0",
+            "method": "textDocument/publishDiagnostics",
+            "params": {
+                "uri": uri,
+                "diagnostics": diagnostics
+            }
+        }
+        
+        data = json.dumps(payload)
+        header = f"Content-Length: {len(data)}\r\n\r\n"
+        sys.stdout.write(header + data)
+        sys.stdout.flush()
+
+
     def _log(self, payload: Any) -> None:
         try:
+            # Create a formatted timestamp like [2026-06-21 23:05:47]
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
             with open(self.log_path, "a", encoding="utf-8") as f:
-                f.write(str(payload) + "\n")
+                f.write(f"[{timestamp}] {payload}\n")
         except Exception:
             # Never crash the LSP due to logging
             pass
@@ -76,7 +137,7 @@ class PsychLanguageServer:
         return {
 
             "capabilities": {
-                "textDocumentSync": 2,  # Full document sync
+                "textDocumentSync": 1,  # Full document sync
                 "completionProvider": {
                     "resolveProvider": True,
                     "triggerCharacters": [".", "(", " "],
@@ -102,15 +163,50 @@ class PsychLanguageServer:
         """Handle document open"""
         uri = params["textDocument"]["uri"]
         text = params["textDocument"]["text"]
+        
+        # Add this line to ensure the document manager knows the file content
+        self.document_manager[uri] = text 
+        
         self._validate_document(uri, text)
 
+    def on_did_change(self, params: Dict[str, Any]) -> None:
+        """Handles the debounced validation trigger."""
+        # If a timer is already running, cancel it
+        if self.debounce_timer:
+            self.debounce_timer.cancel()
+    
+        # Start a new timer to wait for the user to stop typing
+        self.debounce_timer = threading.Timer(self.debounce_interval, self.validate_and_publish, [params])
+        self.debounce_timer.start()
+
+
     def did_change(self, params: Dict[str, Any]) -> None:
-        """Handle document changes"""
+        """Handle document changes from VS Code"""
         uri = params["textDocument"]["uri"]
-        changes = params.get("contentChanges", [])
-        if changes:
-            text = changes[-1]["text"]
-            self._validate_document(uri, text)
+        # Update our document manager with the latest full text
+        for change in params.get("contentChanges", []):
+            self.document_manager[uri] = change.get("text", "")
+        
+        # Trigger the debounced validation
+        self.on_did_change(params)
+
+    def did_save(self, params: Dict[str, Any]) -> None:
+        """Handle document save - force run immediate evaluation to counter Client Wipes"""
+        if self.debounce_timer:
+            self.debounce_timer.cancel()
+        
+        self.validate_and_publish(params)
+
+    def validate_and_publish(self, params):
+        uri = params["textDocument"]["uri"]
+        text = self.document_manager.get(uri, "")
+        
+        # 1. Run the validator scan on the full, uncorrupted text
+        errors, warnings = self.validator.validate(text)
+        
+        # 2. Update the cache and push the real updates directly to VS Code
+        self.last_diagnostics[uri] = (errors, warnings)
+        self.publish_diagnostics(uri, errors, warnings)
 
     def _validate_document(self, uri: str, text: str) -> None:
         """Validate a Lua document"""
@@ -118,6 +214,11 @@ class PsychLanguageServer:
             return
 
         errors, warnings = self.validator.validate(text)
+        
+        # --- ADD THIS LINE BELOW ---
+        self.publish_diagnostics(uri, errors, warnings) 
+        # ---------------------------
+        
         self._log(f"Diagnostics for {uri}: {len(errors)} errors, {len(warnings)} warnings")
 
     def completion(self, params: Dict[str, Any]) -> Dict[str, List[Dict]]:

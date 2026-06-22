@@ -63,20 +63,38 @@ class LuaValidator:
         return self.errors, self.warnings
     
     def _check_function_calls(self, line: str, line_no: int):
-        """Check if function calls are valid Psych API calls"""
-        # Pattern: functionName(...)
-        func_pattern = r'(\w+)\s*\('
+        """Check for correct argument counts in Psych Engine API calls"""
         
-        for match in re.finditer(func_pattern, line):
+        # 🚨 UPGRADE: The forgiving regex! 
+        # r'(\w+)\s*\(([^)]*)' means: 
+        # 1. Find a word (function name)
+        # 2. Find an opening '('
+        # 3. Grab everything after it that ISN'T a closing ')'
+        for match in re.finditer(r'(\w+)\s*\(([^)]*)', line):
             func_name = match.group(1)
+            args_string = match.group(2)
             
-            # Skip comments
-            if '--' in line and line.index('--') < match.start():
-                continue
+            # Count the arguments by splitting at commas
+            # (If it's empty space, it counts as 0 args)
+            args = [arg.strip() for arg in args_string.split(',')] if args_string.strip() else []
+            arg_count = len(args)
+
+            # --- Your existing dictionary check goes here ---
+            # Example:
+            api_funcs = {
+                'initLuaShader': 1,
+                'setSpriteShader': 2,
+                # ... other functions
+            }
             
-            # Check if it's a Psych function
-            if func_name in self.PSYCH_FUNCTIONS:
-                continue
+            if func_name in api_funcs:
+                expected_args = api_funcs[func_name]
+                if arg_count != expected_args:
+                    self.errors.append({
+                        'line': line_no,
+                        'col': match.start(),
+                        'message': f'Argument mismatch: {func_name} expects {expected_args} args, but got {arg_count}.'
+                    })
             
             # Check if it's a callback
             if func_name in self.PSYCH_CALLBACKS:
@@ -87,33 +105,29 @@ class LuaValidator:
             if func_name in lua_stdlib or func_name.startswith('table.') or func_name.startswith('string.'):
                 continue
             
-            # Warn about potentially unknown function
+            # Warn about unknown functions (info only)
             if not any(func_name.startswith(f) for f in ['local', 'if', 'for', 'while', 'function']):
                 self.warnings.append({
                     'line': line_no,
+                    'col': match.start(1),
                     'message': f'Unknown function: {func_name}',
                     'severity': 'info'
                 })
     
     def _check_shader_usage(self, line: str, line_no: int):
-        """Check if shader-related code is correct"""
-
-        # Rules:
-        # - initLuaShader('name') should NOT include .frag/.vsh in the name.
-        # - If someone passes a full path/asset ending in .frag/.vsh, treat it as a VALID shader asset reference,
-        #   not as a dropped/invalid string.
+        """Check if shader-related code is correct and strictly enforce extensions"""
         if 'initLuaShader' in line:
+            # Look for the shader name inside the function
             match = re.search(r"initLuaShader\s*\(\s*['\"]([^'\"]+)['\"]\s*\)", line)
             if match:
                 shader_name = match.group(1)
 
-                # Accept explicit shader asset references, but warn that the API expects the shader name.
-                # (Prevents the server/validator from treating the string as broken syntax/token.)
-                if re.search(r"\.frag\b|\.vsh\b", shader_name, flags=re.IGNORECASE):
-                    self.warnings.append({
+                # 🚨 UPGRADE: Push to self.errors instead of self.warnings!
+                if '.frag' in shader_name or '.vsh' in shader_name:
+                    self.errors.append({
                         'line': line_no,
-                        'message': f'Shader asset reference "{shader_name}" detected. initLuaShader typically expects the shaderName without extension.',
-                        'severity': 'warning'
+                        'col': line.find(shader_name),
+                        'message': f'Invalid Shader Name: "{shader_name}". Do not include .frag or .vsh extensions.'
                     })
 
                 # Also keep a softer warning when both keyword and extension are present.

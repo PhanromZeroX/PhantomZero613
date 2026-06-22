@@ -1,0 +1,22 @@
+{
+  "callbacks": [
+    { "name": "onCreate", "args": [], "description": "Fired when the script starts loading." },
+    { "name": "onCreatePost", "args": [], "description": "Fired after characters, stage, and UI are created." },
+    { "name": "onUpdate", "args": ["elapsed"], "description": "Fired every frame." },
+    { "name": "onUpdatePost", "args": ["elapsed"], "description": "Fired every frame after character updates." },
+    { "name": "onBeatHit", "args": [], "description": "Fired every beat." },
+    { "name": "onStepHit", "args": [], "description": "Fired every step." },
+    { "name": "onEvent", "args": ["eventName", "value1", "value2", "strumTime"], "description": "Fired when an event is triggered." },
+    { "name": "goodNoteHit", "args": ["id", "noteData", "noteType", "isSustainNote"], "description": "Fired when player hits a note." },
+    { "name": "opponentNoteHit", "args": ["id", "noteData", "noteType", "isSustainNote"], "description": "Fired when opponent hits a note." }
+  ],
+  "functions": [
+    { "name": "addLuaSprite", "args": ["tag", "front"], "description": "Adds a Lua sprite to the scene." },
+    { "name": "makeLuaSprite", "args": ["tag", "image", "x", "y"], "description": "Initializes a new Lua sprite." },
+    { "name": "playAnim", "args": ["obj", "name", "forced", "reverse", "startFrame"], "description": "Plays an animation on an object." },
+    { "name": "setProperty", "args": ["variable", "value"], "description": "Sets a property on an object or playState variable." },
+    { "name": "getProperty", "args": ["variable"], "description": "Gets a property value from an object." },
+    { "name": "runTimer", "args": ["tag", "time", "loops"], "description": "Starts a standalone timer." },
+    { "name": "startTween", "args": ["tag", "vars", "duration", "options"], "description": "Tweens an object's properties." }
+  ]
+}
