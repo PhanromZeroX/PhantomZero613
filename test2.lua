@@ -4,6 +4,6 @@ function onStartCountdown()
         return
 
 runHaxeCode([[
-    game.initLuaShader('glow.frag');
+    game.initLuaShader('glow');
 ]])
 

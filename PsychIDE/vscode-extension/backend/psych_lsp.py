@@ -8,6 +8,7 @@ import sys
 import logging
 import traceback
 import os
+import re
 from datetime import datetime
 import threading
 from typing import Dict, Any, List, Optional
@@ -28,7 +29,8 @@ class PsychLanguageServer:
         self.debounce_interval = 0.3
 
         # Load Psych Engine v1.0.4 API database (callbacks/functions)
-        self.api_db_path = "/workspaces/PhantomZero613/PsychIDE/backend/psych_api.json"
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.api_db_path = os.path.join(current_dir, "psych_api.json")
         self.api_db: Dict[str, Any] = {"callbacks": [], "functions": []}
         try:
             if os.path.exists(self.api_db_path):
@@ -39,7 +41,8 @@ class PsychLanguageServer:
             self.api_db = {"callbacks": [], "functions": []}
 
         # Robust crash logging for hidden failures
-        self.crash_log_file = "/workspaces/PhantomZero613/PsychIDE/server_crash.log"
+        # Robust crash logging for hidden failures
+        self.crash_log_file = os.path.join(current_dir, "server_crash.log")
         try:
             os.makedirs(os.path.dirname(self.crash_log_file), exist_ok=True)
         except Exception:
@@ -60,6 +63,7 @@ class PsychLanguageServer:
             "textDocument/didSave": self.did_save,
             "textDocument/completion": self.completion,
             "textDocument/hover": self.hover,
+            "textDocument/semanticTokens/full": self.get_semantic_tokens
         }
 
     def publish_diagnostics(self, uri: str, errors: List[Any], warnings: List[Any]):
@@ -146,7 +150,7 @@ class PsychLanguageServer:
                 "diagnosticProvider": True,
                 "semanticTokensProvider": {
                     "legend": {
-                        "tokenTypes": ["variable", "function", "keyword", "string", "number", "type"],
+                        "tokenTypes": ["variable", "function", "keyword", "string", "number", "type", "engine"],
                         "tokenModifiers": [],
                     },
                     "full": True,
@@ -303,6 +307,53 @@ class PsychLanguageServer:
         return None
 
 
+    def get_semantic_tokens(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Provides syntax highlighting data to VS Code using delta encoding."""
+        try:
+            uri = params["textDocument"]["uri"]
+            self._log(f"DEBUG: Starting token generation for {uri}")
+            text = self.document_manager.get(uri, "")
+            
+            # 1. Pull BOTH functions and callbacks
+            engine_funcs = [f.get("name") for f in self.api_db.get("functions", []) if f.get("name")]
+            engine_callbacks = [c.get("name") for c in self.api_db.get("callbacks", []) if c.get("name")]
+            all_engine_api = engine_funcs + engine_callbacks
+            
+            # 2. Regex
+            engine_pattern = r'\b(' + '|'.join(all_engine_api) + r')(?=\s*\()' if all_engine_api else r'(?!x)x'
+            patterns = [
+                (r'\b(function|if|then|else|end|local|return|for|while|do)\b', 2),
+                (r'"[^"]*"|\'[^\']*\'', 3),
+                (engine_pattern, 6),
+                (r'\b\d+(\.\d+)?\b', 4),
+                (r'\b[a-zA-Z_]\w*\b', 0)
+            ]
+
+            # 3. Tokenize
+            tokens = []
+            for line_idx, line in enumerate(text.splitlines()):
+                for pattern, type_idx in patterns:
+                    for match in re.finditer(pattern, line):
+                        tokens.append((line_idx, match.start(), match.end() - match.start(), type_idx))
+            
+            tokens.sort()
+            
+            # 4. Delta Encoding
+            encoded_data = []
+            prev_line, prev_char = 0, 0
+            for line, char, length, type_idx in tokens:
+                delta_line = line - prev_line
+                delta_char = (char - prev_char) if delta_line == 0 else char
+                encoded_data.extend([delta_line, delta_char, length, type_idx, 0])
+                prev_line, prev_char = line, char
+            
+            self._log(f"DEBUG: Successfully sent {len(tokens)} tokens.")
+            return {"data": encoded_data}
+
+        except Exception as e:
+            self._log(f"CRITICAL ERROR in get_semantic_tokens: {str(e)}")
+            return {"data": []}
+
 
 def _read_lsp_message(stdin) -> Optional[Dict[str, Any]]:
     """Read a single JSON-RPC message from stdin using LSP Content-Length framing."""
@@ -344,6 +395,7 @@ def _write_lsp_response(stdout, request_id: Any, result: Any) -> None:
     stdout.write(header)
     stdout.write(data)
     stdout.flush()
+
 
 
 def main():

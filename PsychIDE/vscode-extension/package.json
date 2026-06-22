@@ -55,17 +55,18 @@
         "url": "./schemas/character.schema.json"
       }
     ],
-    "semanticTokenColorCustomizations": {
-      "semanticTokenColors": {
-        "variable": "#8BE9FD",
-        "function": "#50FA7B",
-        "keyword": "#FF79C6",
-        "string": "#F1FA8C",
-        "number": "#BD93F9",
-        "type": "#FFB86C"
-      }
-    },
     "configurationDefaults": {
+      "editor.semanticTokenColorCustomizations": {
+        "rules": {
+          "variable": "#8BE9FD",
+          "function": "#50FA7B",
+          "keyword": "#FF79C6",
+          "string": "#F1FA8C",
+          "number": "#BD93F9",
+          "type": "#FFB86C",
+          "engine": "#00FFCC" 
+        }
+      },
       "editor.tokenColorCustomizations": {
         "textMateRules": [
           {
@@ -82,17 +83,18 @@
             }
           }
         ]
-      }
-    },
-
-    "haxe": {
-      "semanticTokenColorCustomizations": {
-        "variable": "#8BE9FD",
-        "function": "#50FA7B",
-        "keyword": "#FF79C6",
-        "string": "#F1FA8C",
-        "number": "#BD93F9",
-        "type": "#FFB86C"
+      },
+      "[haxe]": {
+        "editor.semanticTokenColorCustomizations": {
+          "rules": {
+            "variable": "#8BE9FD",
+            "function": "#50FA7B",
+            "keyword": "#FF79C6",
+            "string": "#F1FA8C",
+            "number": "#BD93F9",
+            "type": "#FFB86C"
+          }
+        }
       }
     },
     "commands": [
@@ -109,7 +111,7 @@
         "title": "Psych: Generate Code Snippet"
       },
       {
-        "command": "psychide.showOutput",
+        "command": "psychIde.showOutput",
         "title": "PsychIDE: Show Server Output Logs"
       }
     ]
@@ -129,6 +131,6 @@
   },
   "activationEvents": [
     "onLanguage:lua",
-    "onCommand:psychide.showOutput"
+    "onCommand:psychIde.showOutput"
   ]
 }

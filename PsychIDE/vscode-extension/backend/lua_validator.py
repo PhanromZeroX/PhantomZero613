@@ -81,20 +81,17 @@ class LuaValidator:
 
             # --- Your existing dictionary check goes here ---
             # Example:
-            api_funcs = {
-                'initLuaShader': 1,
-                'setSpriteShader': 2,
-                # ... other functions
-            }
             
-            if func_name in api_funcs:
-                expected_args = api_funcs[func_name]
+            expected_spec = self.PSYCH_FUNCTIONS.get(func_name)
+            if expected_spec:
+                expected_args = len(expected_spec.get('params', []))
                 if arg_count != expected_args:
                     self.errors.append({
                         'line': line_no,
                         'col': match.start(),
                         'message': f'Argument mismatch: {func_name} expects {expected_args} args, but got {arg_count}.'
                     })
+                continue # Known function processed safely; skip downstream checks
             
             # Check if it's a callback
             if func_name in self.PSYCH_CALLBACKS:
@@ -130,15 +127,6 @@ class LuaValidator:
                         'message': f'Invalid Shader Name: "{shader_name}". Do not include .frag or .vsh extensions.'
                     })
 
-                # Also keep a softer warning when both keyword and extension are present.
-                # Do NOT error/drop; warnings are enough.
-                if '.frag' in shader_name:
-                    # Retain legacy wording for compatibility with existing tests/reporting.
-                    self.warnings.append({
-                        'line': line_no,
-                        'message': f'Shader name "{shader_name}" should not include .frag extension',
-                        'severity': 'warning'
-                    })
 
         # Validate generic shader string asset usage: any string literal ending in .frag/.vsh is treated as an asset.
         # This is intentionally permissive so we don't drop/flag it as an undefined token.
