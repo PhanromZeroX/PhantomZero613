@@ -20,13 +20,16 @@
     "modding"
   ],
   "main": "./out/extension.js",
-  "icon": "./resources/icon.png",
   "contributes": {
     "languages": [
       {
         "id": "lua",
-        "extensions": [".lua"],
-        "aliases": ["Lua"]
+        "extensions": [
+          ".lua"
+        ],
+        "aliases": [
+          "Lua"
+        ]
       }
     ],
     "grammars": [
@@ -54,6 +57,36 @@
     ],
     "semanticTokenColorCustomizations": {
       "semanticTokenColors": {
+        "variable": "#8BE9FD",
+        "function": "#50FA7B",
+        "keyword": "#FF79C6",
+        "string": "#F1FA8C",
+        "number": "#BD93F9",
+        "type": "#FFB86C"
+      }
+    },
+    "configurationDefaults": {
+      "editor.tokenColorCustomizations": {
+        "textMateRules": [
+          {
+            "name": "Psych Engine API Functions and Callbacks",
+            "scope": [
+              "support.function.lua",
+              "entity.name.function.lua",
+              "entity.name.function.haxe",
+              "support.function.haxe"
+            ],
+            "settings": {
+              "foreground": "#00FFCC",
+              "fontStyle": "bold"
+            }
+          }
+        ]
+      }
+    },
+
+    "haxe": {
+      "semanticTokenColorCustomizations": {
         "variable": "#8BE9FD",
         "function": "#50FA7B",
         "keyword": "#FF79C6",
@@ -93,5 +126,9 @@
   },
   "dependencies": {
     "vscode-languageclient": "^8.1.0"
-  }
+  },
+  "activationEvents": [
+    "onLanguage:lua",
+    "onCommand:psychide.showOutput"
+  ]
 }
