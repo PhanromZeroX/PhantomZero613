@@ -154,6 +154,10 @@
         "title": "Psych: Validate Workspace"
       },
       {
+        "command": "psychIde.previewSpriteSheet",
+        "title": "Psych: Preview Sprite Sheet"
+      },
+      {
         "command": "psychIde.askAiToFix",
         "title": "Psych: Ask AI to Fix"
       },
@@ -198,6 +202,7 @@
     "onCommand:psychIde.resizeSpriteSheet",
     "onCommand:psychIde.resizeSpriteFolder",
     "onCommand:psychIde.scanAssetHealth",
-    "onCommand:psychIde.validateWorkspace"
+    "onCommand:psychIde.validateWorkspace",
+    "onCommand:psychIde.previewSpriteSheet"
   ]
 }

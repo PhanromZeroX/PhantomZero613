@@ -450,6 +450,22 @@ export async function activate(context: vscode.ExtensionContext) {
         })
     );
 
+    context.subscriptions.push(
+        vscode.commands.registerCommand('psychIde.previewSpriteSheet', async () => {
+            const imageUri = await vscode.window.showOpenDialog({
+                canSelectFiles: true,
+                canSelectFolders: false,
+                canSelectMany: false,
+                filters: { 'Sprite sheets': ['png'] },
+                openLabel: 'Preview sprite sheet',
+            });
+            if (!imageUri || imageUri.length === 0) {
+                return;
+            }
+            await showSpritePreview(context, imageUri[0].fsPath);
+        })
+    );
+
     // Register validation command
     context.subscriptions.push(
         vscode.commands.registerCommand('psychIde.validateLua', async () => {
@@ -605,6 +621,96 @@ export async function activate(context: vscode.ExtensionContext) {
     );
 
     console.log('Psych Engine IDE commands registered');
+}
+
+async function showSpritePreview(context: vscode.ExtensionContext, imagePath: string): Promise<void> {
+    const imageData = fs.readFileSync(imagePath).toString('base64');
+    const folder = path.dirname(imagePath);
+    const baseName = path.basename(imagePath, path.extname(imagePath));
+    const xmlPath = path.join(folder, `${baseName}.xml`);
+    const frames = fs.existsSync(xmlPath) ? parseSpriteFrames(xmlPath) : [];
+    const panel = vscode.window.createWebviewPanel(
+        'psychideSpritePreview',
+        `Sprite Preview: ${baseName}`,
+        vscode.ViewColumn.Active,
+        { enableScripts: true }
+    );
+
+    const nonce = `${Date.now()}${Math.random().toString(16).slice(2)}`;
+    const frameJson = JSON.stringify(frames.length > 0 ? frames : [{ name: baseName, x: 0, y: 0, width: 0, height: 0 }])
+        .replace(/</g, '\\u003c');
+    panel.webview.html = `<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
+<style>
+body { font-family: sans-serif; color: var(--vscode-foreground); background: var(--vscode-editor-background); padding: 16px; }
+.toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+button, input { accent-color: var(--vscode-focusBorder); }
+canvas { display: block; max-width: 100%; image-rendering: pixelated; margin-top: 16px; background: repeating-conic-gradient(#333 0 25%, #222 0 50%) 0 / 20px 20px; }
+#status { opacity: .8; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+<button id="play">Play</button>
+<label>Frame <input id="frame" type="range" min="0" max="${Math.max(frames.length - 1, 0)}" value="0"></label>
+<label>FPS <input id="fps" type="number" min="1" max="60" value="12" size="3"></label>
+<span id="status"></span>
+</div>
+<canvas id="preview"></canvas>
+<script nonce="${nonce}">
+const image = new Image();
+const frames = ${frameJson};
+const canvas = document.getElementById('preview');
+const ctx = canvas.getContext('2d');
+const frameInput = document.getElementById('frame');
+const fpsInput = document.getElementById('fps');
+const status = document.getElementById('status');
+let timer = null;
+function draw(index) {
+  const frame = frames[index];
+  const width = frame.width || image.naturalWidth;
+  const height = frame.height || image.naturalHeight;
+  canvas.width = width;
+  canvas.height = height;
+  ctx.clearRect(0, 0, width, height);
+  ctx.drawImage(image, frame.x || 0, frame.y || 0, width, height, 0, 0, width, height);
+  status.textContent = (frame.name || 'frame') + ' ' + (index + 1) + '/' + frames.length + ' (' + width + 'x' + height + ')';
+}
+function stop() { if (timer) { clearInterval(timer); timer = null; } document.getElementById('play').textContent = 'Play'; }
+document.getElementById('play').addEventListener('click', () => {
+  if (timer) { stop(); return; }
+  document.getElementById('play').textContent = 'Pause';
+  timer = setInterval(() => { frameInput.value = String((Number(frameInput.value) + 1) % frames.length); draw(Number(frameInput.value)); }, 1000 / Number(fpsInput.value || 12));
+});
+frameInput.addEventListener('input', () => { stop(); draw(Number(frameInput.value)); });
+fpsInput.addEventListener('change', () => { if (timer) { stop(); document.getElementById('play').click(); } });
+image.onload = () => draw(0);
+image.src = 'data:image/png;base64,${imageData}';
+</script>
+</body>
+</html>`;
+}
+
+function parseSpriteFrames(xmlPath: string): Array<{ name: string; x: number; y: number; width: number; height: number }> {
+    const xml = fs.readFileSync(xmlPath, 'utf8');
+    const frames: Array<{ name: string; x: number; y: number; width: number; height: number }> = [];
+    for (const match of xml.matchAll(/<SubTexture\b([^>]*)\/?>(?:<\/SubTexture>)?/g)) {
+        const attributes = match[1];
+        const read = (name: string, fallback: string) => {
+            const value = attributes.match(new RegExp(`${name}=["']([^"']+)["']`));
+            return value ? value[1] : fallback;
+        };
+        frames.push({
+            name: read('name', `frame-${frames.length}`),
+            x: Number(read('x', '0')) || 0,
+            y: Number(read('y', '0')) || 0,
+            width: Number(read('width', '0')) || 0,
+            height: Number(read('height', '0')) || 0,
+        });
+    }
+    return frames;
 }
 
 function validateJsonFile(document: vscode.TextDocument) {
