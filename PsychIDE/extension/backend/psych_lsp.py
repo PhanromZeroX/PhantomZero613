@@ -768,20 +768,44 @@ class PsychLanguageServer:
                             params_list.append(f"`{arg}`")
                     
                     args_str = ", ".join(params_list)
+                    beginner = f.get("beginner", "")
+                    example = f.get("example", "")
+                    tips = f.get("tips", [])
+                    tips_markdown = "\n".join(f"* {tip}" for tip in tips)
+                    example_text = example or f"{word}({', '.join('...' for _ in args_info)})"
                     
                     markdown = (
                         f"### 💡 `{word}(...)`\n"
                         f"---\n"
                         f"✨ **Psych Engine v1.0.4** • *API Function*\n\n"
                         f"{desc}\n\n"
+                        f"**Beginner guide:** {beginner}\n\n" if beginner else ""
+                    ) + (
                         f"* **Parameters:** {args_str if args_str else '`None`'}\n"
                         f"* **Returns:** `{f.get('return', 'void')}`\n\n"
-                        f"```lua\n"
-                        f"-- Example Usage:\n"
-                        f"{word}({', '.join(['...' for _ in args_info])})\n"
-                        f"```"
+                        f"**Example:**\n```lua\n{example_text}\n```\n\n"
+                        f"**Tips:**\n{tips_markdown or '* Check the Psych Engine API documentation for details.'}"
                     )
                     return {"contents": {"kind": "markdown", "value": markdown}}
+
+            # Callback guidance uses the same beginner-oriented API metadata.
+            for callback in self.api_db.get("callbacks", []):
+                if callback.get("name") != word:
+                    continue
+                args = callback.get("args", [])
+                labels = ", ".join(str(arg.get("name", "arg")) if isinstance(arg, dict) else str(arg) for arg in args)
+                tips = callback.get("tips", [])
+                tips_markdown = "\n".join(f"* {tip}" for tip in tips)
+                example_text = callback.get("example", f"function {word}({labels})\nend")
+                markdown = (
+                    f"### 💡 `{word}({labels})`\n---\n"
+                    f"✨ **Psych Engine callback**\n\n"
+                    f"{callback.get('description', 'Engine callback.')}\n\n"
+                    f"**Beginner guide:** {callback.get('beginner', 'Use this callback to react to an engine event.')}\n\n"
+                    f"**Example:**\n```lua\n{example_text}\n```\n\n"
+                    f"**Tips:**\n{tips_markdown or '* Keep callback work short and focused.'}"
+                )
+                return {"contents": {"kind": "markdown", "value": markdown}}
 
             # 🛠️ 2. Fallback to validator
             if word in self.validator.functions:

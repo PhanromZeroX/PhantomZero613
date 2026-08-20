@@ -1,22 +1,22 @@
 {
   "callbacks": [
-    { "name": "onCreate", "args": [], "description": "Fired when the script starts loading." },
-    { "name": "onCreatePost", "args": [], "description": "Fired after characters, stage, and UI are created." },
-    { "name": "onUpdate", "args": ["elapsed"], "description": "Fired every frame." },
-    { "name": "onUpdatePost", "args": ["elapsed"], "description": "Fired every frame after character updates." },
-    { "name": "onBeatHit", "args": [], "description": "Fired every beat." },
-    { "name": "onStepHit", "args": [], "description": "Fired every step." },
-    { "name": "onEvent", "args": ["eventName", "value1", "value2", "strumTime"], "description": "Fired when an event is triggered." },
-    { "name": "goodNoteHit", "args": ["id", "noteData", "noteType", "isSustainNote"], "description": "Fired when player hits a note." },
-    { "name": "opponentNoteHit", "args": ["id", "noteData", "noteType", "isSustainNote"], "description": "Fired when opponent hits a note." }
+    { "name": "onCreate", "args": [], "description": "Fired when the script starts loading.", "beginner": "Use this to create sprites, set variables, and prepare the scene.", "example": "function onCreate()\n    makeLuaSprite('logo', 'logo', 0, 0)\n    addLuaSprite('logo', true)\nend", "tips": ["This normally runs once.", "Create assets here before trying to animate them."] },
+    { "name": "onCreatePost", "args": [], "description": "Fired after characters, stage, and UI are created.", "beginner": "Use this when your code needs the game objects to exist first.", "example": "function onCreatePost()\n    setProperty('boyfriend.alpha', 0.5)\nend", "tips": ["Prefer onCreate for your own sprites.", "Use this for changing objects created by the engine."] },
+    { "name": "onUpdate", "args": ["elapsed"], "description": "Fired every frame.", "beginner": "Use this for continuous movement or checks. elapsed is the time since the previous frame.", "example": "function onUpdate(elapsed)\n    -- update movement here\nend", "tips": ["Keep per-frame work small.", "Do not start a new timer every frame unless that is intentional."] },
+    { "name": "onUpdatePost", "args": ["elapsed"], "description": "Fired every frame after character updates.", "beginner": "Use this when your adjustment should happen after the engine updates characters.", "example": "function onUpdatePost(elapsed)\n    -- apply a final camera or UI adjustment\nend", "tips": ["Use onUpdate when ordering does not matter."] },
+    { "name": "onBeatHit", "args": [], "description": "Fired every beat.", "beginner": "Use this to pulse, move, or change something in time with the music.", "example": "function onBeatHit()\n    cameraFlash('FFFFFF', 0.1)\nend", "tips": ["A beat is less frequent than a step."] },
+    { "name": "onStepHit", "args": [], "description": "Fired every step.", "beginner": "Use this for timing changes that need twice the resolution of beat-based logic.", "example": "function onStepHit()\n    if curStep == 64 then\n        cameraShake('game', 0.02, 0.2)\n    end\nend", "tips": ["Check curStep before applying one-time changes."] },
+    { "name": "onEvent", "args": ["eventName", "value1", "value2", "strumTime"], "description": "Fired when an event is triggered.", "beginner": "Use this to react to chart events. value1 and value2 contain the event's custom values.", "example": "function onEvent(eventName, value1, value2, strumTime)\n    debugPrint(eventName)\nend", "tips": ["Compare eventName before using the values."] },
+    { "name": "goodNoteHit", "args": ["id", "noteData", "noteType", "isSustainNote"], "description": "Fired when player hits a note.", "beginner": "Use this to react to successful player notes or specific note types.", "example": "function goodNoteHit(id, noteData, noteType, isSustainNote)\n    debugPrint(noteType)\nend", "tips": ["noteData identifies the direction.", "isSustainNote is true for held notes."] },
+    { "name": "opponentNoteHit", "args": ["id", "noteData", "noteType", "isSustainNote"], "description": "Fired when opponent hits a note.", "beginner": "Use this for effects triggered by opponent notes.", "example": "function opponentNoteHit(id, noteData, noteType, isSustainNote)\n    -- opponent reaction\nend", "tips": ["This is separate from goodNoteHit."] }
   ],
   "functions": [
-    { "name": "addLuaSprite", "args": ["tag", "front"], "description": "Adds a Lua sprite to the scene." },
-    { "name": "makeLuaSprite", "args": ["tag", "image", "x", "y"], "description": "Initializes a new Lua sprite." },
-    { "name": "playAnim", "args": ["obj", "name", "forced", "reverse", "startFrame"], "description": "Plays an animation on an object." },
-    { "name": "setProperty", "args": ["variable", "value"], "description": "Sets a property on an object or playState variable." },
-    { "name": "getProperty", "args": ["variable"], "description": "Gets a property value from an object." },
-    { "name": "runTimer", "args": ["tag", "time", "loops"], "description": "Starts a standalone timer." },
-    { "name": "startTween", "args": ["tag", "vars", "duration", "options"], "description": "Tweens an object's properties." }
+    { "name": "addLuaSprite", "args": ["tag", "front"], "description": "Adds a Lua sprite to the scene.", "beginner": "Displays a sprite created with makeLuaSprite.", "example": "makeLuaSprite('logo', 'logo', 0, 0)\naddLuaSprite('logo', true)", "tips": ["Use the same tag in both calls.", "Set front to true to draw above characters."] },
+    { "name": "makeLuaSprite", "args": ["tag", "image", "x", "y"], "description": "Initializes a new Lua sprite.", "beginner": "Creates a sprite object, but does not display it until you call addLuaSprite.", "example": "makeLuaSprite('logo', 'logo', 100, 50)\naddLuaSprite('logo', false)", "tips": ["The image is relative to the mod's images folder.", "Tags are names you choose and reuse later."] },
+    { "name": "playAnim", "args": ["obj", "name", "forced", "reverse", "startFrame"], "description": "Plays an animation on an object.", "beginner": "Changes an animated object's current animation.", "example": "playAnim('boyfriend', 'idle', true)", "tips": ["The animation name must exist in the object's atlas or character definition.", "Optional arguments can usually be omitted."] },
+    { "name": "setProperty", "args": ["variable", "value"], "description": "Sets a property on an object or playState variable.", "beginner": "Changes a property such as alpha, x, y, angle, or visible.", "example": "setProperty('logo.alpha', 0.5)", "tips": ["Use dot notation for nested properties.", "Numbers and booleans should not be quoted."] },
+    { "name": "getProperty", "args": ["variable"], "description": "Gets a property value from an object.", "beginner": "Reads a value so your script can make a decision or calculate a change.", "example": "local alpha = getProperty('logo.alpha')", "tips": ["Store the returned value in a local variable when reusing it."] },
+    { "name": "runTimer", "args": ["tag", "time", "loops"], "description": "Starts a standalone timer.", "beginner": "Schedules a delayed action without blocking the game.", "example": "runTimer('hideLogo', 2, 1)", "tips": ["Handle the tag in onTimerCompleted.", "Time is measured in seconds."] },
+    { "name": "startTween", "args": ["tag", "vars", "duration", "options"], "description": "Tweens an object's properties.", "beginner": "Smoothly changes one or more properties over time.", "example": "startTween('fadeLogo', 'logo', {alpha = 0}, 1, {})", "tips": ["Use a unique tag for each tween.", "Check the Psych Engine version for supported option fields."] }
   ]
 }
