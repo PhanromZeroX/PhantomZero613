@@ -3,6 +3,11 @@
   "displayName": "Psych Engine IDE",
   "description": "Complete development environment for Psych Engine v1.0.4 modding",
   "version": "0.2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PhanromZeroX/PhantomZero613.git",
+    "directory": "PsychIDE/extension"
+  },
   "publisher": "PsychModding",
   "engines": {
     "vscode": "^1.75.0"
@@ -182,18 +187,19 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "package": "npm run compile && vsce package --allow-star-activation --skip-license"
   },
   "devDependencies": {
     "@types/vscode": "^1.75.0",
     "@types/node": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "@vscode/vsce": "latest"
   },
   "dependencies": {
     "vscode-languageclient": "^8.1.0"
   },
   "activationEvents": [
-    "*",
     "onLanguage:lua",
     "onCommand:psychide.showOutput",
     "onCommand:psychIde.askAiToFix",

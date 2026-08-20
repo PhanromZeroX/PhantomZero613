@@ -1,0 +1,10 @@
+node_modules/
+out/**/*.map
+src/
+backend/__pycache__/
+backend/test_*.py
+backend/server_crash.log
+*.vsix
+.vscode/
+tsconfig.json
+STATUSBAR_PLAN.md
