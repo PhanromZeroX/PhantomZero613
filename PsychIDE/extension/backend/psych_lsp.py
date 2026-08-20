@@ -99,6 +99,8 @@ class PsychLanguageServer:
             "psychIde/resizeSpriteSheet": self.resize_sprite_sheet,
             "psychIde/scanAssetHealth": self.scan_asset_health,
             "psychIde/validateWorkspace": self.validate_workspace,
+            "psychIde/projectSummary": self.project_summary,
+            "psychIde/explainSymbol": self.explain_symbol,
         }
 
     def publish_diagnostics(self, uri: str, errors: List[Any], warnings: List[Any]):
@@ -435,6 +437,44 @@ class PsychLanguageServer:
             if errors or warnings:
                 results.append({"uri": uri, "errors": errors, "warnings": warnings})
         return {"ok": True, "totals": totals, "results": results}
+
+    def project_summary(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        folder_path = params.get("folderPath") or (str(self.index.workspace_root) if self.index.workspace_root else "")
+        if not folder_path:
+            return {"ok": False, "error": "No workspace folder is available"}
+        validation = self.validate_workspace({})
+        assets = scan_asset_folder(folder_path, profile=str(params.get("profile", "balanced")))
+        root = pathlib.Path(folder_path)
+        files = {"lua": 0, "haxe": 0, "json": 0, "png": 0}
+        for file_path in root.rglob("*"):
+            if not file_path.is_file() or any(part in {".git", "node_modules", "out", "build", "dist", "psychide-resized"} for part in file_path.parts):
+                continue
+            suffix = file_path.suffix.lower()
+            if suffix == ".lua": files["lua"] += 1
+            elif suffix == ".hx": files["haxe"] += 1
+            elif suffix == ".json": files["json"] += 1
+            elif suffix == ".png": files["png"] += 1
+        return {
+            "ok": True,
+            "folder": folder_path,
+            "files": files,
+            "validation": validation.get("totals", {}),
+            "assets": assets.get("totals", {}),
+            "api": {
+                "functions": len(self.validator.functions),
+                "callbacks": len(self.validator.callbacks),
+                "haxeFunctions": len(self.haxe_api.get("functions", [])),
+                "haxeClasses": len(self.haxe_api.get("classes", [])),
+            },
+        }
+
+    def explain_symbol(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        name = str(params.get("name", ""))
+        for category in ("functions", "callbacks"):
+            for item in self.api_db.get(category, []):
+                if item.get("name") == name:
+                    return {"ok": True, "name": name, "kind": category[:-1], **item}
+        return {"ok": False, "error": f"No Psych Engine guide found for {name}"}
 
     def validate_and_publish(self, params):
         uri = params["textDocument"]["uri"]

@@ -2,7 +2,7 @@
   "name": "psych-ide",
   "displayName": "Psych Engine IDE",
   "description": "Complete development environment for Psych Engine v1.0.4 modding",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/PhanromZeroX/PhantomZero613.git",
@@ -194,6 +194,22 @@
         "title": "Psych: Preview Sprite Sheet"
       },
       {
+        "command": "psychIde.openDashboard",
+        "title": "Psych: Open Project Dashboard"
+      },
+      {
+        "command": "psychIde.createProject",
+        "title": "Psych: Create Mod Project Files"
+      },
+      {
+        "command": "psychIde.explainCurrentSymbol",
+        "title": "Psych: Explain Current API"
+      },
+      {
+        "command": "psychIde.showGameStatus",
+        "title": "Psych: Show Game Status"
+      },
+      {
         "command": "psychIde.askAiToFix",
         "title": "Psych: Ask AI to Fix"
       },
@@ -240,6 +256,10 @@
     "onCommand:psychIde.resizeSpriteFolder",
     "onCommand:psychIde.scanAssetHealth",
     "onCommand:psychIde.validateWorkspace",
-    "onCommand:psychIde.previewSpriteSheet"
+    "onCommand:psychIde.previewSpriteSheet",
+    "onCommand:psychIde.openDashboard",
+    "onCommand:psychIde.createProject",
+    "onCommand:psychIde.explainCurrentSymbol",
+    "onCommand:psychIde.showGameStatus"
   ]
 }

@@ -466,6 +466,93 @@ export async function activate(context: vscode.ExtensionContext) {
         })
     );
 
+    context.subscriptions.push(
+        vscode.commands.registerCommand('psychIde.openDashboard', async () => {
+            if (!psychClient) {
+                vscode.window.showErrorMessage('PsychIDE language server is not active.');
+                return;
+            }
+            const workspace = vscode.workspace.workspaceFolders?.[0];
+            if (!workspace) {
+                vscode.window.showErrorMessage('Open a Psych Engine workspace first.');
+                return;
+            }
+            const summary = await psychClient.sendRequest('psychIde/projectSummary', {
+                folderPath: workspace.uri.fsPath,
+                profile: 'balanced',
+            });
+            await showProjectDashboard(context, summary);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('psychIde.createProject', async () => {
+            const workspace = vscode.workspace.workspaceFolders?.[0];
+            if (!workspace) {
+                vscode.window.showErrorMessage('Open a workspace before creating mod files.');
+                return;
+            }
+            const choices = [
+                { label: 'Lua stage script', file: 'stages/my-stage.lua', content: "function onCreate()\n    -- Create stage sprites here\nend\n" },
+                { label: 'Lua event script', file: 'custom_events/My Event.lua', content: "function onEvent(name, value1, value2)\n    -- Handle your event here\nend\n" },
+                { label: 'Lua character helper', file: 'scripts/character-helper.lua', content: "function onCreatePost()\n    -- Customize an engine character here\nend\n" },
+                { label: 'Haxe script', file: 'scripts/MyScript.hx', content: "package;\n\nclass MyScript {\n    public function new() {}\n}\n" },
+            ];
+            const choice = await vscode.window.showQuickPick(choices, { placeHolder: 'Choose a Psych Engine starter file' });
+            if (!choice) return;
+            const target = vscode.Uri.joinPath(workspace.uri, choice.file);
+            await vscode.workspace.fs.createDirectory(vscode.Uri.file(path.dirname(target.fsPath)));
+            if (fs.existsSync(target.fsPath)) {
+                const replace = await vscode.window.showWarningMessage(`${choice.file} already exists. Replace it?`, 'Replace', 'Cancel');
+                if (replace !== 'Replace') return;
+            }
+            await vscode.workspace.fs.writeFile(target, Buffer.from(choice.content, 'utf8'));
+            const document = await vscode.workspace.openTextDocument(target);
+            await vscode.window.showTextDocument(document);
+            vscode.window.showInformationMessage(`Created ${choice.file}`);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('psychIde.explainCurrentSymbol', async () => {
+            if (!psychClient) return;
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) return;
+            const wordRange = editor.document.getWordRangeAtPosition(editor.selection.active);
+            if (!wordRange) {
+                vscode.window.showInformationMessage('Place the cursor on a Psych Engine API or callback.');
+                return;
+            }
+            const name = editor.document.getText(wordRange);
+            const guide = await psychClient.sendRequest('psychIde/explainSymbol', { name }) as { ok?: boolean; beginner?: string; example?: string; tips?: string[]; description?: string };
+            if (!guide.ok) {
+                vscode.window.showInformationMessage(`No Psych Engine guide found for ${name}.`);
+                return;
+            }
+            const tips = (guide.tips || []).map(tip => `- ${tip}`).join('\n');
+            const panel = vscode.window.createWebviewPanel('psychideSymbolGuide', `Guide: ${name}`, vscode.ViewColumn.Beside, { enableScripts: false });
+            panel.webview.html = `<html><body style="font-family: sans-serif; padding: 20px; color: var(--vscode-foreground); background: var(--vscode-editor-background)"><h1>${name}</h1><p>${guide.description || ''}</p><h2>Beginner guide</h2><p>${guide.beginner || ''}</p><h2>Example</h2><pre>${guide.example || ''}</pre><h2>Tips</h2><pre>${tips}</pre></body></html>`;
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('psychIde.showGameStatus', async () => {
+            const host = vscode.workspace.getConfiguration('psychIde.debug').get<string>('host', '127.0.0.1');
+            const port = vscode.workspace.getConfiguration('psychIde.debug').get<number>('port', 8000);
+            try {
+                await checkGameConnection(host, port);
+                vscode.window.showInformationMessage(`Psych Engine connected at ${host}:${port}.`, 'Reload Current Script').then(async action => {
+                    if (action === 'Reload Current Script') await sendCommandToGame('reload_script', host, port);
+                });
+            } catch (error) {
+                const message = error instanceof Error ? error.message : String(error);
+                vscode.window.showWarningMessage(`Psych Engine is offline: ${message}`, 'Open Debug Settings').then(action => {
+                    if (action === 'Open Debug Settings') vscode.commands.executeCommand('workbench.action.openSettings', 'psychIde.debug');
+                });
+            }
+        })
+    );
+
     // Register validation command
     context.subscriptions.push(
         vscode.commands.registerCommand('psychIde.validateLua', async () => {
@@ -714,6 +801,31 @@ image.src = 'data:image/png;base64,${imageData}';
 </script>
 </body>
 </html>`;
+}
+
+async function showProjectDashboard(context: vscode.ExtensionContext, summary: any): Promise<void> {
+    const panel = vscode.window.createWebviewPanel(
+        'psychideProjectDashboard',
+        'PsychIDE Project Dashboard',
+        vscode.ViewColumn.Active,
+        { enableScripts: false }
+    );
+    const files = summary.files || {};
+    const validation = summary.validation || {};
+    const assets = summary.assets || {};
+    const api = summary.api || {};
+    const card = (label: string, value: unknown, tone = '') => `<article class="card ${tone}"><strong>${value}</strong><span>${label}</span></article>`;
+    panel.webview.html = `<!doctype html><html><head><style>
+body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); background: var(--vscode-editor-background); padding: 24px; }
+h1 { margin-top: 0; } .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.card { border: 1px solid var(--vscode-panel-border); padding: 16px; display: flex; flex-direction: column; gap: 8px; background: var(--vscode-sideBar-background); }
+.card strong { font-size: 24px; } .card span { opacity: .75; } .danger strong { color: var(--vscode-errorForeground); }
+.good strong { color: var(--vscode-testing-iconPassed); } section { margin-top: 24px; }
+</style></head><body><h1>PsychIDE Project Dashboard</h1><p>${summary.folder || 'Workspace'}</p>
+<section><h2>Project Files</h2><div class="grid">${card('Lua files', files.lua)}${card('Haxe files', files.haxe)}${card('JSON files', files.json)}${card('PNG assets', files.png)}</div></section>
+<section><h2>Health</h2><div class="grid">${card('Validation errors', validation.errors || 0, validation.errors ? 'danger' : 'good')}${card('Validation warnings', validation.warnings || 0)}${card('Oversized assets', assets.oversized || 0, assets.oversized ? 'danger' : 'good')}${card('Missing metadata', assets.missingMetadata || 0, assets.missingMetadata ? 'danger' : 'good')}${card('Invalid metadata', assets.invalidMetadata || 0, assets.invalidMetadata ? 'danger' : 'good')}</div></section>
+<section><h2>Psych Engine API</h2><div class="grid">${card('Lua functions', api.functions || 0)}${card('Callbacks', api.callbacks || 0)}${card('Haxe functions', api.haxeFunctions || 0)}${card('Haxe classes', api.haxeClasses || 0)}</div></section>
+</body></html>`;
 }
 
 function parseSpriteFrames(xmlPath: string): Array<{ name: string; x: number; y: number; width: number; height: number }> {
