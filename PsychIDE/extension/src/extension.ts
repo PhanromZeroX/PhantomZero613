@@ -628,7 +628,11 @@ async function showSpritePreview(context: vscode.ExtensionContext, imagePath: st
     const folder = path.dirname(imagePath);
     const baseName = path.basename(imagePath, path.extname(imagePath));
     const xmlPath = path.join(folder, `${baseName}.xml`);
-    const frames = fs.existsSync(xmlPath) ? parseSpriteFrames(xmlPath) : [];
+    const sourceFrames = fs.existsSync(xmlPath) ? parseSpriteFrames(xmlPath) : [];
+    const frames = sourceFrames.length > 0
+        ? sourceFrames
+        : [{ name: baseName, x: 0, y: 0, width: 0, height: 0 }];
+    const poses = groupSpriteFrames(frames);
     const panel = vscode.window.createWebviewPanel(
         'psychideSpritePreview',
         `Sprite Preview: ${baseName}`,
@@ -637,8 +641,9 @@ async function showSpritePreview(context: vscode.ExtensionContext, imagePath: st
     );
 
     const nonce = `${Date.now()}${Math.random().toString(16).slice(2)}`;
-    const frameJson = JSON.stringify(frames.length > 0 ? frames : [{ name: baseName, x: 0, y: 0, width: 0, height: 0 }])
+    const frameJson = JSON.stringify(frames)
         .replace(/</g, '\\u003c');
+    const poseJson = JSON.stringify(poses).replace(/</g, '\\u003c');
     panel.webview.html = `<!doctype html>
 <html>
 <head>
@@ -654,6 +659,7 @@ canvas { display: block; max-width: 100%; image-rendering: pixelated; margin-top
 <body>
 <div class="toolbar">
 <button id="play">Play</button>
+<label>Pose <select id="pose"></select></label>
 <label>Frame <input id="frame" type="range" min="0" max="${Math.max(frames.length - 1, 0)}" value="0"></label>
 <label>FPS <input id="fps" type="number" min="1" max="60" value="12" size="3"></label>
 <span id="status"></span>
@@ -662,28 +668,45 @@ canvas { display: block; max-width: 100%; image-rendering: pixelated; margin-top
 <script nonce="${nonce}">
 const image = new Image();
 const frames = ${frameJson};
+const poses = ${poseJson};
 const canvas = document.getElementById('preview');
 const ctx = canvas.getContext('2d');
 const frameInput = document.getElementById('frame');
+const poseInput = document.getElementById('pose');
 const fpsInput = document.getElementById('fps');
 const status = document.getElementById('status');
 let timer = null;
+let activeFrames = frames;
+for (const poseName of Object.keys(poses)) {
+    const option = document.createElement('option');
+    option.value = poseName;
+    option.textContent = poseName + ' (' + poses[poseName].length + ')';
+    poseInput.appendChild(option);
+}
+function selectPose(poseName) {
+    activeFrames = poses[poseName] || frames;
+    frameInput.max = String(Math.max(activeFrames.length - 1, 0));
+    frameInput.value = '0';
+    stop();
+    draw(0);
+}
 function draw(index) {
-  const frame = frames[index];
+    const frame = activeFrames[index] || activeFrames[0];
   const width = frame.width || image.naturalWidth;
   const height = frame.height || image.naturalHeight;
   canvas.width = width;
   canvas.height = height;
   ctx.clearRect(0, 0, width, height);
   ctx.drawImage(image, frame.x || 0, frame.y || 0, width, height, 0, 0, width, height);
-  status.textContent = (frame.name || 'frame') + ' ' + (index + 1) + '/' + frames.length + ' (' + width + 'x' + height + ')';
+    status.textContent = (frame.name || 'frame') + ' ' + (index + 1) + '/' + activeFrames.length + ' (' + width + 'x' + height + ')';
 }
 function stop() { if (timer) { clearInterval(timer); timer = null; } document.getElementById('play').textContent = 'Play'; }
 document.getElementById('play').addEventListener('click', () => {
   if (timer) { stop(); return; }
   document.getElementById('play').textContent = 'Pause';
-  timer = setInterval(() => { frameInput.value = String((Number(frameInput.value) + 1) % frames.length); draw(Number(frameInput.value)); }, 1000 / Number(fpsInput.value || 12));
+    timer = setInterval(() => { frameInput.value = String((Number(frameInput.value) + 1) % activeFrames.length); draw(Number(frameInput.value)); }, 1000 / Number(fpsInput.value || 12));
 });
+poseInput.addEventListener('change', () => selectPose(poseInput.value));
 frameInput.addEventListener('input', () => { stop(); draw(Number(frameInput.value)); });
 fpsInput.addEventListener('change', () => { if (timer) { stop(); document.getElementById('play').click(); } });
 image.onload = () => draw(0);
@@ -711,6 +734,17 @@ function parseSpriteFrames(xmlPath: string): Array<{ name: string; x: number; y:
         });
     }
     return frames;
+}
+
+function groupSpriteFrames(frames: Array<{ name: string; x: number; y: number; width: number; height: number }>): Record<string, Array<{ name: string; x: number; y: number; width: number; height: number }>> {
+    const groups: Record<string, Array<{ name: string; x: number; y: number; width: number; height: number }>> = {};
+    for (const frame of frames) {
+        const pose = frame.name
+            .replace(/(?:[-_: ]?\d+)$/, '')
+            .replace(/[-_: ]$/, '') || 'all';
+        (groups[pose] ||= []).push(frame);
+    }
+    return Object.keys(groups).length > 0 ? groups : { all: frames };
 }
 
 function validateJsonFile(document: vscode.TextDocument) {

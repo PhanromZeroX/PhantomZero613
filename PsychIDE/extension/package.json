@@ -2,7 +2,7 @@
   "name": "psych-ide",
   "displayName": "Psych Engine IDE",
   "description": "Complete development environment for Psych Engine v1.0.4 modding",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/PhanromZeroX/PhantomZero613.git",
@@ -92,13 +92,13 @@
       { "id": "engine" }
     ],
     "semanticTokenColors": {
-      "variable": "#8BE9FD",
-      "function": "#50FA7B",
-      "keyword": "#FF79C6",
-      "string": "#F1FA8C",
-      "number": "#BD93F9",
-      "type": "#FFB86C",
-      "engine": "#9D00FF"
+      "variable": "#9CDCFE",
+      "function": "#DCDCAA",
+      "keyword": "#C586C0",
+      "string": "#CE9178",
+      "number": "#B5CEA8",
+      "type": "#4EC9B0",
+      "engine": "#4FC1FF"
     },
     "configurationDefaults": {
       "editor.tokenColorCustomizations": {
@@ -113,8 +113,39 @@
               "foreground": "#00FFCC",
               "fontStyle": "bold"
             }
+          },
+          {
+            "name": "PsychIDE Lua comments",
+            "scope": ["comment.line.double-dash.lua", "comment.block.lua"],
+            "settings": { "foreground": "#6A9955", "fontStyle": "italic" }
+          },
+          {
+            "name": "PsychIDE Lua strings",
+            "scope": ["string.quoted.single.lua", "string.quoted.double.lua", "string.quoted.other.lua"],
+            "settings": { "foreground": "#CE9178" }
+          },
+          {
+            "name": "PsychIDE Lua keywords",
+            "scope": ["keyword.control.lua", "storage.type.function.lua", "storage.type.local.lua"],
+            "settings": { "foreground": "#C586C0", "fontStyle": "bold" }
+          },
+          {
+            "name": "PsychIDE Lua numbers",
+            "scope": ["constant.numeric.lua"],
+            "settings": { "foreground": "#B5CEA8" }
           }
         ]
+      },
+      "editor.semanticTokenColorCustomizations": {
+        "rules": {
+          "engine": "#4FC1FF",
+          "function": "#DCDCAA",
+          "variable": "#9CDCFE",
+          "keyword": "#C586C0",
+          "string": "#CE9178",
+          "number": "#B5CEA8",
+          "type": "#4EC9B0"
+        }
       }
     },
     "commands": [

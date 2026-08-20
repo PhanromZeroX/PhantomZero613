@@ -1,0 +1,38 @@
+{
+  "scopeName": "source.lua",
+  "name": "Lua",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#keywords" },
+    { "include": "#numbers" },
+    { "include": "#functions" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.double-dash.lua", "match": "--(?!\\[\\[).*?$" },
+        { "name": "comment.block.lua", "begin": "--\\[\\[", "end": "\\]\\]" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        { "name": "string.quoted.single.lua", "begin": "'", "end": "'", "patterns": [{ "name": "constant.character.escape.lua", "match": "\\\\." }] },
+        { "name": "string.quoted.double.lua", "begin": "\\\"", "end": "\\\"", "patterns": [{ "name": "constant.character.escape.lua", "match": "\\\\." }] },
+        { "name": "string.quoted.other.lua", "begin": "\\[\\[", "end": "\\]\\]" }
+      ]
+    },
+    "keywords": {
+      "patterns": [{ "name": "keyword.control.lua", "match": "\\b(and|break|do|else|elseif|end|for|function|goto|if|in|local|not|or|repeat|return|then|until|while)\\b" }]
+    },
+    "numbers": {
+      "patterns": [{ "name": "constant.numeric.lua", "match": "\\b(?:0[xX][0-9A-Fa-f]+|\\d+(?:\\.\\d+)?)\\b" }]
+    },
+    "functions": {
+      "patterns": [
+        { "name": "entity.name.function.lua", "match": "\\b(?:function|local\\s+function)\\s+([A-Za-z_][A-Za-z0-9_]*)" },
+        { "name": "support.function.lua", "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\()" }
+      ]
+    }
+  }
+}
