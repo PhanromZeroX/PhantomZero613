@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Psych Engine Song Metadata",
+  "description": "Schema for Psych Engine song data files (data/songname/song.json)",
+  "type": "object",
+  "required": ["song"],
+  "properties": {
+    "song": {
+      "type": "object",
+      "description": "Song configuration",
+      "required": ["player1", "player2", "gfVersion"],
+      "properties": {
+        "player1": { "type": "string", "description": "Boyfriend character ID" },
+        "player2": { "type": "string", "description": "Opponent character ID" },
+        "gfVersion": { "type": "string", "description": "Girlfriend character ID" },
+        "stage": { "type": "string", "description": "Stage ID" },
+        "validScore": { "type": "boolean", "description": "Whether score is valid for ranking", "default": true },
+        "needsVoices": { "type": "boolean", "description": "Whether song needs voice tracks", "default": true }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "description": "Chart data",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sectionNotes": {
+            "type": "array",
+            "items": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "type": "number" } }
+          },
+          "lengthInSteps": { "type": "integer" },
+          "typeOfSection": { "type": "integer" },
+          "mustHitSection": { "type": "boolean" }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "description": "Stage events",
+      "items": { "type": "array", "minItems": 2, "items": { "type": "any" } }
+    }
+  }
+}

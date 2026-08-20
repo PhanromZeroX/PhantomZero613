@@ -34,14 +34,15 @@ class HaxeParser:
             specs['functions'].append({
                 'name': func_name,
                 'params': self._parse_params(params),
-                'return_type': return_type
+                'return_type': return_type,
+                'file': filepath.resolve().as_uri(),
             })
         
         # Extract classes
         class_pattern = r'(?:class|extern\s+class)\s+(\w+)'
         for match in re.finditer(class_pattern, content):
             class_name = match.group(1)
-            specs['classes'].append({'name': class_name})
+            specs['classes'].append({'name': class_name, 'file': filepath.resolve().as_uri()})
         
         return specs
     
@@ -62,7 +63,10 @@ class HaxeParser:
         """Scan all Haxe files and extract API specs"""
         apis = {'functions': [], 'classes': []}
         
+        ignored = {'.git', '.buildozer', 'node_modules', 'out', 'build', 'dist', '__pycache__'}
         for haxe_file in self.haxe_source_dir.glob('**/*.hx'):
+            if ignored.intersection(haxe_file.parts):
+                continue
             specs = self.parse_file(haxe_file)
             apis['functions'].extend(specs.get('functions', []))
             apis['classes'].extend(specs.get('classes', []))

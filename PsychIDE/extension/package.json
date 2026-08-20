@@ -1,0 +1,193 @@
+{
+  "name": "psych-ide",
+  "displayName": "Psych Engine IDE",
+  "description": "Complete development environment for Psych Engine v1.0.4 modding",
+  "version": "0.2.0",
+  "publisher": "PsychModding",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Debuggers"
+  ],
+  "keywords": [
+    "psych-engine",
+    "fnf",
+    "lua",
+    "haxe",
+    "modding"
+  ],
+  "main": "./out/extension.js",
+  "configuration": {
+    "title": "PsychIDE",
+    "properties": {
+      "psychIde.debug.host": {
+        "type": "string",
+        "default": "127.0.0.1",
+        "description": "Host for the Psych Engine debug server."
+      },
+      "psychIde.debug.port": {
+        "type": "number",
+        "default": 8000,
+        "minimum": 1,
+        "maximum": 65535,
+        "description": "Port for the Psych Engine debug server."
+      }
+    }
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "lua",
+        "extensions": [
+          ".lua"
+        ],
+        "aliases": [
+          "Lua"
+        ]
+      },
+      {
+        "id": "haxe",
+        "extensions": [".hx"],
+        "aliases": ["Haxe"]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "lua",
+        "scopeName": "source.lua",
+        "path": "./syntaxes/lua.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "lua",
+        "path": "./snippets/psych-snippets.json"
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "song.json",
+        "url": "./schemas/song.schema.json"
+      },
+      {
+        "fileMatch": "character.json",
+        "url": "./schemas/character.schema.json"
+      }
+    ],
+    "semanticTokenTypes": [
+      { "id": "variable" },
+      { "id": "function" },
+      { "id": "keyword" },
+      { "id": "string" },
+      { "id": "number" },
+      { "id": "type" },
+      { "id": "engine" }
+    ],
+    "semanticTokenColors": {
+      "variable": "#8BE9FD",
+      "function": "#50FA7B",
+      "keyword": "#FF79C6",
+      "string": "#F1FA8C",
+      "number": "#BD93F9",
+      "type": "#FFB86C",
+      "engine": "#9D00FF"
+    },
+    "configurationDefaults": {
+      "editor.tokenColorCustomizations": {
+        "textMateRules": [
+          {
+            "name": "Psych Engine API Functions and Callbacks",
+            "scope": [
+              "support.function.lua",
+              "entity.name.function.lua"
+            ],
+            "settings": {
+              "foreground": "#00FFCC",
+              "fontStyle": "bold"
+            }
+          }
+        ]
+      }
+    },
+    "commands": [
+      {
+        "command": "psychIde.validateLua",
+        "title": "Psych: Validate Lua File"
+      },
+      {
+        "command": "psychIde.validateJson",
+        "title": "Psych: Validate JSON File"
+      },
+      {
+        "command": "psychIde.generateSnippet",
+        "title": "Psych: Generate Code Snippet"
+      },
+      {
+        "command": "psychide.showOutput",
+        "title": "PsychIDE: Show Server Output Logs"
+      },
+      {
+        "command": "psychIde.reloadScript",
+        "title": "Psych: Hot-Reload Current Script"
+      },
+      {
+        "command": "psychIde.checkGameConnection",
+        "title": "Psych: Check Game Debug Connection"
+      },
+      {
+        "command": "psychIde.resizeSpriteSheet",
+        "title": "Psych: Resize Sprite Sheet"
+      },
+      {
+        "command": "psychIde.resizeSpriteFolder",
+        "title": "Psych: Resize Sprite Folder"
+      },
+      {
+        "command": "psychIde.askAiToFix",
+        "title": "Psych: Ask AI to Fix"
+      },
+      {
+        "command": "psychIde.configureAiKey",
+        "title": "Psych: Configure AI API Key"
+      },
+      {
+        "command": "psychIde.reindexWorkspace",
+        "title": "Psych: Reindex Workspace"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "psychIde.reloadScript",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+shift+r",
+        "when": "editorLangId == lua"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/node": "latest",
+    "typescript": "latest"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.1.0"
+  },
+  "activationEvents": [
+    "*",
+    "onLanguage:lua",
+    "onCommand:psychide.showOutput",
+    "onCommand:psychIde.askAiToFix",
+    "onCommand:psychIde.configureAiKey",
+    "onCommand:psychIde.reindexWorkspace",
+    "onCommand:psychIde.resizeSpriteSheet",
+    "onCommand:psychIde.resizeSpriteFolder"
+  ]
+}

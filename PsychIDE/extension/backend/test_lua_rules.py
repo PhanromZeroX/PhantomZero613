@@ -11,9 +11,50 @@ if THIS_DIR not in sys.path:
 # The project’s validator lives in psych_lsp.py.
 # Import defensively because class/function names may differ.
 import psych_lsp  # noqa: F401
+from lua_validator import LuaValidator
 
 
 class TestPsychEngineRules(unittest.TestCase):
+    def test_api_database_controls_function_arity(self):
+        validator = LuaValidator({
+            "functions": [{"name": "customApi", "args": ["first", "second"]}],
+            "callbacks": [],
+        })
+        errors, _ = validator.validate("customApi(1)\n")
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0]["code"], "psych-arity")
+
+    def test_callback_arity_is_validated(self):
+        validator = LuaValidator({
+            "functions": [],
+            "callbacks": [{"name": "onUpdate", "args": ["elapsed"]}],
+        })
+        errors, _ = validator.validate("function onUpdate()\nend\n")
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0]["code"], "psych-callback-arity")
+
+    def test_nested_arguments_are_not_split(self):
+        validator = LuaValidator({
+            "functions": [{"name": "customApi", "args": ["first", "second"]}],
+            "callbacks": [],
+        })
+        errors, _ = validator.validate("customApi({1, 2}, calculate(a, b))\n")
+        self.assertEqual(errors, [])
+
+    def test_literal_argument_types_are_checked(self):
+        validator = LuaValidator({
+            "functions": [{
+                "name": "typedApi",
+                "args": [
+                    {"name": "tag", "type": "string"},
+                    {"name": "enabled", "type": "boolean"},
+                ],
+            }],
+            "callbacks": [],
+        })
+        errors, _ = validator.validate("typedApi(42, 'yes')\n")
+        self.assertEqual([error["code"] for error in errors], ["psych-type", "psych-type"])
+
     def test_v104_callback_recognition(self):
         """Sanity: validate that typical v1.0.4 callback blocks are syntactically valid strings."""
         valid_lua = (
