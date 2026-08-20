@@ -27,6 +27,7 @@ from lua_structure import LuaStructureAnalyzer
 from json_validator import JsonValidator
 from haxe_parser import HaxeParser
 from sprite_resizer import resize_sprite_sheet
+from asset_health import scan_asset_folder
 
 
 class PsychLanguageServer:
@@ -96,6 +97,8 @@ class PsychLanguageServer:
             "psychIde/configureAiKey": self.configure_ai_key,
             "psychIde/reindexWorkspace": self.reindex_workspace,
             "psychIde/resizeSpriteSheet": self.resize_sprite_sheet,
+            "psychIde/scanAssetHealth": self.scan_asset_health,
+            "psychIde/validateWorkspace": self.validate_workspace,
         }
 
     def publish_diagnostics(self, uri: str, errors: List[Any], warnings: List[Any]):
@@ -405,6 +408,33 @@ class PsychLanguageServer:
             return result
         except Exception as exc:  # pragma: no cover - defensive server behavior
             return {"ok": False, "error": str(exc)}
+
+    def scan_asset_health(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        folder_path = params.get("folderPath")
+        if not folder_path:
+            return {"ok": False, "error": "folderPath is required"}
+        return scan_asset_folder(
+            folder_path,
+            profile=str(params.get("profile", "balanced")),
+            max_dimension=params.get("maxDimension"),
+        )
+
+    def validate_workspace(self, _params: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate every indexed Lua and JSON document without changing files."""
+        self.index.rebuild()
+        results = []
+        totals = {"files": 0, "errors": 0, "warnings": 0}
+        for uri, text in sorted(self.index.documents.items()):
+            if uri.lower().endswith(".json"):
+                errors, warnings = self._validate_json_text(uri, text)
+            else:
+                errors, warnings = self._validate_text(text)
+            totals["files"] += 1
+            totals["errors"] += len(errors)
+            totals["warnings"] += len(warnings)
+            if errors or warnings:
+                results.append({"uri": uri, "errors": errors, "warnings": warnings})
+        return {"ok": True, "totals": totals, "results": results}
 
     def validate_and_publish(self, params):
         uri = params["textDocument"]["uri"]

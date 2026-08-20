@@ -146,6 +146,14 @@
         "title": "Psych: Resize Sprite Folder"
       },
       {
+        "command": "psychIde.scanAssetHealth",
+        "title": "Psych: Scan Asset Health"
+      },
+      {
+        "command": "psychIde.validateWorkspace",
+        "title": "Psych: Validate Workspace"
+      },
+      {
         "command": "psychIde.askAiToFix",
         "title": "Psych: Ask AI to Fix"
       },
@@ -188,6 +196,8 @@
     "onCommand:psychIde.configureAiKey",
     "onCommand:psychIde.reindexWorkspace",
     "onCommand:psychIde.resizeSpriteSheet",
-    "onCommand:psychIde.resizeSpriteFolder"
+    "onCommand:psychIde.resizeSpriteFolder",
+    "onCommand:psychIde.scanAssetHealth",
+    "onCommand:psychIde.validateWorkspace"
   ]
 }

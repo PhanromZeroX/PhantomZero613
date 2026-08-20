@@ -359,6 +359,97 @@ export async function activate(context: vscode.ExtensionContext) {
         })
     );
 
+    context.subscriptions.push(
+        vscode.commands.registerCommand('psychIde.scanAssetHealth', async () => {
+            if (!psychClient) {
+                vscode.window.showErrorMessage('PsychIDE language server is not active.');
+                return;
+            }
+
+            const folderUri = await vscode.window.showOpenDialog({
+                canSelectFiles: false,
+                canSelectFolders: true,
+                canSelectMany: false,
+                openLabel: 'Scan asset folder',
+            });
+            if (!folderUri || folderUri.length === 0) {
+                return;
+            }
+
+            const profile = await pickExportProfile();
+            if (!profile) {
+                return;
+            }
+
+            const result = await psychClient.sendRequest('psychIde/scanAssetHealth', {
+                folderPath: folderUri[0].fsPath,
+                profile: profile.id,
+            }) as {
+                ok?: boolean;
+                error?: string;
+                totals?: { files?: number; bytes?: number; oversized?: number; missingMetadata?: number; invalidMetadata?: number };
+                assets?: Array<{ path: string; issues: string[]; recommendations?: string[] }>;
+            };
+
+            if (!result.ok) {
+                vscode.window.showErrorMessage(`Asset health scan failed: ${result.error || 'Unknown error'}`);
+                return;
+            }
+
+            const totals = result.totals || {};
+            output.appendLine(`Asset health scan: ${folderUri[0].fsPath}`);
+            for (const asset of result.assets || []) {
+                if (asset.issues.length > 0) {
+                    output.appendLine(`${asset.path}: ${asset.issues.join(', ')}`);
+                    for (const recommendation of asset.recommendations || []) {
+                        output.appendLine(`  Recommendation: ${recommendation}`);
+                    }
+                }
+            }
+            output.show(true);
+
+            vscode.window.showInformationMessage(
+                `Asset scan complete: ${totals.files || 0} PNGs, ${totals.oversized || 0} oversized, ` +
+                `${totals.missingMetadata || 0} missing metadata, ${totals.invalidMetadata || 0} invalid metadata.`
+            );
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('psychIde.validateWorkspace', async () => {
+            if (!psychClient) {
+                vscode.window.showErrorMessage('PsychIDE language server is not active.');
+                return;
+            }
+
+            const result = await psychClient.sendRequest('psychIde/validateWorkspace', {}) as {
+                ok?: boolean;
+                totals?: { files?: number; errors?: number; warnings?: number };
+                results?: Array<{ uri: string; errors: Array<{ message?: string }>; warnings: Array<{ message?: string }> }>;
+            };
+            if (!result.ok) {
+                vscode.window.showErrorMessage('Workspace validation failed.');
+                return;
+            }
+
+            output.appendLine('Workspace validation:');
+            for (const file of result.results || []) {
+                const label = vscode.Uri.parse(file.uri).fsPath;
+                output.appendLine(`${label}: ${file.errors.length} errors, ${file.warnings.length} warnings`);
+                for (const diagnostic of [...file.errors, ...file.warnings]) {
+                    output.appendLine(`  ${diagnostic.message || 'Unknown diagnostic'}`);
+                }
+            }
+            output.show(true);
+
+            const totals = result.totals || {};
+            vscode.window.showInformationMessage(
+                `Workspace validation complete: ${totals.files || 0} files, ` +
+                `${totals.errors || 0} errors, ${totals.warnings || 0} warnings.`
+            );
+        })
+    );
+
     // Register validation command
     context.subscriptions.push(
         vscode.commands.registerCommand('psychIde.validateLua', async () => {
