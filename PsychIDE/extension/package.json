@@ -2,7 +2,7 @@
   "name": "psych-ide",
   "displayName": "Psych Engine IDE",
   "description": "Complete development environment for Psych Engine v1.0.4 modding",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/PhanromZeroX/PhantomZero613.git",

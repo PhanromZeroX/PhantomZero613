@@ -1,4 +1,3 @@
-node_modules/
 out/**/*.map
 src/
 backend/__pycache__/
