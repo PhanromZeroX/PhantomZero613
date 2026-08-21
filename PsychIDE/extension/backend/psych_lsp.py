@@ -28,6 +28,7 @@ from json_validator import JsonValidator
 from haxe_parser import HaxeParser
 from sprite_resizer import resize_sprite_sheet
 from asset_health import scan_asset_folder
+from project_detector import detect_project
 
 
 class PsychLanguageServer:
@@ -101,6 +102,7 @@ class PsychLanguageServer:
             "psychIde/validateWorkspace": self.validate_workspace,
             "psychIde/projectSummary": self.project_summary,
             "psychIde/explainSymbol": self.explain_symbol,
+            "psychIde/detectProject": self.detect_project,
         }
 
     def publish_diagnostics(self, uri: str, errors: List[Any], warnings: List[Any]):
@@ -466,7 +468,14 @@ class PsychLanguageServer:
                 "haxeFunctions": len(self.haxe_api.get("functions", [])),
                 "haxeClasses": len(self.haxe_api.get("classes", [])),
             },
+            "project": detect_project(folder_path),
         }
+
+    def detect_project(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        folder_path = params.get("folderPath") or (str(self.index.workspace_root) if self.index.workspace_root else "")
+        if not folder_path:
+            return {"ok": False, "error": "No folder supplied"}
+        return detect_project(folder_path)
 
     def explain_symbol(self, params: Dict[str, Any]) -> Dict[str, Any]:
         name = str(params.get("name", ""))

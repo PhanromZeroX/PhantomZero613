@@ -808,8 +808,13 @@ async function showProjectDashboard(context: vscode.ExtensionContext, summary: a
         'psychideProjectDashboard',
         'PsychIDE Project Dashboard',
         vscode.ViewColumn.Active,
-        { enableScripts: false }
+        { enableScripts: true }
     );
+    panel.webview.onDidReceiveMessage(message => {
+        if (typeof message.command === 'string') {
+            vscode.commands.executeCommand(message.command);
+        }
+    }, undefined, context.subscriptions);
     const files = summary.files || {};
     const validation = summary.validation || {};
     const assets = summary.assets || {};
@@ -820,12 +825,14 @@ body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); 
 h1 { margin-top: 0; } .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
 .card { border: 1px solid var(--vscode-panel-border); padding: 16px; display: flex; flex-direction: column; gap: 8px; background: var(--vscode-sideBar-background); }
 .card strong { font-size: 24px; } .card span { opacity: .75; } .danger strong { color: var(--vscode-errorForeground); }
-.good strong { color: var(--vscode-testing-iconPassed); } section { margin-top: 24px; }
+.good strong { color: var(--vscode-testing-iconPassed); } section { margin-top: 24px; } nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; } button { padding: 8px 12px; color: var(--vscode-button-foreground); background: var(--vscode-button-background); border: 0; cursor: pointer; }
 </style></head><body><h1>PsychIDE Project Dashboard</h1><p>${summary.folder || 'Workspace'}</p>
+<nav><button data-command="psychIde.validateWorkspace">Validate workspace</button><button data-command="psychIde.scanAssetHealth">Scan assets</button><button data-command="psychIde.resizeSpriteFolder">Resize sprites</button><button data-command="psychIde.previewSpriteSheet">Preview sprite</button><button data-command="psychIde.createProject">Create starter</button></nav>
 <section><h2>Project Files</h2><div class="grid">${card('Lua files', files.lua)}${card('Haxe files', files.haxe)}${card('JSON files', files.json)}${card('PNG assets', files.png)}</div></section>
 <section><h2>Health</h2><div class="grid">${card('Validation errors', validation.errors || 0, validation.errors ? 'danger' : 'good')}${card('Validation warnings', validation.warnings || 0)}${card('Oversized assets', assets.oversized || 0, assets.oversized ? 'danger' : 'good')}${card('Missing metadata', assets.missingMetadata || 0, assets.missingMetadata ? 'danger' : 'good')}${card('Invalid metadata', assets.invalidMetadata || 0, assets.invalidMetadata ? 'danger' : 'good')}</div></section>
 <section><h2>Psych Engine API</h2><div class="grid">${card('Lua functions', api.functions || 0)}${card('Callbacks', api.callbacks || 0)}${card('Haxe functions', api.haxeFunctions || 0)}${card('Haxe classes', api.haxeClasses || 0)}</div></section>
-</body></html>`;
+<section><h2>Project Detection</h2><p>${summary.project?.kind || 'Unknown'} (${summary.project?.confidence || 'low'} confidence)</p></section>
+</body><script nonce="dashboard">const api = acquireVsCodeApi(); document.querySelectorAll('[data-command]').forEach(button => button.addEventListener('click', () => api.postMessage({ command: button.dataset.command })));</script></html>`;
 }
 
 function parseSpriteFrames(xmlPath: string): Array<{ name: string; x: number; y: number; width: number; height: number }> {
